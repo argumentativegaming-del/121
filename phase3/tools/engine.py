@@ -26,7 +26,7 @@ DMG_BUFF_RESTRICT = {'Chroma Prime':'Vex Armor','Cyte-09':'Resupply','Mirage Pri
 AUG_REQUIRES = {'Molecular Fission':['Null Star'],'Blazing Pillage':['Haven'],'Temporal Artillery':['Temporal Anchor'],'Temporal Erosion':['Blaze Artillery','Grenade Fan'],
                 'Wrecking Wall':['Chyrinka Pillar'],'Reinforcing Stomp':['Iron Skin'],'Cathode Current':['Rotorswell'],'Wrath of Ukko':['Wrathful Advance'],
                 'Ironclad Charge':['Iron Skin'],'Hallowed Reckoning':[],'Divine Retribution':[],'Aegis Gale':['Balefire'],'Valence Formation':[],
-                'Lasting Covenant':[],'Teeming Virulence':[],'Parasitic Vitality':[]}
+                'Lasting Covenant':[],'Merulina Guardian':['Sea Snares'],'Spellbound Harvest':['Spellbind'],'Untime Rift':['The Vast Untime'],'Intrepid Stand':['Final Stand'],'Teeming Virulence':[],'Parasitic Vitality':[]}
 RESTRICTED_HELM = {'Eclipse','Roar',"Xata's Whisper"}
 NO_SHIELD = {'Inaros Prime','Kullervo','Nidus Prime'}; NO_ENERGY = {'Hildryn Prime','Lavos Prime'}
 STATRE = re.compile(r'([+-]\d+(?:\.\d+)?)% Ability (Strength|Duration|Range|Efficiency)(?! for your)')

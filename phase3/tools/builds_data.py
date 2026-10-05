@@ -511,3 +511,35 @@ _swap('Rhino Prime', 'Stretch', 'Ironclad Charge')
 _upd('Rhino Prime', notes='B4: prior architecture (Ironclad Charge + Reinforcing Stomp, NO HELMINTH) restored over v4.2 Nourish over Rhino Charge')
 _swap('Nidus Prime', 'Umbral Vitality', 'Augur Secrets')
 _upd('Nidus Prime', notes='B4: Parasitic Vitality (+4% max health per Mutation stack while linked, ~+800% at 200 stacks) is incompatible with Umbral Vitality -> Umbral Vitality out, Augur Secrets keeps Larva\'s guaranteed-stack breakpoint (200% Str); Virulence refunds replace Primed Flow')
+
+# ---------------- v4.3 Batch 5 optimization audit (Saryn -> Zephyr). See audit_batch5.py.
+EXALTED_FRAMES["Sevagoth Prime's Shadow"].update(arcanes=['Arcane Fury', 'Arcane Reaper'],
+    notes="Separately moddable Exalted Warframe with its OWN Arcane slots (wiki: the Shadow 'utilizes its equipped Mods and Arcanes'); Archon Shards and Focus apply normally (Sevagoth's shared set). Uses Shadow Claws Prime. Sevagoth's gear passives do not carry over.")
+EXALTED_FRAMES['Orion'].update(aura='Corrosive Projection', arcanes=['Arcane Energize', 'Molt Augmented'],
+    notes='Separate upgrade loadout: own Mods, Aura and Arcanes (wiki). Archon Shards SHARED with Sirius (5 total). Pre-installed Orokin Reactor (no extra cost). Helminth only on the Primary Son. Identical Auras on both sons do not stack -> Corrosive Projection (Gravitic Slash full strip at 164% instead of 200%).')
+_upd('Saryn Prime', helm=('Roar', 'Molt'),
+     notes='B5: Phase 2 baseline restored - Toxic Lash kept (every weapon hit bursts/spreads Spores; Toxin extra hit triggers twice on spored enemies; Toxin mods multiply its ticks). Molt subsumed.')
+_upd('Sevagoth Prime', helm=('NO HELMINTH', 'Reap x Sow detonation (25% current health True + spread), Gloom slow/lifesteal (persists during Exalted Shadow), Exalted Shadow form; all four fill the Death Well'),
+     notes='B5: v4.2 subsumed Sow and broke the Reap detonation')
+_upd('Sirius & Orion', live=[], notes='B5: Primary Son = Sirius. Roar over Coronal Ejection (Sirius-side slot 1 hold-swap lost; swaps still via slots 2/3). Celestial Clash never subsumed (would disable both). Former LIVE TESTs (Reactor, Orion Arcanes/shards, Helminth) resolved from the wiki.')
+_upd('Styanax Prime', helm=('Roar', 'Axios Javelin'))
+_swap('Styanax Prime', 'Primed Flow', 'Intrepid Stand')
+_upd('Styanax Prime', notes='B5: Rally Point restored (3 x Str energy/s + shields per kill -> passive crit, doubled on spearguns). Axios Javelin subsumed (agrees with Phase 2), but Roar instead of Nourish because Rally Point already covers energy. Intrepid Stand + Tharros Lethality both carried.')
+_upd('Titania Prime', helm=('Roar', 'Lantern'))
+_swap('Titania Prime', 'Stretch', 'Spellbound Harvest')
+_upd('Titania Prime', notes='B5: Spellbind restored - status immunity (incl. Razorwing collision lock-out) and, with Spellbound Harvest, +50 energy per 4+ hits, one of the few energy sources that works inside Razorwing. Lantern subsumed.')
+_upd('Uriel', helm=('Roar', 'Demonium'),
+     notes='B5: Roar is legal ONLY over Demonium on Uriel. Subsuming keeps Vythelas (runes, default stats). Roar multiplies Vinquibus, Stubbas, Infernalis and Brimstone.')
+_upd('Valkyr Prime', helm=('Roar', 'Rip Line'),
+     notes='B5: Paralysis restored (+50% x Str melee vulnerability, stun -> finishers -> Rage). Rip Line subsumed (Hysteria Talons cover gap-closing).')
+_upd('Volt Prime', shards=['T:CS', 'VPE', 'VPE', 'ZS', 'AC'],
+     notes='B5: Volt is weapon-centric through Electric Shield (x2 crit damage, +50% Electricity per shield) -> Violet Primary-Electricity shards instead of ability-damage shards')
+_upd('Voruna Prime', helm=('NO HELMINTH', 'Shroud of Dynar (+100% flat crit, +2x crit damage, forced Slash, Ulfrun 100% crit) -> Fangs of Raksh (5 statuses x10) -> Ulfrun\'s Descent (damage per status) -> Lycath\'s Hunt (orbs, extended by 5-status kills)'),
+     notes='B5: v4.2 subsumed Shroud of Dynar, the melee buff. Ulfrun\'s Descent stays an ability attack; Sarofang Prime remains the ordinary Melee.')
+_upd('Wukong Prime', helm=('Roar', 'Defy'),
+     notes='B5: Cloud Walker restored (on-demand invulnerability, the kit\'s only cleanse, healing per meter, Twin protection, castable during Primal Fury). Defy subsumed (armor needs a rooted 2s taunt; Arcane Reaper covers armor).')
+_upd('Xaku Prime', helm=('NO HELMINTH', "Roar may only replace Xata's Whisper; Xata's Void extra hit (26% x Str of total weapon damage, double-dips faction/body part, paused by Vast Untime and amplified by its Void vulnerability) is worth more than Roar on Xaku's weapons"))
+_upd('Yareli Prime', helm=('Roar', 'Riptide'),
+     notes='B5: v4.2 subsumed Sea Snares while running Merulina Guardian (which needs kills during Sea Snares). Riptide subsumed instead.')
+_upd('Zephyr Prime', helm=('Roar', 'Airburst'),
+     notes='B5: Tail Wind restored (airborne upkeep for the +150% weapon crit passive; 12.5 energy airborne). Airburst subsumed - Tornado already groups.')

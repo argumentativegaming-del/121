@@ -139,7 +139,26 @@ for _w,(_m,_a,_x,_n) in _B3_EXALTED.items():
     EXALTED[_w]=(_f,_slot,_m,_a,_el,_n)
     EXALTED_ARCANE[_w]=_a
 BATCH1_EXALTED |= set(_B3_EXALTED)
-EXALTED_EXILUS = {'Neutralizer':'Hush', **{w:x for w,(m,a,x,n) in _B3_EXALTED.items() if x}}
+_B5_EXALTED = {
+ 'Lizzie': (['Serration','Galvanized Chamber','Point Strike','Vital Sense','Hammer Shot','Galvanized Aptitude','Primed Cryo Rounds','Malignant Force'],'Primary Merciless','Sinister Reach',
+     'Exalted Solo flamethrower beam (35% crit / 2.3x / 35% status, 10m beam) accepts Primary mods/Arcanes; Exilus Sinister Reach (+12m beam range); Viral + innate Heat; Ripper\'s Wail adds up to 750% Heat (does not combine); Overdrive adds final crit vulnerability'),
+ 'Dex Pixia Prime': (['Hornet Strike','Galvanized Diffusion','Lethal Torrent','Primed Pistol Gambit','Primed Target Cracker','Galvanized Shot','Deep Freeze','Pathogen Rounds'],'Secondary Merciless','Primed Steady Hands',
+     'Razorwing machine pistols: base damage scales with Str (multiplicative with Hornet Strike); 10% crit -> Primed Pistol Gambit + Avenger flat crit; Galvanized Crosshairs (aimed weak points) replaced by Lethal Torrent; Exilus Primed Steady Hands (recoil)'),
+ 'Diwata Prime': (['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','North Wind','Virulent Scourge'],'Melee Duplicate',None,
+     'Razorwing sword (20% crit / Puncture-heavy): combo crit template; attack speed applies'),
+ 'Shadow Claws Prime': (['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','North Wind','Virulent Scourge'],'Melee Duplicate',None,
+     'Shadow\'s Exalted claws (38% crit / 2.6x): combo crit; the Shadow itself carries Arcane Fury + Arcane Reaper (own Arcane slots)'),
+ 'Valkyr Prime Talons': (['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','North Wind','Virulent Scourge'],'Melee Duplicate',None,
+     'Hysteria Talons (50% base crit -> Melee Duplicate on base crits); Warcry attack speed + Paralysis melee vulnerability; Eternal War extends Warcry'),
+ 'Iron Staff Prime': (['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','North Wind','Virulent Scourge'],'Melee Duplicate',None,
+     'Primal Fury staff (25% crit / 30% status, +0.5m range per combo): combo template; Celestial Twin also wields it; Primal Rage crit on kill'),
+}
+for _w,(_m,_a,_x,_n) in _B5_EXALTED.items():
+    _f,_slot,_old,_oa,_el,_on=EXALTED[_w]
+    EXALTED[_w]=(_f,_slot,_m,_a,_el,_n)
+    EXALTED_ARCANE[_w]=_a
+BATCH1_EXALTED |= set(_B5_EXALTED)
+EXALTED_EXILUS = {'Neutralizer':'Hush', **{w:x for w,(m,a,x,n) in _B3_EXALTED.items() if x}, **{w:x for w,(m,a,x,n) in _B5_EXALTED.items() if x}}
 VENARI_AUDITED = 'B3: Venari Prime config audited - Primed Pack Leader/Link mods for survival, Vicious/Contagious Bond for Viral spread; Venari Bodyguard not taken (Khora build slot goes to Accumulating Whipclaw)'
 def exalted_element(w):
     f,slot,mods,a,e,n = EXALTED[w]
@@ -316,8 +335,31 @@ WEAPON_OVERRIDE.update({
  ('Revenant Prime','Melee'): dict(why='Signature Tatsu Prime has INNATE Radiation (+4 Soul Swarm charges) - documented thrall conflict'),
  ('Rhino Prime','Primary'): dict(incarnon=['EVO2: Crimson Overture','EVO3: Rapid Reinforcement',"EVO4: Survivor's Edge"], why="Hunter's Mantra needs a channeled ability (Rhino has none) -> Crimson Overture; Incarnon Form 24% / 3x crit -> crit"),
 })
+# ---------------- v4.3 Batch 5 (Saryn -> Zephyr) weapon audit
+FURIS_PRELUDE = ['Hornet Strike','Galvanized Diffusion','Lethal Torrent','Primed Target Cracker','Augur Pact','Galvanized Shot','Deep Freeze','Pathogen Rounds']
+WEAPON_OVERRIDE.update({
+ ('Saryn Prime','Primary'): dict(why='THRESHOLD REVIEW: Kuva Ogris 9% crit / 47% status; Toxic Lash Toxin ticks are multiplied by every Toxin mod -> status build confirmed'),
+ ('Saryn Prime','Melee'): dict(incarnon=["EVO2: Alchemist's Wrath",'EVO3: Orokin Reach','EVO4: Poison Parasite'], why="Toxic Lash (doubled for melee) applies Toxin -> Alchemist's Wrath +5 combo on Toxin targets and Poison Parasite heals are active"),
+ ('Sirius & Orion','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Spectra Vandal 20% crit: crit template; weapons, mods and Arcanes are SHARED by both sons (wiki); the uncontrolled son fires at 0.25x and cannot trigger conditional Arcanes'),
+ ('Sirius & Orion','Melee'): dict(why='Pride: no Signature bonus with Sirius & Orion (wiki); shared loadout'),
+ ('Trinity Prime','Primary'): dict(incarnon=['EVO2: Reified Bane','EVO3: Ready Retaliation','EVO4: Critical Parallel'], why="Fortress Salvo needs >450 armor (Trinity 135) -> Reified Bane; Champion's Blessing (+350% primary/secondary crit, self-heals count) -> crit perks"),
+ ('Trinity Prime','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why="THRESHOLD OVERRIDE: Champion's Blessing adds up to +350% secondary crit (additive with Pistol Gambit) -> Akbronco Prime ~6% x (1+1.87+3.5) = 38% crit; crit template beats status"),
+ ('Uriel','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Kuva Twin Stubbas 23% crit: crit template (status Arcane on crit mods was a mismatch); Vinquibus holds Primary + Melee, Stubbas stays separate'),
+ ('Valkyr Prime','Secondary'): dict(arcane='Secondary Dexterity', why='Secondary Outburst would consume the combo the Talons depend on -> Dexterity (melee kills -> secondary damage, +combo duration)'),
+ ('Vauban Prime','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Kulstar: ordinary weapon - NO Incarnon exists (confirmed: no Kulstar family in live Incarnon data); 17% crit cluster launcher -> crit + Merciless'),
+ ('Voruna Prime','Secondary'): dict(arcane='Secondary Dexterity', why='Melee/Ulfrun frame: Outburst would consume combo; Dexterity extends combo on melee kills'),
+ ('Wisp Prime','Secondary'): dict(tname='FURIS_PRELUDE', mods=FURIS_PRELUDE, incarnon=['EVO2: Stormburst','EVO3: Practiced Grip','EVO4: Prelude of Might'],
+     why='INCARNON OVERRIDE: Prelude of Might gives +3x crit multiplier only below 40% crit -> NO crit-chance mods (Incarnon Form 26%); Stormburst active on Shock-mote Electricity targets'),
+ ('Wukong Prime','Secondary'): dict(arcane='Secondary Dexterity', incarnon=['EVO2: Headcracker','EVO3: Rapid Reinforcement','EVO4: Critical Parallel'],
+     why='Outburst would drain Iron Staff combo (staff range +0.5m per combo) -> Dexterity; Prolific Perforation needs punch-through hits (none built in) -> Headcracker'),
+ ('Xaku Prime','Secondary'): dict(kind='status', tname='PISTOL_STATUS', mods=PISTOL_STATUS, incarnon=["EVO2: Marksman's Hand",'EVO3: Lethal Rearmament','EVO4: Elemental Excess','EVO5: Devouring Attrition'],
+     why='INCARNON OVERRIDE: Devouring Attrition (+2000% on NON-crit hits, 50%) and Elemental Excess (-10% crit) -> status build, not crit; Xata\'s Whisper adds its Void extra hit on top'),
+ ('Yareli Prime','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Merulina gameplay keeps Critical Flow (+200% secondary crit while moving) permanently active -> Kompressa Prime crit; Merciless (kill stacks) over Deadhead (weak-point aiming is unreliable from Merulina)'),
+ ('Zephyr Prime','Primary'): dict(kind='crit', arcane='Primary Merciless', why='Tornado distributes 100% of each hit (crits x2) to all trapped enemies - weak-point Deadhead does not apply; airborne passive +150% crit -> crit Nataruk + Merciless'),
+})
 AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime',
                   'Cyte-09','Dagath','Dante','Ember Prime','Equinox Prime','Excalibur Umbra','Follie','Frost Prime','Gara Prime','Garuda Prime','Gauss Prime','Grendel Prime',
+                  'Saryn Prime','Sevagoth Prime','Sirius & Orion','Styanax Prime','Temple','Titania Prime','Trinity Prime','Uriel','Valkyr Prime','Vauban Prime','Volt Prime','Voruna Prime','Wisp Prime','Wukong Prime','Xaku Prime','Yareli Prime','Zephyr Prime',
                   'Mirage Prime','Narin','Nekros Prime','Nezha Prime','Nidus Prime','Nokko','Nova Prime','Nyx Prime','Oberon Prime','Octavia Prime','Oraxia','Protea Prime','Qorvex','Revenant Prime','Rhino Prime',
                   'Gyre Prime','Harrow Prime','Hildryn Prime','Hydroid Prime','Inaros Prime','Ivara Prime','Jade','Khora Prime','Koumei','Kullervo','Lavos Prime','Limbo Prime','Loki Prime','Mag Prime','Mesa Prime'}
 def weapon_configs():
@@ -369,3 +411,10 @@ def apply_shard_policy():
 TAU_ASSUMPTION = ('Tauforged shards are FINITE. They are allocated deliberately: Tau Crimson Strength only on frames whose primary scaling stat is uncapped Strength; '
                   'Tau Melee Crit Damage on melee-centric frames; Tau Primary Status / Secondary Crit on weapon-reliant frames. All other positions use normal shards. '
                   'Ascent Fusion (3 normal -> 1 Tauforged) is the planned conversion route; acquisition is account-bound (Archon Hunts / Netracells / Archimedea).')
+
+# v4.3 B5 SYSTEMIC: the default rule gave Secondary Outburst (consumes ALL melee combo) to melee-centric frames whose
+# combo drives their main damage. Remaining users corrected; their other weapon settings are unchanged.
+for _k in [('Baruuk Prime','Secondary'),('Excalibur Umbra','Secondary'),('Garuda Prime','Secondary')]:
+    _o = WEAPON_OVERRIDE.setdefault(_k, {})
+    _o['arcane'] = 'Secondary Dexterity'
+    _o['why'] = (_o.get('why','') + '; ' if _o.get('why') else '') + 'SYSTEMIC FIX (B5): Secondary Outburst would consume the melee/Exalted combo this frame depends on -> Secondary Dexterity'

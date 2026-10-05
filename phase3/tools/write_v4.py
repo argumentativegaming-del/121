@@ -139,9 +139,9 @@ for r in rows:
     f=r[0]; v=FR.get(f,{}); b=FR.get(f.replace(' Prime',''),{})
     ro.append([f,'Prime' if f.endswith('Prime') else ('Umbra' if 'Umbra' in f else 'Base (no Prime)'),v.get('Introduced'),', '.join(v.get('Abilities') or []),(v.get('Passive') or '').replace('\n',' ')[:300],v.get('Subsumed') or b.get('Subsumed'),', '.join(k for k,s in meta.SIG.items() if s[0]==f)])
 newsheet('Roster v4 (live)',['Frame','Version','Introduced','Abilities (live)','Passive (live)','Helminth ability (live)','Signature weapons (live)'],ro,{'Abilities (live)':55,'Passive (live)':70,'Signature weapons (live)':40},idx=3)
-oi=[('Protea','Helminth Roar on Temporal Anchor conflicts with Temporal Artillery','Pick: Roar over Grenade Fan (recommended) or drop Temporal Artillery'),
+oi=[('Protea','RESOLVED v4.3 B4: Roar over Grenade Fan + Temporal Artillery + Temporal Erosion','No action'),
     ('Dante','Noctua ruled additional Exalted (no Secondary replacement)','LIVE TEST REQUIRED if replacement is wanted'),
-    ('Sirius & Orion','Orion is an Exalted Warframe sharing rank/upgrades; Reactor count assumes one per S&O','LIVE CHECK: confirm Orion shares the Reactor'),
+    ('Sirius & Orion','RESOLVED v4.3 B5 (wiki): Orion comes with a pre-installed Orokin Reactor; one Reactor per S&O is correct','No action'),
     ('Signature preference','v4.1 allocated uncontested no-bonus signatures (Temple Riot-848, Mirage Akzani, S&O Pride)','Revert to Athodai / Prisma Twin Gremlins / Caustacyst if preferred; counts unchanged'),
     ('Builds','v3 holds no per-frame aura/exilus/mod/arcane/shard/focus sheets','Mods are covered by the all-mods mandate and Arcanes by the required + collection lines; per-frame build sheets still need authoring'),
     ('Archon Shards','Plan covers 230 of 330 shard slots','Extend shard plan to all 66 frames'),

@@ -1,8 +1,8 @@
 import json, collections, math, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3, audit_batch4 as AB4
-class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT, **AB3.AUDIT, **AB4.AUDIT}
+import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3, audit_batch4 as AB4, audit_batch5 as AB5
+class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT, **AB3.AUDIT, **AB4.AUDIT, **AB5.AUDIT}
 X.apply_shard_policy()
 F='Warframe_Phase3_Procurement_Master_v4_Economic_Model.xlsx'
 wb=openpyxl.load_workbook(F)
@@ -36,10 +36,7 @@ LIVE=[]
 for f,b in BD.B.items():
     for l in b.get('live') or []: LIVE.append((f,l))
 LIVE=[x for x in LIVE if x[0]!='Dante']
-LIVE += [         ('Saryn Prime','REAUDIT (queue): v4.2 Roar over Toxic Lash vs Phase 2 Roar over Molt'),('Styanax Prime','REAUDIT (queue): v4.2 Roar over Rally Point vs Phase 2 Nourish over Axios Javelin'),
-         ('Orion','Whether Orion has independent Arcane/Archon Shard slots (separately moddable Exalted Warframe). Shards/Arcanes recorded on Sirius & Orion only -> LIVE TEST REQUIRED'),
-
-         ('Narin','Nurinarim: 20s cast sword-dance, Ability Strength scaling, no weapon modding -> ruled NO Melee replacement (confident); no live test needed for slot, Ice sustain test listed separately')]
+LIVE += []  # v4.3 B5: Saryn/Styanax re-audits done; S&O/Orion questions resolved from the wiki
 LIVE=[x for x in LIVE if not (x[0]=='Narin' and x[1].startswith('Nurinarim'))]
 # ---------- FRAME BUILDS — FINAL
 rows=[]; complete=0
@@ -112,7 +109,7 @@ eb=[]
 for w,(f,slot,mods,a,e,n) in X.EXALTED.items():
     eb.append(['AUDITED' if w in X.BATCH1_EXALTED else 'PENDING',w,f,slot,' | '.join(mods),X.EXALTED_EXILUS.get(w) or ('-' if slot=='Melee' else 'none assigned'),a,X.exalted_element(w)[0],n,'Catalyst pre-installed; Arcane slot (U38.5); Forma ~3'])
 eb.append(['AUDITED','Venari Prime','Khora Prime','Exalted companion',' | '.join(X.VENARI),'-','-','Viral via Vicious/Contagious Bond',X.VENARI_AUDITED,'-'])
-for f,c in BD.EXALTED_FRAMES.items(): eb.append(['PENDING',f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe',' | '.join(c['mods'])+f" | Aura: {c.get('aura')}",c.get('exilus'),'-','-',c['notes'],'Forma ~3'])
+for f,c in BD.EXALTED_FRAMES.items(): eb.append(['AUDITED',f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe (separately moddable)',' | '.join(c['mods'])+f" | Aura: {c.get('aura')}",c.get('exilus') or '-',' + '.join(c.get('arcanes') or []) or '-','-',c['notes'],'Forma ~3' + ('; Reactor pre-installed' if f=='Orion' else '')])
 sheet('EXALTED BUILDS',['Optimization audit','Exalted','Frame','Slot','Mods','Exilus (U38.5)','Arcane','Element (computed from mod order + innate)','Notes','Investment'],eb,{'Mods':90,'Notes':55,'Element (computed from mod order + innate)':30},idx=5)
 # ---------- WEAPON CONFIGS
 wc=[['AUDITED' if r.get('audited') else 'PENDING',r.get('review',''),r.get('flag') or '-',r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
