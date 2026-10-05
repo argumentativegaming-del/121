@@ -1,8 +1,8 @@
 import json, collections, math, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2
-class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT}
+import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3
+class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT, **AB3.AUDIT}
 X.apply_shard_policy()
 F='Warframe_Phase3_Procurement_Master_v4_Economic_Model.xlsx'
 wb=openpyxl.load_workbook(F)
@@ -111,10 +111,10 @@ ws.append(['Note','* Deconstructor Prime is a glaive-type sentinel weapon: use m
 # ---------- EXALTED BUILDS
 eb=[]
 for w,(f,slot,mods,a,e,n) in X.EXALTED.items():
-    eb.append([w,f,slot,' | '.join(mods),a,e,n,'Catalyst pre-installed; Arcane slot (U38.5); Forma ~3'])
-eb.append(['Venari Prime','Khora Prime','Exalted companion',' | '.join(X.VENARI),'-','Viral via Vicious/Contagious Bond','Separately moddable exalted companion','-'])
-for f,c in BD.EXALTED_FRAMES.items(): eb.append([f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe',' | '.join(c['mods'])+f" | Aura: {c.get('aura')} | Exilus: {c.get('exilus')}",'-','-',c['notes'],'Forma ~3'])
-sheet('EXALTED BUILDS',['Exalted','Frame','Slot','Mods','Arcane','Element','Notes','Investment'],eb,{'Mods':90,'Notes':45},idx=5)
+    eb.append(['AUDITED' if w in X.BATCH1_EXALTED else 'PENDING',w,f,slot,' | '.join(mods),X.EXALTED_EXILUS.get(w) or ('-' if slot=='Melee' else 'none assigned'),a,X.exalted_element(w)[0],n,'Catalyst pre-installed; Arcane slot (U38.5); Forma ~3'])
+eb.append(['AUDITED','Venari Prime','Khora Prime','Exalted companion',' | '.join(X.VENARI),'-','-','Viral via Vicious/Contagious Bond',X.VENARI_AUDITED,'-'])
+for f,c in BD.EXALTED_FRAMES.items(): eb.append(['PENDING',f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe',' | '.join(c['mods'])+f" | Aura: {c.get('aura')}",c.get('exilus'),'-','-',c['notes'],'Forma ~3'])
+sheet('EXALTED BUILDS',['Optimization audit','Exalted','Frame','Slot','Mods','Exilus (U38.5)','Arcane','Element (computed from mod order + innate)','Notes','Investment'],eb,{'Mods':90,'Notes':55,'Element (computed from mod order + innate)':30},idx=5)
 # ---------- WEAPON CONFIGS
 wc=[['AUDITED' if r.get('audited') else 'PENDING',r.get('why',''),r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
 sheet('WEAPON CONFIGS',['Optimization audit','Audit note','Frame','Slot','Weapon','Class','Base CC','Base SC','Build type','Mod template','Template mods','Weapon Arcane','Element / status','Incarnon evolutions','Forma / investment'],wc,{'Template mods':80,'Element / status':45,'Incarnon evolutions':55},idx=6)
@@ -177,7 +177,8 @@ rep=[('Frames complete',f'{complete} / 66'),('Helminth decisions',f"{sum(1 for b
      ('Full mod configs',f"{sum(1 for b in BD.B.values() if len(b['mods'])==8)} / 66"),('Arcane pairs',f"{sum(1 for b in BD.B.values() if len(b['arcanes'])==2)} / 66"),('Archon Shards',f'{len(sh)} / 330'),
      ('Focus Schools',f"{sum(1 for b in BD.B.values() if b['focus'])} / 66"),('Companions',f"{sum(1 for b in BD.B.values() if b['comp'])} / 66"),
      ('Weapon configurations complete',f"{sum(1 for f in alloc if all((s in wbyf[f]) or (f,s) in EXREP for s in ('Primary','Secondary','Melee')))} / 66"),
-     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - NOT FINAL'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE)))]
+     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - NOT FINAL'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
+     ('Element-order validator (weapons + Exalteds)',f"{sum(1 for r in wcfg if not r['elem_errs'])+sum(1 for w in X.EXALTED if not X.exalted_element(w)[1])} / {len(wcfg)+len(X.EXALTED)} pass")]
 ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=9)
 s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds (v4.3 DRAFT)',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited - NOT FINAL']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
 wb.save(F)

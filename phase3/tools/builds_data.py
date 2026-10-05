@@ -443,3 +443,35 @@ EXALTED_FRAMES = {
    mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Augur Secrets'],
    notes='Second body of Sirius & Orion; separately moddable per wiki. Arcane/shard sharing with Sirius: LIVE TEST REQUIRED.'),
 }
+
+# ---------------- v4.3 Batch 3 optimization audit (Gyre -> Mesa). See audit_batch3.py for evidence per frame.
+def _upd(frame, **k):
+    B[frame].update(k)
+def _swap(frame, old, new):
+    m = B[frame]['mods']; m[m.index(old)] = new
+_swap('Harrow Prime', 'Warding Thurible', 'Lasting Covenant')
+_upd('Harrow Prime', notes='B3: Lasting Covenant (headshot kills +3s Covenant crit) replaces Warding Thurible (DR only while channeling, when Harrow cannot shoot)')
+_swap('Hildryn Prime', 'Augur Reach', 'Streamline')
+_upd('Hildryn Prime', bp='Efficiency reduces SHIELD costs (Pillage 150, Haven 250 + drain, Balefire 100/200 per shot); Flow/Energy shards irrelevant (no energy pool).',
+     notes='B3: Augur set bonus does not work on Hildryn (wiki) -> Augur Reach replaced by Streamline; Augur Accord kept only for its shield-capacity stat')
+_swap('Hydroid Prime', 'Pilfering Swarm', 'Corroding Barrage')
+_upd('Hydroid Prime', cond=['Corroding Barrage: Tempest Barrage 100% Corrosive + 100% Str', 'Passive: 10 Corrosive stacks = 100% armor removal; Plunder makes it permanent'],
+     notes='B3: Pilfering Swarm is a loot augment (keep as optional farming swap); combat build uses Corroding Barrage')
+_swap('Ivara Prime', 'Infiltrate', 'Concentrated Arrow')
+_upd('Ivara Prime', arcanes=['Arcane Crepuscular', 'Molt Augmented'],
+     notes='B3: Arcane Avenger needs Ivara to take damage, which Prowl invisibility prevents -> Molt Augmented (Artemis Bow damage scales with Str). Infiltrate -> Concentrated Arrow')
+_upd('Jade', helm=('NO HELMINTH', "All four abilities load-bearing: Light's Judgment heal+Judgments, Symphony of Mercy (Deathbringer +100% x Str weapon dmg / Power of the Seven Str), Ophanim Eyes strip, Glory on High"),
+     notes='B3: v4.2 replaced Symphony of Mercy (native damage + Str buff) with a weaker subsumed Roar')
+_upd('Kullervo', helm=('Roar', 'Storm of Ukko'))
+_swap('Kullervo', 'Wrath of Ukko', 'Volatile Recompense')
+_upd('Kullervo', notes='B3: Collective Curse (100% damage redirection at 200% Str, armor-ignoring) restored; Storm of Ukko subsumed; Wrath of Ukko removed (targets replaced ability)',
+     live=['Whether Wrathful Advance final crit counts as a base crit for Melee Duplicate on Azothane'])
+_upd('Lavos Prime', helm=('NO HELMINTH', 'Every ability is an element source and imbue button for Catalyze (x2 per unique status); a subsume removes one element, its imbue and all its combinations'))
+_swap('Lavos Prime', 'Augur Reach', 'Swift Bite')
+_upd('Lavos Prime', arcanes=['Arcane Impetus', 'Molt Augmented'],
+     bp='Catalyze = (base + imbued) x 2^unique statuses; Efficiency only affects Probe/Swift Bite cooldown reduction',
+     notes='B3: Augur set bonus does not work on Lavos (wiki) -> Swift Bite (-4s cooldowns at 4+ hits, +30% Bite range). Arcane Reaper (melee-kill) -> Arcane Impetus (+6% Str per unique ability status)')
+_swap('Limbo Prime', 'Primed Flow', 'Rift Torrent')
+_upd('Limbo Prime', notes='B3: Rift Torrent (+30% damage per Rift Surge enemy while in the Rift) replaces Primed Flow; Rift energy regen (2/s, +10 per Rift kill) covers energy')
+_upd('Koumei', live=['Whether a Helminth (Roar) cast rolls The Five Fates dice like native casts'])
+_upd('Mesa Prime', live=['Peacemaker auto-target weak-point hit rate: decides whether Secondary Deadhead / Arcane Precision beat Secondary Merciless on Regulators'])

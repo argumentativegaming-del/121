@@ -129,7 +129,8 @@ def validate(frame, bd):
         if code == 'ZS' and frame in NO_SHIELD: errs.append('shield shard on shieldless frame')
         if code == 'ZE' and frame in NO_ENERGY: errs.append('energy shard on energyless frame')
     if bd['focus'] not in ('Madurai','Vazarin','Naramon','Unairu','Zenurik'): errs.append('bad focus')
-    if frame in NO_ENERGY and any(m in ('Primed Flow','Flow','Streamline','Fleeting Expertise','Archon Flow') for m in allm): errs.append('energy mod on energyless frame')
+    # v4.3 B3: Efficiency is live on both no-energy frames (Hildryn: shield costs; Lavos: Probe/Swift Bite cooldown reduction); only energy-pool mods are dead
+    if frame in NO_ENERGY and any(m in ('Primed Flow','Flow','Archon Flow') for m in allm): errs.append('energy-pool mod on energyless frame')
     return errs, warns, augs
 def run():
     importlib.reload(BD)

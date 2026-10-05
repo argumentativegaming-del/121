@@ -47,6 +47,53 @@ SHOTGUN = ['Primed Point Blank','Galvanized Hell','Primed Ravage','Critical Dece
 NEUTRALIZER = ['Primary Acuity','Serration','Galvanized Scope','Bladed Rounds','Vital Sense','Hammer Shot','Primed Cryo Rounds','Malignant Force']
 TEMPLATE_ELEMENT = {'RIFLE_CRIT':'Viral (Primed Cryo Rounds -> Malignant Force)','PISTOL_CRIT':'Viral (Deep Freeze -> Pathogen Rounds)','SHOTGUN':'Viral + Electricity (Chilling Grasp -> Toxic Barrage, then Primed Charged Shell unpaired)',
                     'MELEE_CRIT':'Viral (North Wind -> Virulent Scourge)','MELEE_INFLUENCE':'Viral + Electricity (North Wind -> Virulent Scourge, Voltaic Strike unpaired: required to trigger Melee Influence)','PSEUDO_MELEE':'Viral','SHADOW_CLONES':'Viral'}
+# v4.3 Batch 3: status templates (weapons with base crit < 15% and status-led stats get no crit mods)
+RIFLE_STATUS = ['Serration','Galvanized Chamber','Vigilante Armaments','Galvanized Aptitude','Primed Shred','Rime Rounds','Malignant Force','High Voltage']
+PISTOL_STATUS = ['Hornet Strike','Augur Pact','Galvanized Diffusion','Lethal Torrent','Galvanized Shot','Frostbite','Pistol Pestilence','Jolt']
+SHOTGUN_STATUS = ['Primed Point Blank','Vicious Spread','Galvanized Hell','Galvanized Savvy','Shotgun Barrage','Frigid Blast','Toxic Barrage','Primed Charged Shell']
+# ---------------- Element-order engine (v4.3 Batch 3 automated check)
+# Mod elements combine in slot order; an innate element merges into the same element already added by a mod,
+# otherwise it is appended after all mod elements. Elements then pair sequentially.
+_ELTAG = {'DT_FREEZE':'Cold','DT_POISON':'Toxin','DT_FIRE':'Heat','DT_ELECTRICITY':'Electricity'}
+_COMBO = {frozenset(('Cold','Toxin')):'Viral',frozenset(('Electricity','Toxin')):'Corrosive',frozenset(('Heat','Toxin')):'Gas',
+          frozenset(('Cold','Electricity')):'Magnetic',frozenset(('Heat','Electricity')):'Radiation',frozenset(('Cold','Heat')):'Blast'}
+_COMBINED = set(_COMBO.values())
+def mod_element(m):
+    d=(engine.mod(m) or {}).get('Description') or ''
+    import re as _re
+    for t in _re.findall(r'<(DT_[A-Z]+)_COLOR>', d):
+        if t in _ELTAG and _re.search(r'\+\d+%\s*<'+t, d): return _ELTAG[t]
+    return None
+def innate_elements(w):
+    v=W.get(w) or W.get(w+' (Primary)') or {}
+    dmg=((v.get('Attacks') or [{}])[0].get('Damage') or {})
+    els=[k for k in dmg if k in ('Cold','Toxin','Heat','Electricity') or k in _COMBINED]
+    import meta as _meta
+    pe=_meta.ELEMENT.get(w)
+    if pe: els.append(pe.capitalize())
+    return els
+def combine(mods, innate=()):
+    seq=[]
+    for m in mods:
+        e=mod_element(m)
+        if e and e not in seq: seq.append(e)
+    fixed=[e for e in innate if e in _COMBINED]
+    for e in innate:
+        if e not in _COMBINED and e not in seq: seq.append(e)
+    out=[]; i=0
+    while i < len(seq):
+        if i+1 < len(seq): out.append(_COMBO[frozenset((seq[i],seq[i+1]))]); i+=2
+        else: out.append(seq[i]); i+=1
+    for e in fixed:
+        if e not in out: out.append(e)
+    return out
+ARC_ELEM = {'Melee Influence':'Electricity','Primary Frostbite':'Cold','Primary Blight':'Toxin','Melee Vortex':'Magnetic','Primary Obstruct':'Magnetic','Secondary Irradiate':'Radiation'}
+def element_check(mods, innate, arcane=None, target=None):
+    res=combine(mods, innate); errs=[]
+    if arcane in ARC_ELEM and ARC_ELEM[arcane] not in res: errs.append(f'{arcane} needs a {ARC_ELEM[arcane]} element (got {" + ".join(res)})')
+    for t in (target or []):
+        if t not in res: errs.append(f'target element {t} not produced')
+    return res, errs
 EXALTED = {
  'Neutralizer':('Cyte-09','Primary',NEUTRALIZER,'Primary Deadhead','Viral','Weak-point sniper: Primary Acuity (+350% weak point dmg/crit; ricochets trigger on weak point hits), Galvanized Scope/Bladed Rounds (enabled on Exalteds in U38.5). Exilus: Hush. Primary Deadhead on weak point kills'),
  'Artemis Bow Prime':('Ivara Prime','Primary',RIFLE_CRIT,'Primary Deadhead','Viral+Heat','Charged multi-arrow; bow uses rifle mods'),
@@ -74,6 +121,30 @@ EXALTED_ARCANE['Exalted Umbra Blade']='Melee Influence'; EXALTED_ARCANE['Noctua'
 for _w,_a in EXALTED_ARCANE.items():
     _f,_slot,_mods,_old,_el,_n=EXALTED[_w]
     EXALTED[_w]=(_f,_slot,_mods,_a,_el,_n+('' if _w in BATCH1_EXALTED else ' [Arcane provisional - re-review in frame batch]'))
+# ---------------- v4.3 Batch 3 Exalted audit (U38.5: Arcane on all Exalteds; Exilus on Primary/Secondary Exalteds)
+_B3_EXALTED = {
+ 'Artemis Bow Prime': (['Serration','Galvanized Chamber','Point Strike','Vital Sense','Galvanized Scope','Hammer Shot','Primed Cryo Rounds','Malignant Force'],'Primary Deadhead','Terminal Velocity',
+     'Concentrated Arrow: single arrow +25% base crit, +50% crit and 7m explosion on weak points; Galvanized Scope (aimed weak-point crit) replaces Galvanized Aptitude; Prowl headshot bonus + Crepuscular x3 final crit'),
+ 'Balefire Charger Prime': (['Hornet Strike','Augur Pact','Galvanized Diffusion','Lethal Torrent','Galvanized Shot','Deep Freeze','Pathogen Rounds','Primed Convulsion'],'Secondary Merciless','Lethal Momentum',
+     '5% crit / 1.5x / 10% status: crit template was dead weight -> flat damage + multishot; base 1500 (charged) scales with Str; Viral + innate Electricity; Blazing Pillage Heat procs feed Galvanized Shot'),
+ 'Regulators Prime': (['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Lethal Torrent','Galvanized Shot','Deep Freeze','Pathogen Rounds'],'Secondary Merciless','Suppress',
+     'Peacemaker auto-targets (no aiming) -> Galvanized Crosshairs dead, Lethal Torrent instead; Galvanized buffs persist across recasts (wiki); Suppress is the only Exilus with effect (wiki); Crimson Tau Secondary Crit shard applies'),
+ 'Glory': (['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Lethal Torrent','Galvanized Shot','Deep Freeze','Pathogen Rounds'],'Secondary Merciless','Lethal Momentum',
+     'Primary fire 10% Judgment chance per shot -> fire rate (Lethal Torrent) over aimed weak-point Crosshairs; Viral + innate Heat; alt-fire detonates Judgments'),
+ 'Whipclaw Prime': (['Primed Pressure Point','Blood Rush','Primed Reach','Organ Shatter','Gladiator Might','Condition Overload','North Wind','Virulent Scourge'],'Melee Duplicate',None,
+     'Primed Reach extends the explosion radius past the 10m Range cap (wiki); no Attack Speed benefit (Gladiator Might); no Exilus slot; Ensnare subsumed -> Roar multiplies every Whipclaw'),
+}
+for _w,(_m,_a,_x,_n) in _B3_EXALTED.items():
+    _f,_slot,_old,_oa,_el,_on=EXALTED[_w]
+    EXALTED[_w]=(_f,_slot,_m,_a,_el,_n)
+    EXALTED_ARCANE[_w]=_a
+BATCH1_EXALTED |= set(_B3_EXALTED)
+EXALTED_EXILUS = {'Neutralizer':'Hush', **{w:x for w,(m,a,x,n) in _B3_EXALTED.items() if x}}
+VENARI_AUDITED = 'B3: Venari Prime config audited - Primed Pack Leader/Link mods for survival, Vicious/Contagious Bond for Viral spread; Venari Bodyguard not taken (Khora build slot goes to Accumulating Whipclaw)'
+def exalted_element(w):
+    f,slot,mods,a,e,n = EXALTED[w]
+    res,errs = element_check(mods, innate_elements(w), a)
+    return ' + '.join(res) + (' [ELEMENT ERROR: '+'; '.join(errs)+']' if errs else ''), errs
 VENARI = ['Primed Pack Leader','Primed Animal Instinct','Link Fiber','Link Vitality','Enhanced Vitality','Vicious Bond','Contagious Bond','Hastened Deflection']
 def validate_mods(mods, allowed):
     errs=[]
@@ -92,12 +163,13 @@ def wclass(w):
 def norm_attack(v):
     a=(v.get('Attacks') or [{}])[0]
     return a.get('CritChance') or 0, a.get('StatusChance') or 0
-def template(slot, cls, arcane=None):
+def template(slot, cls, arcane=None, kind=None, cc=1.0, incarnon=False):
     if slot=='Melee' and arcane=='Melee Influence': return 'MELEE_INFLUENCE', MELEE_INFLUENCE
     if slot=='Melee': return 'MELEE_CRIT', MELEE_CRIT
-    if slot=='Primary' and cls in ('Shotgun',): return 'SHOTGUN', SHOTGUN
-    if slot=='Secondary': return 'PISTOL_CRIT', PISTOL_CRIT
-    return 'RIFLE_CRIT', RIFLE_CRIT
+    status = kind=='status' and cc < 0.15 and not incarnon   # v4.3 B3: crit mods are dead weight below 15% base crit (Incarnon forms excluded: form/evolutions change the crit profile)
+    if slot=='Primary' and cls in ('Shotgun',): return ('SHOTGUN_STATUS', SHOTGUN_STATUS) if status else ('SHOTGUN', SHOTGUN)
+    if slot=='Secondary': return ('PISTOL_STATUS', PISTOL_STATUS) if status else ('PISTOL_CRIT', PISTOL_CRIT)
+    return ('RIFLE_STATUS', RIFLE_STATUS) if status else ('RIFLE_CRIT', RIFLE_CRIT)
 ARC_RULE = {}
 def weapon_arcane(slot, cls, w, frame, kind):
     if slot=='Primary':
@@ -168,8 +240,41 @@ WEAPON_OVERRIDE.update({
  ('Gauss Prime','Secondary'): dict(arcane='Secondary Merciless', why='Explosive kill-chaining under Redline'),
  ('Gauss Prime','Melee'): dict(incarnon=['EVO2: Whirling Flurry','EVO3: Adept Reflexes','EVO4: Swift Transmute','EVO5: Kinetic Harmony'], why='Attack speed + heavy wind-up'),
 })
+# ---------------- v4.3 Batch 3 (Gyre -> Mesa) weapon audit
+HEAVY_ATTACK = ['Primed Pressure Point','Killing Blow','Blood Rush','Organ Shatter','Galvanized Reflex','Condition Overload','North Wind','Virulent Scourge']
+HEAVY_KULLERVO = ['Primed Pressure Point','Killing Blow','Blood Rush','Organ Shatter','Primed Reach','Condition Overload','North Wind','Virulent Scourge']
+WEAPON_OVERRIDE.update({
+ ('Frost Prime','Primary'): dict(arcane='Primary Frostbite', tname='RIFLE_COLD', target=['Cold'],
+     mods=['Serration','Galvanized Chamber','Vigilante Armaments','Galvanized Aptitude','Primed Shred','Primed Cryo Rounds','Rime Rounds','Hammer Shot'],
+     why='SYSTEMIC FIX (B3 element validator): Primary Frostbite triggers on Cold status, but the Viral template consumed Glaxion Vandal\'s Cold; pure Cold kept. Batch 2 decision unchanged'),
+ ('Gyre Prime','Primary'): dict(kind='crit', why='Cathode Grace adds +50% x Str weapon crit chance (additive with Point Strike); innate Electricity left unpaired after Viral feeds the passive (+10% ability crit per Electricity stack)'),
+ ('Gyre Prime','Secondary'): dict(kind='crit', arcane='Secondary Merciless', incarnon=['EVO2: Paladin Virtue','EVO3: Swift Deliverance','EVO4: Critical Parallel'],
+     why='Haven Foray needs Overshields (Gyre has no source); Paladin Virtue +75 base unconditional and its >700 energy crit bonus is met (285 x 2.85 Primed Flow = 812); Cathode Grace makes crit the scaling axis'),
+ ('Gyre Prime','Melee'): dict(why='Melee Influence spreads Electricity (Voltaic Strike unpaired) -> Gyre passive ability-crit stacks'),
+ ('Harrow Prime','Primary'): dict(arcane='Primary Deadhead', tname='RIFLE_COVENANT',
+     mods=['Serration','Galvanized Chamber','Vital Sense','Hammer Shot','Galvanized Aptitude','Rime Rounds','Malignant Force','High Voltage'],
+     why='Covenant adds up to +200% FLAT crit on weak points (Condemn exposes heads): crit-damage mods pay off on a 10% base; Deadhead on weak-point kills'),
+ ('Harrow Prime','Secondary'): dict(arcane='Secondary Deadhead', why='Knell signature (+1 magazine), headshot weapon; Covenant weak-point crit'),
+ ('Hildryn Prime','Primary'): dict(incarnon=["EVO2: Hunter's Mantra",'EVO3: Resonant Restore',"EVO4: Survivor's Edge"],
+     why="EVO2 taken for base damage only: Hunter's Mantra conditional needs an ENERGY-draining channel (Haven drains shields - inactive); Hoplite Virtue needs personal shield break (rare on ~4000 shields)"),
+ ('Inaros Prime','Melee'): dict(arcane='Melee Crescendo', why='Desiccation blind + Sandstorm knockdown -> finisher loop (passive heals 20% per finisher kill); Crescendo stacks combo on finisher kills'),
+ ('Ivara Prime','Secondary'): dict(kind='crit', arcane='Secondary Deadhead', why='Prowl +40% x Str headshot damage and Crepuscular x3 final crit: weak-point crit sidearm'),
+ ('Jade','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Cantare 18% crit: crit template; Judgments +50% vulnerability'),
+ ('Khora Prime','Secondary'): dict(arcane='Secondary Deadhead', why='Hystrix Prime signature: 8% instant reload on headshot -> headshot/weak-point play'),
+ ('Khora Prime','Melee'): dict(arcane='Melee Animosity', tname='HEAVY_ATTACK', mods=HEAVY_ATTACK,
+     why='Dual Keres Prime signature: +20% Heavy Attack Efficiency -> heavy-attack build (Galvanized Reflex); Whipclaw remains the primary damage'),
+ ('Koumei','Secondary'): dict(kind='crit', incarnon=['EVO2: Swift Conclusion','EVO3: Swift Deliverance',"EVO4: Survivor's Edge"],
+     why="Sage's Resolve needs a channeled ability (Koumei has none); Deathtrap Trigger only lasts 4s after swapping from Primary (bugged as permanent in Arsenal)"),
+ ('Kullervo','Primary'): dict(arcane='Primary Dexterity', why='Melee-centric frame: melee kills fuel +60% primary damage stacks and +7.5s combo (Rauta signature +7s combo duration)'),
+ ('Kullervo','Secondary'): dict(arcane='Secondary Dexterity', why='Secondary Outburst would consume the combo Kullervo banks for Wrathful Advance heavy attacks'),
+ ('Kullervo','Melee'): dict(tname='HEAVY_KULLERVO', mods=HEAVY_KULLERVO,
+     why='Wrathful Advance = heavy attack with +200% x Str flat final crit; passive +75% heavy efficiency/+100% wind-up -> Berserker Fury/Weeping Wounds dead; Collective Curse spreads the hit'),
+ ('Mesa Prime','Secondary'): dict(kind='status', arcane='Secondary Encumber', tname='PISTOL_STATUS', mods=PISTOL_STATUS,
+     why='Akjagara Prime 32% status, Slash-weighted burst; Mesa passive +15% fire rate dual-wield. Regulators carry the crit role'),
+})
 AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime',
-                  'Cyte-09','Dagath','Dante','Ember Prime','Equinox Prime','Excalibur Umbra','Follie','Frost Prime','Gara Prime','Garuda Prime','Gauss Prime','Grendel Prime'}
+                  'Cyte-09','Dagath','Dante','Ember Prime','Equinox Prime','Excalibur Umbra','Follie','Frost Prime','Gara Prime','Garuda Prime','Gauss Prime','Grendel Prime',
+                  'Gyre Prime','Harrow Prime','Hildryn Prime','Hydroid Prime','Inaros Prime','Ivara Prime','Jade','Khora Prime','Koumei','Kullervo','Lavos Prime','Limbo Prime','Loki Prime','Mag Prime','Mesa Prime'}
 def weapon_configs():
     rows=[]
     for r in engine.ROWS:
@@ -180,17 +285,18 @@ def weapon_configs():
             if w=='Vinquibus (Melee)': cls='Bayonet'
             cc,sc=norm_attack(v) if v else (0,0)
             kind='crit' if cc>=0.24 else ('status' if sc>=0.28 else ('crit' if cc>=sc else 'status'))
-            ov0=WEAPON_OVERRIDE.get((f,slot),{})
-            arc0=ov0.get('arcane') or weapon_arcane(slot,cls,w,f,ov0.get('kind') or kind)
-            tname,tmods=template(slot,cls,arc0)
-            fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
-            inc=[]
-            if fam: inc=evo_pick(fam,kind)
             ov=WEAPON_OVERRIDE.get((f,slot),{})
             if ov.get('kind'): kind=ov['kind']
+            arc0=ov.get('arcane') or weapon_arcane(slot,cls,w,f,kind)
+            fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
+            tname,tmods=template(slot,cls,arc0,kind,cc,bool(fam))
+            if ov.get('mods'): tname,tmods=ov.get('tname','CUSTOM'),ov['mods']
+            inc=[]
+            if fam: inc=evo_pick(fam,kind)
             if ov.get('incarnon'): inc=ov['incarnon']
+            res,eerr=element_check(tmods, innate_elements(w.replace(' (Primary)','').replace(' (Melee)','')), arc0, ov.get('target'))
             rows.append(dict(audited=f in AUDITED_FRAMES, why=ov.get('why',''), frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
-                             arcane=arc0,element=('Adversary innate element (see Adversary sheet) + ' if w.startswith(('Kuva ','Tenet ')) else '')+TEMPLATE_ELEMENT[tname],incarnon=inc,evo_family=fam,
+                             arcane=arc0,element=' + '.join(res) + (' [ELEMENT ERROR: '+'; '.join(eerr)+']' if eerr else ''),elem_errs=eerr,exilus=ov.get('exilus'),incarnon=inc,evo_family=fam,
                              forma='5 Forma to Rank 40 + ~3 polarization' if w.startswith(('Kuva ','Tenet ')) else ('~4 (Incarnon)' if fam else '~3')))
     return rows
 
