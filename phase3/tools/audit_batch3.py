@@ -122,3 +122,11 @@ AUDIT = {
    why='Kill-stacked Merciless is reliable under auto-targeting, and fire rate plus multishot scale the 14.8 rps Exalted.',
    delta='None (Secondary Merciless and Encumber already required).'),
 }
+
+# ---------------- Targeted Khora Helminth re-review (requested before Batch 4)
+AUDIT['Khora Prime'].update(outcome='CORRECTED',
+  live=AUDIT['Khora Prime']['live']+' RE-REVIEW (B4): Whipclaw on an ENSNARED target re-propagates Ensnare as a NEW instance (wiki), pulling and disabling every enemy within 10m (x Range) into the cluster, including enemies freed from an earlier cast. Venari takes +150% vs ensnared. Ensnare has 30m range, no LoS and moves with the fight; Strangledome is anchored at Khora (5m dome, 26 vertices, 100 energy, full-body cast), and its +100% vulnerability does NOT apply to Whipclaw. Wiki: subsuming the 3rd ability removes only Venari marking, posture switching and instant resummon - Venari stays, keeps the movement-speed bonus and respawns on her 45s timer.',
+  problems=AUDIT['Khora Prime']['problems']+' RE-REVIEW: the Batch 3 justification treated Ensnare as a x2 multiplier only. In practice Ensnare + Whipclaw is a self-refreshing grouping engine: every Whipclaw re-propagates and keeps pulling new enemies into its 10m explosion, so it sets target density - Roar cannot create density. Both the Strangledome and Ensnare loops are density tools; the only near-free slot is the Venari ability.',
+  final='Roar over VENARI (ability; Venari herself stays). Ensnare + Whipclaw propagation loop restored, Strangledome kept for anchored defence, Accumulating Whipclaw kept. Rest of the Batch 3 build unchanged (Whipclaw Prime Primed Reach, Dual Keres Prime heavy, Hystrix Prime Deadhead). LIVE TEST: which Venari posture persists once the ability is subsumed.',
+  why='Steel Path endurance: Ensnare + Whipclaw keeps re-pulling and disabling whole packs into one 10m blast (x2 damage on ensnared), Roar adds x1.65 on top, and the only cost is losing Venari posture control/instant revive. NO HELMINTH was competitive but leaves the near-free Venari slot unused; subsuming Strangledome or Ensnare costs a density tool.',
+  delta='None.')

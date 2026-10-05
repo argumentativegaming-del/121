@@ -1,8 +1,8 @@
 import json, collections, math, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3
-class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT, **AB3.AUDIT}
+import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3, audit_batch4 as AB4
+class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT, **AB3.AUDIT, **AB4.AUDIT}
 X.apply_shard_policy()
 F='Warframe_Phase3_Procurement_Master_v4_Economic_Model.xlsx'
 wb=openpyxl.load_workbook(F)
@@ -37,7 +37,6 @@ for f,b in BD.B.items():
     for l in b.get('live') or []: LIVE.append((f,l))
 LIVE=[x for x in LIVE if x[0]!='Dante']
 LIVE += [         ('Saryn Prime','REAUDIT (queue): v4.2 Roar over Toxic Lash vs Phase 2 Roar over Molt'),('Styanax Prime','REAUDIT (queue): v4.2 Roar over Rally Point vs Phase 2 Nourish over Axios Javelin'),
-         ('Protea Prime','OPTIMIZATION REVIEW (queue): Roar over Grenade Fan vs native Temporal Anchor/Erosion configurations'),
          ('Orion','Whether Orion has independent Arcane/Archon Shard slots (separately moddable Exalted Warframe). Shards/Arcanes recorded on Sirius & Orion only -> LIVE TEST REQUIRED'),
 
          ('Narin','Nurinarim: 20s cast sword-dance, Ability Strength scaling, no weapon modding -> ruled NO Melee replacement (confident); no live test needed for slot, Ice sustain test listed separately')]
@@ -116,8 +115,8 @@ eb.append(['AUDITED','Venari Prime','Khora Prime','Exalted companion',' | '.join
 for f,c in BD.EXALTED_FRAMES.items(): eb.append(['PENDING',f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe',' | '.join(c['mods'])+f" | Aura: {c.get('aura')}",c.get('exilus'),'-','-',c['notes'],'Forma ~3'])
 sheet('EXALTED BUILDS',['Optimization audit','Exalted','Frame','Slot','Mods','Exilus (U38.5)','Arcane','Element (computed from mod order + innate)','Notes','Investment'],eb,{'Mods':90,'Notes':55,'Element (computed from mod order + innate)':30},idx=5)
 # ---------- WEAPON CONFIGS
-wc=[['AUDITED' if r.get('audited') else 'PENDING',r.get('why',''),r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
-sheet('WEAPON CONFIGS',['Optimization audit','Audit note','Frame','Slot','Weapon','Class','Base CC','Base SC','Build type','Mod template','Template mods','Weapon Arcane','Element / status','Incarnon evolutions','Forma / investment'],wc,{'Template mods':80,'Element / status':45,'Incarnon evolutions':55},idx=6)
+wc=[['AUDITED' if r.get('audited') else 'PENDING',r.get('review',''),r.get('flag') or '-',r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
+sheet('WEAPON CONFIGS',['Optimization audit','Review / audit note','Classification flags (threshold / Incarnon form)','Frame','Slot','Weapon','Class','Base CC','Base SC','Build type','Mod template','Template mods','Weapon Arcane','Element / status','Incarnon evolutions','Forma / investment'],wc,{'Template mods':80,'Element / status':45,'Incarnon evolutions':55},idx=6)
 # ---------- Replace Arcanes + Archon Shards (v3) sheets with v4.2-derived
 proc=json.load(open('proc.json')); pa={r['Item']:r for r in proc if r['Category']=='Arcane'}
 users=collections.defaultdict(list)

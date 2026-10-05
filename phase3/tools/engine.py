@@ -19,6 +19,15 @@ SHARD = {'CS':('Crimson','Ability Strength',10),'CD':('Crimson','Ability Duratio
          'ECO':('Emerald','Ability Damage vs Corrosion',10),'ECS':('Emerald','Corrosion Max Stacks',2),'TBH':('Topaz','Blast-kill Max Health',1),'TBS':('Topaz','Blast-kill Shield Regen',5),
          'THC':('Topaz','Secondary Crit Chance on Heat kill',1),'TRA':('Topaz','Ability Damage vs Radiation',10),'VEA':('Violet','Ability Damage vs Electricity',10),
          'VPE':('Violet','Primary Electricity Damage',30),'VMC':('Violet','Melee Crit Damage (x2 >500 energy)',25),'VEQ':('Violet','Health/Energy orb conversion',20)}
+# v4.3 B4: wiki Helminth "Damage buff restrictions" - Eclipse/Roar/Xata's Whisper may ONLY replace this ability on these frames
+DMG_BUFF_RESTRICT = {'Chroma Prime':'Vex Armor','Cyte-09':'Resupply','Mirage Prime':'Eclipse','Octavia Prime':'Amp','Oraxia':'Silken Stride',
+                     'Rhino Prime':'Roar','Temple':"Ripper's Wail",'Uriel':'Demonium','Xaku Prime':"Xata's Whisper"}
+# v4.3 B4: augments whose EFFECT needs a second native ability (validator previously only checked the augment's own target)
+AUG_REQUIRES = {'Molecular Fission':['Null Star'],'Blazing Pillage':['Haven'],'Temporal Artillery':['Temporal Anchor'],'Temporal Erosion':['Blaze Artillery','Grenade Fan'],
+                'Wrecking Wall':['Chyrinka Pillar'],'Reinforcing Stomp':['Iron Skin'],'Cathode Current':['Rotorswell'],'Wrath of Ukko':['Wrathful Advance'],
+                'Ironclad Charge':['Iron Skin'],'Hallowed Reckoning':[],'Divine Retribution':[],'Aegis Gale':['Balefire'],'Valence Formation':[],
+                'Lasting Covenant':[],'Teeming Virulence':[],'Parasitic Vitality':[]}
+RESTRICTED_HELM = {'Eclipse','Roar',"Xata's Whisper"}
 NO_SHIELD = {'Inaros Prime','Kullervo','Nidus Prime'}; NO_ENERGY = {'Hildryn Prime','Lavos Prime'}
 STATRE = re.compile(r'([+-]\d+(?:\.\d+)?)% Ability (Strength|Duration|Range|Efficiency)(?! for your)')
 def mod(n): return MODS.get(n.lower())
@@ -107,6 +116,8 @@ def validate(frame, bd):
         if h not in HELM_POOL: errs.append(f'Helminth {h} not in pool')
         if rep not in abil: errs.append(f'replaced {rep} not an ability of {frame}')
         if h in abil: errs.append(f'{h} is native to {frame}')
+        if h in RESTRICTED_HELM and frame in DMG_BUFF_RESTRICT and rep != DMG_BUFF_RESTRICT[frame]:
+            errs.append(f'{h} may only replace {DMG_BUFF_RESTRICT[frame]} on {frame} (Helminth damage-buff restriction)')
     augs = []
     for m in allm:
         v = mod(m) or {}
@@ -115,6 +126,8 @@ def validate(frame, bd):
             if augment_target(v) == h: continue
             if tgt and h != 'NO HELMINTH' and tgt == rep: errs.append(f'augment {m} targets replaced ability {rep}')
             if tgt and tgt not in abil and tgt != 'Passive': warns.append(f'augment {m} targets "{tgt}" not in live ability list')
+            need = AUG_REQUIRES.get(m)
+            if need and h != 'NO HELMINTH' and all(n == rep for n in need): errs.append(f'augment {m} needs {"/".join(need)}, which is subsumed')
             if m == 'Temporal Artillery' and ('Temporal Anchor' == rep or 'Blaze Artillery' == rep): errs.append('Temporal Artillery requires Temporal Anchor and Blaze Artillery')
     ar = bd['arcanes']
     if len(ar) != 2 or len(set(ar)) != 2: errs.append('need 2 distinct arcanes')

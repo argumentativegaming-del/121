@@ -475,3 +475,39 @@ _swap('Limbo Prime', 'Primed Flow', 'Rift Torrent')
 _upd('Limbo Prime', notes='B3: Rift Torrent (+30% damage per Rift Surge enemy while in the Rift) replaces Primed Flow; Rift energy regen (2/s, +10 per Rift kill) covers energy')
 _upd('Koumei', live=['Whether a Helminth (Roar) cast rolls The Five Fates dice like native casts'])
 _upd('Mesa Prime', live=['Peacemaker auto-target weak-point hit rate: decides whether Secondary Deadhead / Arcane Precision beat Secondary Merciless on Regulators'])
+
+# ---------------- v4.3 Khora Helminth re-review (targeted amendment before Batch 4)
+_upd('Khora Prime', helm=('Roar', 'Venari'),
+     notes="B4 re-review: Ensnare restored. Whipclaw on an ensnared target re-propagates Ensnare as a NEW instance (pulls/disables everything within 10m, x2 Whipclaw) - the grouping engine. "
+           "Venari slot subsumed: wiki - replacing the 3rd ability removes only marking/posture switching/instant resummon; Venari stays (passive) with her movement-speed bonus and 45s natural respawn.",
+     live=['Which Venari posture persists once the Venari ability is subsumed (Protect heal vs Attack)'])
+
+# ---------------- v4.3 Batch 4 optimization audit (Mirage -> Rhino). See audit_batch4.py.
+_upd('Narin', helm=('NO HELMINTH', 'Closed Ice/Cold loop: Neote (main Ice + 10 Cold stacks), Naraemagi (Cold -> shields/Overguard + Ice), Hakchum (only ability castable during Nurinarim; +150% x Str Cold vulnerability, freezes for slash explosions, invulnerable), Nurinarim (spender)'),
+     arcanes=['Arcane Energize', 'Arcane Truculence'],
+     live=[], notes='B4: Hakchum restored. Former LIVE TEST (Ice sustain with Hakchum replaced) closed: the decision no longer depends on Ice sustain - Hakchum is the dance\'s multiplier and in-dance defence. Nurinarim ruling unchanged: ordinary Melee kept (no weapon modding, 20s cast).')
+_swap('Nekros Prime', 'Primed Flow', 'Equilibrium')
+_upd('Nekros Prime', arcanes=['Molt Augmented', 'Arcane Blessing'],
+     notes='B4: farming/sustain loop - Desecrate health orbs -> Equilibrium energy + Arcane Blessing max health; Smeeta loot; Shield of Shadows DR; Terrify full strip at 167% Str (met)')
+_upd('Nidus Prime', helm=('NO HELMINTH', 'Parasitic Link (companion link: +25% x Str Str and weapon damage; doubles Virulence = doubled Mutation gain) beats subsumed Roar; Larva/Virulence/Ravenous are the stack loop'))
+_swap('Nidus Prime', 'Primed Flow', 'Parasitic Vitality')
+_upd('Nidus Prime', notes='B4: Parasitic Vitality (+4% max health per Mutation stack while linked); Virulence energy refunds replace Primed Flow')
+_upd('Nokko', helm=('NO HELMINTH', 'Sporespring (nuke) bounces off mushrooms; Stinkbrain = Viral 100% + Sleep + bounce targets; Brightbonnet = Str up to +150%/+300% invigorated + energy; Reroot = invulnerable/invisible survival (Crepuscular)'),
+     arcanes=['Arcane Crepuscular', 'Molt Augmented'],
+     notes='B4: v4.2 had subsumed Sporespring (the core). Crepuscular applies to Sporespring hits landing while Nokko is in Reroot Sprodling form (wiki)')
+_upd('Nova Prime', helm=('Roar', 'Antimatter Drop'))
+_swap('Nova Prime', 'Augur Reach', 'Augur Message')
+_upd('Nova Prime', bp='Molecular Prime wave radius and Null Star particle count scale with DURATION; slow cap 75% at 150% Str; Null Star DR 5%/particle (90% cap)',
+     notes='B4: Null Star restored (Molecular Fission requires Null Star hits); Antimatter Drop subsumed')
+_swap('Oraxia', "Brood's Oversurge", "Brood's Oversurge")
+_upd('Oraxia', helm=('NO HELMINTH', "Roar/Eclipse/Xata's Whisper may only replace Silken Stride on Oraxia (wiki restriction) - Silken Stride is core; Mercy's Kiss/Webbed Embrace/Widow's Brood form one mercy-threshold loop"),
+     notes="B4: v4.2 Roar over Mercy's Kiss was ILLEGAL. Mercy's Kiss is an ability finisher (Parazon/finisher Arcanes), not a separately moddable weapon")
+_swap('Protea Prime', 'Primed Flow', 'Temporal Erosion')
+_upd('Protea Prime', notes='B4: Roar over Grenade Fan + Temporal Artillery + Temporal Erosion (Blaze strikes strip 10% armor each while anchored). Passive: 4th cast +100% Str -> sequence the empowered cast onto Blaze Artillery or Temporal Anchor')
+_upd('Revenant Prime', helm=('NO HELMINTH', 'Enthrall -> Reave restores Mesmer Skin charges per thrall passed through and drains 5x; Danse Macabre stores Mesmer-reflected damage and pops thrall pillars/overshield pickups'),
+     notes='B4: v4.2 subsumed Enthrall and cut the Reave->Mesmer charge loop. Radiation status turns thralls back - signature Phantasma Prime/Tatsu Prime carry innate Radiation (documented conflict)')
+_upd('Rhino Prime', helm=('NO HELMINTH', 'Rhino Charge carries Ironclad Charge (+50% armor per enemy hit) which multiplies Iron Skin Overguard (2.5 x armor x Str); Roar native at full strength; Stomp + Reinforcing Stomp refills Iron Skin'))
+_swap('Rhino Prime', 'Stretch', 'Ironclad Charge')
+_upd('Rhino Prime', notes='B4: prior architecture (Ironclad Charge + Reinforcing Stomp, NO HELMINTH) restored over v4.2 Nourish over Rhino Charge')
+_swap('Nidus Prime', 'Umbral Vitality', 'Augur Secrets')
+_upd('Nidus Prime', notes='B4: Parasitic Vitality (+4% max health per Mutation stack while linked, ~+800% at 200 stacks) is incompatible with Umbral Vitality -> Umbral Vitality out, Augur Secrets keeps Larva\'s guaranteed-stack breakpoint (200% Str); Virulence refunds replace Primed Flow')

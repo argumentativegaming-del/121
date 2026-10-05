@@ -272,8 +272,53 @@ WEAPON_OVERRIDE.update({
  ('Mesa Prime','Secondary'): dict(kind='status', arcane='Secondary Encumber', tname='PISTOL_STATUS', mods=PISTOL_STATUS,
      why='Akjagara Prime 32% status, Slash-weighted burst; Mesa passive +15% fire rate dual-wield. Regulators carry the crit role'),
 })
+# ---------------- v4.3 Batch 4 (Mirage -> Rhino) weapon audit + explicit threshold reviews for earlier audited frames
+MIRAGE_BOW = ['Serration','Split Chamber','Vigilante Armaments','Point Strike','Vital Sense','Hammer Shot','Primed Cryo Rounds','Malignant Force']
+MIRAGE_PISTOL = ['Hornet Strike','Barrel Diffusion','Lethal Torrent','Primed Pistol Gambit','Primed Target Cracker','Augur Pact','Deep Freeze','Pathogen Rounds']
+NARIN_BOW = ['Serration','Galvanized Chamber','Point Strike','Vital Sense','Galvanized Aptitude','Hammer Shot','Primed Cryo Rounds','Rime Rounds']
+NARIN_PISTOL = ['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Galvanized Shot','Lethal Torrent','Deep Freeze','Frostbite']
+WEAPON_OVERRIDE.update({
+ # --- threshold reviews (documentation; builds unchanged)
+ ('Citrine Prime','Secondary'): dict(why='THRESHOLD REVIEW: Catabolyst 11% crit; Prismatic Gem adds +100% x Str status chance -> status build confirmed'),
+ ('Follie','Secondary'): dict(why='THRESHOLD REVIEW: Staticor 14% crit, AoE charged orbs; no flat-crit source on Follie -> status build confirmed'),
+ ('Hydroid Prime','Secondary'): dict(why='THRESHOLD REVIEW: Pox 1% crit, Toxin AoE -> status build confirmed'),
+ ('Inaros Prime','Secondary'): dict(why='THRESHOLD REVIEW: Zymos 5% crit; no flat-crit source on Inaros -> status build confirmed'),
+ ('Lavos Prime','Secondary'): dict(why='THRESHOLD REVIEW: Cyanex 8% crit; Valence Formation adds a guaranteed-status element -> status build confirmed'),
+ ('Mag Prime','Secondary'): dict(why='THRESHOLD REVIEW: Mara Detron 8% crit / 1.5x -> status build confirmed'),
+ ('Equinox Prime','Secondary'): dict(incarnon=['EVO2: Carnage Reign','EVO3: Evolved Autoloader','EVO4: Neurotoxin'],
+     why='THRESHOLD REVIEW (B4): Incarnon Form 11% crit / 43% status -> status template now matches the Batch 2 status perks (Neurotoxin)'),
+ ('Dante','Secondary'): dict(kind='crit', incarnon=['EVO2: Rapid Wrath','EVO3: Rapid Reinforcement','EVO4: Lethal Lance',"EVO5: Impaler's Ferocity"],
+     why="THRESHOLD REVIEW (B4): Incarnon Form 14% crit / 18% status - neither axis strong; locked Batch 2 crit build kept (Primed Pistol Gambit -> ~40%); damage comes from the punch-through perks (Lethal Lance -> Impaler's Ferocity)"),
+ # --- Batch 4
+ ('Mirage Prime','Primary'): dict(tname='MIRAGE_CLONE_SAFE', mods=MIRAGE_BOW, why='Hall of Mirrors clones copy modded stats but NOT Galvanized mods or Arcanes (wiki) -> static Split Chamber/Vigilante instead of Galvanized; Kuva Bramma Heat progenitor'),
+ ('Mirage Prime','Secondary'): dict(tname='MIRAGE_CLONE_SAFE', mods=MIRAGE_PISTOL, why='Clone-safe: Barrel Diffusion/Lethal Torrent/Augur Pact instead of Galvanized Diffusion/Crosshairs/Shot (not inherited by clones)'),
+ ('Narin','Primary'): dict(arcane='Primary Frostbite', tname='COLD_PURE', mods=NARIN_BOW, target=['Cold'],
+     why='Nunchasa innate Cold kept pure: weapon Cold procs feed Naraemagi absorption, Sangodae drops (1%/Cold stack) and freeze for Nurinarim explosions; Primary Frostbite on Cold'),
+ ('Narin','Secondary'): dict(arcane='Secondary Shiver', tname='COLD_PURE', mods=NARIN_PISTOL, target=['Cold'], why='Aksondol innate Cold kept pure (same loop); Secondary Shiver +45% per Cold status'),
+ ('Narin','Melee'): dict(incarnon=['EVO2: Wartime Nerve','EVO3: Orokin Reach',"EVO4: Survivor's Edge"], why="Guardian's Promise needs Overshields - Narin generates Overguard, not Overshields -> Wartime Nerve"),
+ ('Nekros Prime','Primary'): dict(why='THRESHOLD REVIEW: Tigris Prime 10% crit, Slash-weighted double barrel -> status/Slash build confirmed. Announced Tigris Incarnon is NOT live (Upcoming ledger) - no evolutions assigned'),
+ ('Nezha Prime','Primary'): dict(tname='TOXIN_DR', mods=['Serration','Galvanized Chamber','Vigilante Armaments','Galvanized Aptitude','Primed Shred','Malignant Force','Infected Clip','Hammer Shot'], target=['Toxin'],
+     why='Divine Retribution: speared explosions scale x1.5 per remaining Slash/Toxin/Heat status -> raw Toxin (not Viral); Chakram/Fire Walker supply Heat'),
+ ('Nezha Prime','Secondary'): dict(tname='TOXIN_DR', mods=['Hornet Strike','Augur Pact','Galvanized Diffusion','Lethal Torrent','Galvanized Shot','Pistol Pestilence','Pathogen Rounds','Stunning Speed'], target=['Toxin'],
+     why='Zakti Prime 42% status AoE -> raw Toxin for Divine Retribution'),
+ ('Nokko','Primary'): dict(why='THRESHOLD REVIEW: Sporothrix 1% crit / 53% status -> status build confirmed'),
+ ('Nokko','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='Ocucor 16% crit beam with innate Radiation: crit template + Merciless (status Arcane on crit mods was a mismatch)'),
+ ('Nova Prime','Primary'): dict(incarnon=['EVO2: Fortifying Bloodshed','EVO3: Kinetic Battle','EVO4: Zeroed In'], why='Fortress Salvo needs >450 armor (Nova 135) -> Fortifying Bloodshed (+100 overshield on Slash kill)'),
+ ('Nyx Prime','Secondary'): dict(why='THRESHOLD REVIEW: Hikou Prime 6% crit; Nyx passive (+40% crit per confused enemy) is additive to the crit MULTIPLIER, so 6% base stays low -> status confirmed'),
+ ('Oberon Prime','Secondary'): dict(incarnon=['EVO2: Feigned Retreat',"EVO3: Void's Guidance","EVO4: Commodore's Fortune"], why="King's Gambit sets body-shot crit to x0 - Oberon is not a weak-point frame -> Feigned Retreat"),
+ ('Protea Prime','Secondary'): dict(why='THRESHOLD REVIEW: Velox Prime 14% crit, 32% status (signature +40% ammo efficiency) -> status confirmed'),
+ ('Qorvex','Primary'): dict(kind='status', tname='SHOTGUN_STATUS', mods=SHOTGUN_STATUS, incarnon=['EVO2: Attuned Accuracy','EVO3: Dual-Mode','EVO4: Racking Wrath','EVO5: Devastating Attrition'],
+     why='INCARNON OVERRIDE: Devastating Attrition = 50% chance of +2000% on NON-critical hits -> crit mods lower damage; Racking Wrath (-10% crit, +20% status); Incarnon Form innate Radiation feeds the Crucible/Pillar chain'),
+ ('Qorvex','Secondary'): dict(incarnon=['EVO2: Infused Shots','EVO3: Extended Volley','EVO4: Rain of Lead'], why='Speeding Bullet needs sprint speed >=1.2 (not met) -> Infused Shots (per 50 energy spent); Incarnon Form 24% / 3.2x crit'),
+ ('Revenant Prime','Primary'): dict(why='Signature Phantasma Prime has INNATE Radiation, which turns thralls back to enemies (wiki) - documented conflict; avoid sweeping thralls with the beam'),
+ ('Revenant Prime','Secondary'): dict(kind='status', tname='PISTOL_STATUS_NO_ELEC', mods=['Hornet Strike','Augur Pact','Galvanized Diffusion','Lethal Torrent','Galvanized Shot','Frostbite','Pistol Pestilence','Stunning Speed'],
+     why='Tenet Cycron 40% status beam; Jolt removed because Electricity + innate Heat = Radiation (un-thralls Enthrall targets) -> Viral + Heat'),
+ ('Revenant Prime','Melee'): dict(why='Signature Tatsu Prime has INNATE Radiation (+4 Soul Swarm charges) - documented thrall conflict'),
+ ('Rhino Prime','Primary'): dict(incarnon=['EVO2: Crimson Overture','EVO3: Rapid Reinforcement',"EVO4: Survivor's Edge"], why="Hunter's Mantra needs a channeled ability (Rhino has none) -> Crimson Overture; Incarnon Form 24% / 3x crit -> crit"),
+})
 AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime',
                   'Cyte-09','Dagath','Dante','Ember Prime','Equinox Prime','Excalibur Umbra','Follie','Frost Prime','Gara Prime','Garuda Prime','Gauss Prime','Grendel Prime',
+                  'Mirage Prime','Narin','Nekros Prime','Nezha Prime','Nidus Prime','Nokko','Nova Prime','Nyx Prime','Oberon Prime','Octavia Prime','Oraxia','Protea Prime','Qorvex','Revenant Prime','Rhino Prime',
                   'Gyre Prime','Harrow Prime','Hildryn Prime','Hydroid Prime','Inaros Prime','Ivara Prime','Jade','Khora Prime','Koumei','Kullervo','Lavos Prime','Limbo Prime','Loki Prime','Mag Prime','Mesa Prime'}
 def weapon_configs():
     rows=[]
@@ -284,18 +329,25 @@ def weapon_configs():
             if cls=='Exalted Weapon' or w in ('Razorflies','Garuda Prime Talons'): continue
             if w=='Vinquibus (Melee)': cls='Bayonet'
             cc,sc=norm_attack(v) if v else (0,0)
-            kind='crit' if cc>=0.24 else ('status' if sc>=0.28 else ('crit' if cc>=sc else 'status'))
+            # v4.3 B4: Incarnon weapons are classified on their Incarnon Form (the Steel Path mode), base stats kept for display
+            form=[a for a in (v.get('Attacks') or []) if a.get('AttackName','').startswith('Incarnon Form')] if v else []
+            ccx,scx=(form[0].get('CritChance') or 0, form[0].get('StatusChance') or 0) if form else (cc,sc)
+            kind='crit' if ccx>=0.24 else ('status' if scx>=0.28 else ('crit' if ccx>=scx else 'status'))
             ov=WEAPON_OVERRIDE.get((f,slot),{})
             if ov.get('kind'): kind=ov['kind']
             arc0=ov.get('arcane') or weapon_arcane(slot,cls,w,f,kind)
             fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
-            tname,tmods=template(slot,cls,arc0,kind,cc,bool(fam))
+            tname,tmods=template(slot,cls,arc0,kind,ccx,False)
+            flag=[]
+            if form: flag.append(f'Incarnon Form {ccx:.0%} crit / {scx:.0%} status (base {cc:.0%}/{sc:.0%})')
+            if slot!='Melee' and kind=='status' and ccx<0.15: flag.append('THRESHOLD FLAG: <15% crit -> status template proposed; needs weapon-specific review')
+            review=('AUDITED: '+ov['why']) if (ov.get('why') and f in AUDITED_FRAMES) else ('AUDITED: no weapon/frame mechanic overrides the default' if f in AUDITED_FRAMES else ('REVIEW PENDING' if flag else 'PENDING'))
             if ov.get('mods'): tname,tmods=ov.get('tname','CUSTOM'),ov['mods']
             inc=[]
             if fam: inc=evo_pick(fam,kind)
             if ov.get('incarnon'): inc=ov['incarnon']
             res,eerr=element_check(tmods, innate_elements(w.replace(' (Primary)','').replace(' (Melee)','')), arc0, ov.get('target'))
-            rows.append(dict(audited=f in AUDITED_FRAMES, why=ov.get('why',''), frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
+            rows.append(dict(audited=f in AUDITED_FRAMES, why=ov.get('why',''), flag='; '.join(flag), review=review, frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,ccx=ccx,kind=kind,template=tname,mods=tmods,
                              arcane=arc0,element=' + '.join(res) + (' [ELEMENT ERROR: '+'; '.join(eerr)+']' if eerr else ''),elem_errs=eerr,exilus=ov.get('exilus'),incarnon=inc,evo_family=fam,
                              forma='5 Forma to Rank 40 + ~3 polarization' if w.startswith(('Kuva ','Tenet ')) else ('~4 (Incarnon)' if fam else '~3')))
     return rows

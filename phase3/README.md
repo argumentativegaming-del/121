@@ -12,5 +12,5 @@
 
 ## v4.3 optimization audit (DRAFT, not final)
 
-- Batches 1-3 (Ash -> Mesa) are audited: 34 of 66 frames. See the **OPTIMIZATION AUDIT** sheet. Records are in `tools/audit_batch1.py`, `audit_batch2.py` and `audit_batch3.py`.
+- Batches 1-4 (Ash -> Rhino) are audited: 49 of 66 frames. See the **OPTIMIZATION AUDIT** sheet. Records are in `tools/audit_batch1.py`, `audit_batch2.py`, `audit_batch3.py` and `audit_batch4.py`.
 - Regenerate with `build.py`, then `write_v4.py`, then `final_sheets.py`. `engine.py` validates the frame builds. The element-order validator in `builds_extra.py` checks every weapon and Exalted; its result is in **BUILD COMPLETENESS**.
