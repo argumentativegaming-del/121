@@ -80,7 +80,8 @@ def validate(frame, bd):
         v = mod(m)
         if not v: errs.append(f'unknown mod {m}'); continue
         t = v.get('Type')
-        if t not in ('Warframe', base, frame, 'Excalibur Umbra', 'Excalibur') : errs.append(f'{m} type {t} not usable on {frame}')
+        helm_aug = bd['helm'][0] != 'NO HELMINTH' and (augment_target(v) == bd['helm'][0])
+        if t not in ('Warframe', base, frame, 'Excalibur Umbra', 'Excalibur') and not helm_aug: errs.append(f'{m} type {t} not usable on {frame}')
         if t == 'Aura': errs.append(f'{m} is an Aura')
     allm = mods + [bd.get('exilus')] if bd.get('exilus') else list(mods)
     for fam in FAMILIES:
@@ -109,8 +110,9 @@ def validate(frame, bd):
     augs = []
     for m in allm:
         v = mod(m) or {}
-        if v.get('Type') in (base, frame, 'Excalibur Umbra'):
-            tgt = augment_target(v); augs.append(m)
+        if v.get('Type') in (base, frame, 'Excalibur Umbra') or (h != 'NO HELMINTH' and augment_target(v) == h):
+            tgt = augment_target(v); augs.append(m + (' (via Helminth '+h+')' if augment_target(v) == h else ''))
+            if augment_target(v) == h: continue
             if tgt and h != 'NO HELMINTH' and tgt == rep: errs.append(f'augment {m} targets replaced ability {rep}')
             if tgt and tgt not in abil and tgt != 'Passive': warns.append(f'augment {m} targets "{tgt}" not in live ability list')
             if m == 'Temporal Artillery' and ('Temporal Anchor' == rep or 'Blaze Artillery' == rep): errs.append('Temporal Artillery requires Temporal Anchor and Blaze Artillery')

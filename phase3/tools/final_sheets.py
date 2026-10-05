@@ -1,7 +1,7 @@
 import json, collections, math, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-import engine, builds_data as BD, builds_extra as X
+import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB
 X.apply_shard_policy()
 F='Warframe_Phase3_Procurement_Master_v4_Economic_Model.xlsx'
 wb=openpyxl.load_workbook(F)
@@ -34,9 +34,12 @@ def shard_txt(c):
 LIVE=[]
 for f,b in BD.B.items():
     for l in b.get('live') or []: LIVE.append((f,l))
-LIVE += [('Exalted melee weapons','Melee Arcane slot availability on Exalted/pseudo-Exalted melee weapons is not documented; no melee Arcane assigned to them -> LIVE TEST REQUIRED'),
+LIVE=[x for x in LIVE if x[0]!='Dante']
+LIVE += [('Dante','CORRECTION REQUIRED (v4.3 audit queue): v4.2 Nourish-over-Light-Verse breaks Final Verse (needs Light+Light Triumph, Dark+Light Pageflight, Light+Dark Wordwarden). Fix in batch D.'),
+         ('Saryn Prime','REAUDIT (queue): v4.2 Roar over Toxic Lash vs Phase 2 Roar over Molt'),('Styanax Prime','REAUDIT (queue): v4.2 Roar over Rally Point vs Phase 2 Nourish over Axios Javelin'),
+         ('Protea Prime','OPTIMIZATION REVIEW (queue): Roar over Grenade Fan vs native Temporal Anchor/Erosion configurations'),
          ('Orion','Whether Orion has independent Arcane/Archon Shard slots (separately moddable Exalted Warframe). Shards/Arcanes recorded on Sirius & Orion only -> LIVE TEST REQUIRED'),
-         ('Dante','Noctua no-slot-replacement ruling: Noctua is an ability-summoned Exalted Secondary; Onos retained. Practical use (Noctua uptime) -> LIVE TEST REQUIRED to confirm Onos is still used'),
+
          ('Narin','Nurinarim: 20s cast sword-dance, Ability Strength scaling, no weapon modding -> ruled NO Melee replacement (confident); no live test needed for slot, Ice sustain test listed separately')]
 LIVE=[x for x in LIVE if not (x[0]=='Narin' and x[1].startswith('Nurinarim'))]
 # ---------- FRAME BUILDS — FINAL
@@ -56,15 +59,20 @@ for r in engine.ROWS:
     lv='; '.join(l for ff,l in LIVE if ff==f) or '-'
     checks=[b['helm'], b.get('aura'), b.get('exilus'), len(b['mods'])==8, len(b['arcanes'])==2, len(b['shards'])==5, b['focus'], b['comp'], not rr['errs']]
     ok=all(checks); complete+=ok
-    rows.append([f,b['role'],b['helm'][0],b['helm'][1] if b['helm'][0]!='NO HELMINTH' else 'NO HELMINTH: '+b['helm'][1],st['Strength'],st['Duration'],st['Range'],st['Efficiency'],b.get('bp'),
+    rows.append(['v4.3 AUDITED (batch 1)' if f in AB.AUDIT else 'PENDING optimization audit',f,b['role'],b['helm'][0],b['helm'][1] if b['helm'][0]!='NO HELMINTH' else 'NO HELMINTH: '+b['helm'][1],st['Strength'],st['Duration'],st['Range'],st['Efficiency'],b.get('bp'),
                  '; '.join(b.get('cond') or []),b.get('aura'),b.get('aura2'),b.get('exilus'),' | '.join(b['mods']),', '.join(rr['augs']) or '-',b.get('surv'),b['arcanes'][0],b['arcanes'][1],
                  *[shard_txt(c) for c in b['shards']],b['focus'],b['comp'],comp['weapon'],wtxt('Primary') or ('Neutralizer (Exalted)' if f=='Cyte-09' else 'Lizzie (Exalted)' if f=='Temple' else 'Artemis Bow Prime (Exalted)' if f=='Ivara Prime' else 'Razorwing: Dex Pixia Prime' if f=='Titania Prime' else '-'),
                  wtxt('Secondary') or ('Balefire Charger Prime (Exalted)' if f=='Hildryn Prime' else '-'),
                  wtxt('Melee') or {'Baruuk Prime':'Desert Wind Prime (Exalted)','Excalibur Umbra':'Exalted Umbra Blade','Garuda Prime':'Garuda Prime Talons','Mesa Prime':'Regulators Prime (project Melee credit)','Sevagoth Prime':'Shadow Claws Prime','Titania Prime':'Diwata Prime','Valkyr Prime':'Valkyr Prime Talons','Wukong Prime':'Iron Staff Prime'}.get(f,'-'),
                  ', '.join(exal) or '-', 'See EXALTED BUILDS' if exal else '-', warc, inc, elem, f"{cap['cost']}/{cap['capacity']} ({'fits' if cap['fits'] else 'OVER'})", cap['forma'], lv, b.get('notes'), 'COMPLETE' if ok else 'INCOMPLETE: '+'; '.join(rr['errs'])])
-hdr=['Frame','Build identity / gameplay','Helminth ability','Replaces','Strength %','Duration %','Range %','Efficiency %','Breakpoints / targets','Conditional stat sources','Aura','Aura 2 (Jade)','Exilus','Warframe mods (8)','Augment(s)','Survivability architecture','Arcane 1','Arcane 2',
+import audit_batch1 as AB
+hdr=['Optimization audit','Frame','Build identity / gameplay','Helminth ability','Replaces','Strength %','Duration %','Range %','Efficiency %','Breakpoints / targets','Conditional stat sources','Aura','Aura 2 (Jade)','Exilus','Warframe mods (8)','Augment(s)','Survivability architecture','Arcane 1','Arcane 2',
      'Shard 1','Shard 2','Shard 3','Shard 4','Shard 5','Focus School','Companion','Companion weapon','Primary','Secondary','Melee','Exalted / intrinsic','Exalted build','Weapon Arcanes','Incarnon evolutions','Element / status assumptions','Mod capacity (cost/cap, Reactor)','Forma estimate (frame)','LIVE TEST REQUIRED','Notes','Completeness']
-sheet('FRAME BUILDS — FINAL',hdr,rows,{'Build identity / gameplay':45,'Warframe mods (8)':70,'Survivability architecture':40,'Breakpoints / targets':40,'Conditional stat sources':40,'Incarnon evolutions':60,'Element / status assumptions':60,'Weapon Arcanes':45,'LIVE TEST REQUIRED':50,'Notes':45},idx=1)
+sheet('FRAME BUILDS',hdr,rows,{'Build identity / gameplay':45,'Warframe mods (8)':70,'Survivability architecture':40,'Breakpoints / targets':40,'Conditional stat sources':40,'Incarnon evolutions':60,'Element / status assumptions':60,'Weapon Arcanes':45,'LIVE TEST REQUIRED':50,'Notes':45},idx=1)
+if 'FRAME BUILDS — FINAL' in wb.sheetnames: del wb['FRAME BUILDS — FINAL']
+oa=[[f,a['v42'],a['phase2'],a['live'],a['problems'],a['final'],a['why'],a['delta']] for f,a in AB.AUDIT.items()]
+sheet('OPTIMIZATION AUDIT',['FRAME','v4.2 CONFIGURATION','PREVIOUS PHASE 2 CONFIGURATION','CURRENT LIVE MECHANICS THAT MATTER','PROBLEMS FOUND','OPTIMIZED FINAL CONFIGURATION','WHY THIS WINS','PROCUREMENT DELTA'],oa,
+      {'v4.2 CONFIGURATION':40,'PREVIOUS PHASE 2 CONFIGURATION':35,'CURRENT LIVE MECHANICS THAT MATTER':60,'PROBLEMS FOUND':50,'OPTIMIZED FINAL CONFIGURATION':70,'WHY THIS WINS':50,'PROCUREMENT DELTA':35},idx=1)
 # ---------- FRAME MOD CONFIGS
 mc=[]
 def modrow(f,slot,m):
@@ -103,13 +111,13 @@ ws.append(['Note','* Deconstructor Prime is a glaive-type sentinel weapon: use m
 # ---------- EXALTED BUILDS
 eb=[]
 for w,(f,slot,mods,a,e,n) in X.EXALTED.items():
-    eb.append([w,f,slot,' | '.join(mods),a or 'Not assigned (melee Exalted arcane slot: LIVE TEST)',e,n,'Catalyst pre-installed; Forma ~3'])
+    eb.append([w,f,slot,' | '.join(mods),a,e,n,'Catalyst pre-installed; Arcane slot (U38.5); Forma ~3'])
 eb.append(['Venari Prime','Khora Prime','Exalted companion',' | '.join(X.VENARI),'-','Viral via Vicious/Contagious Bond','Separately moddable exalted companion','-'])
 for f,c in BD.EXALTED_FRAMES.items(): eb.append([f,'Sevagoth Prime' if 'Sevagoth' in f else 'Sirius & Orion','Exalted Warframe',' | '.join(c['mods'])+f" | Aura: {c.get('aura')} | Exilus: {c.get('exilus')}",'-','-',c['notes'],'Forma ~3'])
 sheet('EXALTED BUILDS',['Exalted','Frame','Slot','Mods','Arcane','Element','Notes','Investment'],eb,{'Mods':90,'Notes':45},idx=5)
 # ---------- WEAPON CONFIGS
-wc=[[r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
-sheet('WEAPON CONFIGS',['Frame','Slot','Weapon','Class','Base CC','Base SC','Build type','Mod template','Template mods','Weapon Arcane','Element / status','Incarnon evolutions','Forma / investment'],wc,{'Template mods':80,'Element / status':45,'Incarnon evolutions':55},idx=6)
+wc=[['AUDITED' if r.get('audited') else 'PENDING',r.get('why',''),r['frame'],r['slot'],r['weapon'],r['cls'],r['cc'],r['sc'],r['kind'],r['template'],' | '.join(r['mods']),r['arcane'],r['element'],'; '.join(r['incarnon']) or '-',r['forma']] for r in wcfg]
+sheet('WEAPON CONFIGS',['Optimization audit','Audit note','Frame','Slot','Weapon','Class','Base CC','Base SC','Build type','Mod template','Template mods','Weapon Arcane','Element / status','Incarnon evolutions','Forma / investment'],wc,{'Template mods':80,'Element / status':45,'Incarnon evolutions':55},idx=6)
 # ---------- Replace Arcanes + Archon Shards (v3) sheets with v4.2-derived
 proc=json.load(open('proc.json')); pa={r['Item']:r for r in proc if r['Category']=='Arcane'}
 users=collections.defaultdict(list)
@@ -169,9 +177,9 @@ rep=[('Frames complete',f'{complete} / 66'),('Helminth decisions',f"{sum(1 for b
      ('Full mod configs',f"{sum(1 for b in BD.B.values() if len(b['mods'])==8)} / 66"),('Arcane pairs',f"{sum(1 for b in BD.B.values() if len(b['arcanes'])==2)} / 66"),('Archon Shards',f'{len(sh)} / 330'),
      ('Focus Schools',f"{sum(1 for b in BD.B.values() if b['focus'])} / 66"),('Companions',f"{sum(1 for b in BD.B.values() if b['comp'])} / 66"),
      ('Weapon configurations complete',f"{sum(1 for f in alloc if all((s in wbyf[f]) or (f,s) in EXREP for s in ('Primary','Secondary','Melee')))} / 66"),
-     ('Exalted builds complete',f'{nexal} / {nexal}'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE)))]
+     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - NOT FINAL'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE)))]
 ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=9)
-s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds FINAL (v4.2)',f'{complete}/66','See FRAME BUILDS — FINAL']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
+s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds (v4.3 DRAFT)',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited - NOT FINAL']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
 wb.save(F)
 json.dump(dict(complete=complete,shards=len(sh),taus=taus,live=LIVE,T_old=T_old,T_new=T_new,added=[x[0] for x in added],removed=[x[0] for x in removed],changed=[x[0] for x in changed],rep=rep,tot={f'{k[0]}|{k[1]}|{k[2]}':v for k,v in tot.items()}),open('final_report.json','w'),indent=1)
 print('saved', complete, len(sh), taus, len(LIVE)); print(rep)

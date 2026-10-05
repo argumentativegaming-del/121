@@ -1,0 +1,60 @@
+"""v4.3 optimization audit - Batch 1 (Ash -> Citrine). One record per frame."""
+PHASE2_NOTE = 'v3 workbook holds no full Phase 2 build; only frame notes, the augment list and the 14-Arcane list'
+AUDIT = {
+ 'Ash Prime': dict(
+   v42='Roar over Shuriken; Umbral x3, Primed Continuity, Primed Flow, Streamline, Rolling Guard, Rising Storm; Molt Augmented + Arcane Avenger; Shadow Clones crit template with no Arcane',
+   phase2='v3 augment list: Savage Silence assigned to Ash, which implies Silence was subsumed (v4.1 wrongly "corrected" it to Banshee). Note: "Shadow Clones investment"',
+   live='Blade Storm 5% crit / 1.2x / 5% status, so flat bonuses scale it best (wiki). Finisher damage multiplies with Finisher Damage Vulnerability (Savage Silence +300%) on direct hits, not on the Bleed. Smoke Shadow: +150% crit chance while invisible. Shadow Clones can equip Covert Lethality and an Arcane (U38.5).',
+   problems='Roar (+30% x Str = +65%) is far weaker than Savage Silence (x4 finisher hits) for a finisher frame. The Shadow Clones template stacked relative crit/status mods on a 5% base. No invisibility synergy (Smoke Shadow, Crepuscular). Shadow Clones Arcane was unassigned.',
+   final='Silence (Savage Silence) over Shuriken; Umbral x3, Primed Continuity, Rolling Guard, Savage Silence, Rising Storm, Smoke Shadow; Power Drift; Growing Power; Arcane Crepuscular + Arcane Energize; T:Str, Str, T:Melee CD, Energy Max, Armor; Zenurik; Adarza. Shadow Clones Prime: Covert Lethality, Finishing Touch, PPP, Organ Shatter, Gladiator Might, Condition Overload, Virulent Scourge, Molten Impact + Melee Crescendo. Tenet Plinx: Secondary Merciless. Innodem: Melee Crescendo; Bladed Harmony / Blade Twister / Protracted Execution / Stunning Brutality',
+   why='Smoke Screen -> Blade Storm while invisible stacks Savage Silence (x4 finisher hits), Smoke Shadow (+150% flat crit) and Crepuscular (x3 final crit, +30% Str). This is the frame-specific damage engine, and each mod targets a Blade Storm weakness.',
+   delta='None: Savage Silence, Smoke Shadow, Covert Lethality and Finishing Touch are in the all-mods collection; Crepuscular and Energize were already required. New Helminth farm: base Banshee (Silence donor).'),
+ 'Atlas Prime': dict(
+   v42='Nourish over Tectonics; ...Streamline, Stretch, Rubble Heap; Reaper + Molt Augmented; Landslide Fists template included Berserker Fury',
+   phase2='v3: "Landslide Fists investment"; Rubble Heap augment listed',
+   live='Rubble Heap: above 1400 Rubble, Landslide costs no energy and deals 2x. Landslide Fists: 35% crit / 2x, no Attack Speed benefit, no finishers or heavy attacks (no Crescendo or Animosity).',
+   problems='Nourish energy multiplier is largely wasted once Landslide is free. Berserker Fury is dead on Landslide Fists. No Landslide Fists Arcane.',
+   final='Roar over Tectonics; Streamline -> Augur Secrets (Str 241%); shards T:Str, Str, T:Melee CD, Melee CD, Armor; Landslide Fists Prime: Gladiator Might instead of Berserker Fury + Melee Duplicate; Atomos: Hoplite Virtue (Paladin needs >700 energy)',
+   why='Damage-multiplier Helminth for an energy-free brawler; crit-damage shards on a 35% crit exalted.',
+   delta='None.'),
+ 'Banshee Prime': dict(
+   v42='Roar over Silence; Augur Reach; Latron: Primary Merciless + Flensing Spikes',
+   phase2='v3: "Update 44 build", Resonance augment',
+   live='U44 passive: every cast applies 5 Puncture to enemies within 20m. Sonic Boom armor strip 70% x Str (full at ~143%). Silence: stun aura that disables enemy abilities and Eximus effects. Sonar spots count as weak points.',
+   problems='Replacing Silence removes Eximus/ability-disable CC on a 135-armor frame, for a subsumed Roar capped at +30% x Str. Flensing Spikes is redundant with the Sonic Boom full strip. Merciless ignores the Sonar weak-point synergy.',
+   final='NO HELMINTH; Augur Reach -> Rolling Guard; Latron Prime: Primary Deadhead, Riddled Target / Marksman\'s Hand / Critical Parallel; Euphona Prime: Secondary Deadhead',
+   why='Every native ability is a cheap, Strength-scaled cast that also primes. Silence is the defensive core and Deadhead converts Sonar weak points into stacks.',
+   delta='None (Deadhead Arcanes already required). Removes the Banshee Helminth donor need for Roar.'),
+ 'Baruuk Prime': dict(
+   v42='Roar over Elude; Stretch; T:Melee CD shard; Desert Wind crit template, no Arcane',
+   phase2='v3: "Desert Wind Prime investment"; Reactive Storm augment listed',
+   live='Elude dodge is interrupted by attacking. Desolate Hands caps at 9 daggers / 90% DR at Str >=112.5%. Serene Storm DR 25% x Str, cap 40% at 160%. Desert Wind 35% crit / 2x, Reactive Storm +250% status.',
+   problems='Roar-over-Elude is correct but was not justified. Stretch adds little. The Melee CD shard does not fit a status-hybrid Desert Wind. No Desert Wind Arcane.',
+   final='Roar over Elude (justified); Stretch -> Endless Lullaby; shards T:Str, Str, Armor, Armor, Health; Desert Wind Prime + Melee Duplicate; Paris Prime: Deadly Pace (sprint 1.2) / Swift Deliverance / Vicious Promise',
+   why='Elude cannot coexist with a melee loop. Endless Lullaby turns Lull into a self-sustaining CC field. Both DR breakpoints are met.',
+   delta='None.'),
+ 'Caliban Prime': dict(
+   v42='Molt over Razor Gyre; Arcane Camisado; Venato: Melee Animosity',
+   phase2='v3: "Venato Prime priority"',
+   live='Razor Gyre: 1000 dps Tau to Wrath-raised enemies, health/shield and energy restore per enemy hit. Fusion Strike: full armor/shield strip at 200% Str (164% with Corrosive Projection). Lethal Progeny summons level with Caliban rank x Str.',
+   problems='Replacing Razor Gyre destroyed both his sustain and the Wrath x2 synergy. Camisado depended on weak summons.',
+   final='Roar over Lethal Progeny; Molt Augmented + Arcane Energize; Venato Prime: Melee Duplicate',
+   why='Keeps the Wrath -> Gyre -> Fusion Strike loop intact; replaces the only ability that does not scale into Steel Path.',
+   delta='None (Camisado still required by Uriel). Helminth donor: base Rhino instead of base Saryn for Caliban.'),
+ 'Chroma Prime': dict(
+   v42='Nourish over Spectral Scream; Guardian Armor; Lato Vandal: Haven Foray (needs Overshields)',
+   phase2='v3: no note',
+   live='Spectral Scream range scales with cube root of Range. Vex Armor is a native damage buff (subsumed Roar carries a 1-damage-buff limit). Elemental Ward element follows the emissive colour once Scream is gone (Cold = armor).',
+   problems='Guardian Armor only protects squadmates. Haven Foray is inactive without Overshields.',
+   final='Nourish over Spectral Scream (confirmed); Guardian Armor -> Augur Secrets; Cold emissive; Lato Vandal: Reified Bane / Exact Penance / Survivor\'s Edge',
+   why='Self-sufficient Vex Armor platform; every perk is active in solo play.',
+   delta='None.'),
+ 'Citrine Prime': dict(
+   v42='NO HELMINTH; Prismatic Companion',
+   phase2='v3: "Steflos Prime + Corufell Prime"',
+   live='Prismatic Gem +100% x Str weapon status chance and status duration; Prismatic Companion moves the gem with the companion (+50% duration); passive regen grows per Health Orb.',
+   problems='None found.',
+   final='Unchanged',
+   why='All four abilities are load-bearing; the companion-carried gem removes positioning cost.',
+   delta='None.'),
+}

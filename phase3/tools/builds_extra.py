@@ -35,7 +35,10 @@ COMP_WEAPON_BUILD = {
 
 # ---------------- Exalted / separately moddable builds
 MELEE_CRIT = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','Primed Reach','Virulent Scourge']
-PSEUDO_MELEE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','Virulent Scourge','Molten Impact']
+# v4.3: pseudo-Exalted melee (Landslide/Shattered Lash/Whipclaw) do not benefit from Attack Speed -> Berserker Fury replaced by Gladiator Might
+PSEUDO_MELEE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Gladiator Might','Condition Overload','Virulent Scourge','Molten Impact']
+# Shadow Clones (Blade Storm): 5% base crit / 1.2x / 5% status -> relative crit/status mods are near-useless; finisher-damage stack instead
+SHADOW_CLONES = ['Covert Lethality','Finishing Touch','Primed Pressure Point','Organ Shatter','Gladiator Might','Condition Overload','Virulent Scourge','Molten Impact']
 RIFLE_CRIT = ['Serration','Galvanized Chamber','Point Strike','Vital Sense','Hammer Shot','Galvanized Aptitude','Primed Cryo Rounds','Malignant Force']
 PISTOL_CRIT = ['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Galvanized Crosshairs','Primed Heated Charge','Pathogen Rounds','Galvanized Shot']
 SHOTGUN = ['Primed Point Blank','Galvanized Hell','Primed Ravage','Critical Deceleration','Galvanized Savvy','Primed Charged Shell','Toxic Barrage','Incendiary Coat']
@@ -55,11 +58,16 @@ EXALTED = {
  'Valkyr Prime Talons':('Valkyr Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Hysteria talons'),
  'Iron Staff Prime':('Wukong Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Primal Fury staff'),
  'Diwata Prime':('Titania Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Razorwing sword'),
- 'Shadow Clones Prime':('Ash Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo); no heavy-attack mods'),
+ 'Shadow Clones Prime':('Ash Prime','Melee',SHADOW_CLONES,'Melee Crescendo','Viral+Heat','Blade Storm finishers; flat crit from Smoke Shadow/Crepuscular; Crescendo on finisher kills'),
  'Landslide Fists Prime':('Atlas Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
  'Shattered Lash Prime':('Gara Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
  'Whipclaw Prime':('Khora Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
 }
+EXALTED_ARCANE = {'Desert Wind Prime': 'Melee Duplicate', 'Exalted Umbra Blade': 'Melee Duplicate', 'Garuda Prime Talons': 'Melee Duplicate', 'Shadow Claws Prime': 'Melee Duplicate', 'Valkyr Prime Talons': 'Melee Duplicate', 'Iron Staff Prime': 'Melee Duplicate', 'Diwata Prime': 'Melee Duplicate', 'Landslide Fists Prime': 'Melee Duplicate', 'Shattered Lash Prime': 'Melee Duplicate', 'Whipclaw Prime': 'Melee Duplicate', 'Regulators Prime': 'Secondary Merciless', 'Balefire Charger Prime': 'Secondary Merciless', 'Dex Pixia Prime': 'Secondary Merciless', 'Glory': 'Secondary Merciless', 'Noctua': 'Secondary Merciless'}
+BATCH1_EXALTED = {'Shadow Clones Prime','Landslide Fists Prime','Desert Wind Prime'}
+for _w,_a in EXALTED_ARCANE.items():
+    _f,_slot,_mods,_old,_el,_n=EXALTED[_w]
+    EXALTED[_w]=(_f,_slot,_mods,_a,_el,_n+('' if _w in BATCH1_EXALTED else ' [Arcane provisional - re-review in frame batch]'))
 VENARI = ['Primed Pack Leader','Primed Animal Instinct','Link Fiber','Link Vitality','Enhanced Vitality','Vicious Bond','Contagious Bond','Hastened Deflection']
 def validate_mods(mods, allowed):
     errs=[]
@@ -122,6 +130,17 @@ def evo_pick(fam, kind):
             return s
         best=max(opts,key=score); picks.append(f"{t}: {best['perk']}")
     return picks
+WEAPON_OVERRIDE = {
+ ('Ash Prime','Secondary'): dict(arcane='Secondary Merciless', why='Outburst consumes Melee Combo, which Ash does not build on normal melee'),
+ ('Ash Prime','Melee'): dict(arcane='Melee Crescendo', incarnon=['EVO2: Bladed Harmony','EVO3: Blade Twister','EVO4: Protracted Execution','EVO5: Stunning Brutality'], why='Teleport-finisher loop: finisher damage, combo on finisher, finisher stun'),
+ ('Atlas Prime','Secondary'): dict(incarnon=['EVO2: Hoplite Virtue','EVO3: Moonrise Velocity','EVO4: Elemental Balance'], why='Paladin Virtue needs >700 max energy; Atlas reaches ~613'),
+ ('Banshee Prime','Primary'): dict(kind='crit', arcane='Primary Deadhead', incarnon=['EVO2: Riddled Target','EVO3: Marksman\'s Hand','EVO4: Critical Parallel'], why='Sonar spots are weak points (Deadhead); Flensing Spikes redundant with Sonic Boom full strip'),
+ ('Banshee Prime','Secondary'): dict(arcane='Secondary Deadhead', why='Sonar weak points'),
+ ('Baruuk Prime','Primary'): dict(incarnon=['EVO2: Deadly Pace','EVO3: Swift Deliverance','EVO4: Vicious Promise'], why='Baruuk Prime sprint 1.2 activates Deadly Pace (+80% fire rate); bow projectile speed; first-shot crit'),
+ ('Caliban Prime','Melee'): dict(arcane='Melee Duplicate', why='Venato signature boosts combo-count chance on normal attacks, not heavy attacks'),
+ ('Chroma Prime','Secondary'): dict(incarnon=['EVO2: Reified Bane','EVO3: Exact Penance','EVO4: Survivor\'s Edge'], why='Haven Foray needs Overshields (Chroma has none); always-on perks'),
+}
+AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime'}
 def weapon_configs():
     rows=[]
     for r in engine.ROWS:
@@ -136,8 +155,11 @@ def weapon_configs():
             fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
             inc=[]
             if fam: inc=evo_pick(fam,kind)
-            rows.append(dict(frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
-                             arcane=weapon_arcane(slot,cls,w,f,kind),element=element(kind,w,f),incarnon=inc,evo_family=fam,
+            ov=WEAPON_OVERRIDE.get((f,slot),{})
+            if ov.get('kind'): kind=ov['kind']
+            if ov.get('incarnon'): inc=ov['incarnon']
+            rows.append(dict(audited=f in AUDITED_FRAMES, why=ov.get('why',''), frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
+                             arcane=ov.get('arcane') or weapon_arcane(slot,cls,w,f,kind),element=element(kind,w,f),incarnon=inc,evo_family=fam,
                              forma='5 Forma to Rank 40 + ~3 polarization' if w.startswith(('Kuva ','Tenet ')) else ('~4 (Incarnon)' if fam else '~3')))
     return rows
 

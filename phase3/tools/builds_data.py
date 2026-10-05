@@ -11,55 +11,71 @@
 B = {}
 def b(frame, **k): B[frame] = k
 
-b('Ash Prime', role='Blade Storm finisher assassin; Shadow Clones crit melee scaling via Ability Combo; Melee Crescendo via finishers',
-  helm=('Roar', 'Shuriken'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Rolling Guard','Rising Storm'],
-  arcanes=['Molt Augmented','Arcane Avenger'], shards=['T:CS','CS','T:CM','ZA','AC'], focus='Madurai', comp='Adarza Kavat',
-  cond=['Growing Power +25% Str on weapon status','Molt Augmented up to +60% Str','Roar (subsumed) +30% x Str damage'],
-  surv='Umbral health+armor set, Rolling Guard status cleanse/i-frames, Smoke Screen invisibility, Teleport repositioning',
-  bp='No hard Str cap; Roar scales with Str. Duration only affects Smoke Screen/Roar uptime.',
-  notes='Rising Storm: Blade Storm adds Melee Combo to sustain Shadow Clones scaling.')
-b('Atlas Prime', role='Petrify/Rumblers tank and Landslide brawler (Ability Combo scaling)',
-  helm=('Nourish', 'Tectonics'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Rubble Heap'],
-  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','ZA','ZA','AC'], focus='Madurai', comp='Panzer Vulpaphyla',
-  cond=['Nourish (subsumed) energy multiplier and Viral on weapons','Rubble Heap free Landslide above 1400 Rubble'],
-  surv='Passive rubble armor overguard, Umbral health/armor, Petrify stone CC, Arcane Reaper armor/regen',
-  bp='Rubble Heap threshold 1400 Rubble; Petrify/Rumblers scale on Str.')
-b('Banshee Prime', role='U44 Banshee: Sonar weak-point damage multiplier support + Sonic Boom armor strip + Sound Quake blast nuke',
-  helm=('Roar', 'Silence'), aura='Corrosive Projection', exilus='Power Drift',
-  mods=['Umbral Intensify','Transient Fortitude','Primed Continuity','Stretch','Augur Reach','Primed Flow','Streamline','Resonance'],
+b('Ash Prime', role='Invisible finisher assassin: Smoke Screen -> Blade Storm with Savage Silence finisher vulnerability, Smoke Shadow flat crit and Crepuscular crit multiplier',
+  helm=('Silence', 'Shuriken'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Rolling Guard','Savage Silence','Rising Storm','Smoke Shadow'],
+  arcanes=['Arcane Crepuscular','Arcane Energize'], shards=['T:CS','CS','T:CM','ZE','ZA'], focus='Zenurik', comp='Adarza Kavat',
+  cond=['Savage Silence: +300% Finisher damage (Blade Storm direct finisher hits; not its Bleed)','Smoke Shadow: +150% Critical Chance while invisible (flat, decisive on Blade Storm 5% base)','Arcane Crepuscular: +30% Str and x3 final crit damage while invisible','Rising Storm: +4 Ability Combo per Blade Storm attack','Growing Power +25% Str'],
+  surv='Smoke Screen invisibility (Primed Continuity extends), Silence aura stun/ability-disable, Rolling Guard cleanse, Umbral health/armor',
+  bp='No hard cap. Loop: Smoke Screen -> Blade Storm while invisible. Silence aura (20m base) must cover targets for Savage Silence.',
+  notes='v4.3 audit: restores Phase 2 Silence/Savage Silence (v3 listed Savage Silence under Ash). Roar dropped: Savage Silence x4 finisher > Roar +65%. Shuriken/Seeking Shuriken lost (armor strip covered by Corrosive-priming companion/weapons). Primed Flow/Streamline dropped for Smoke Shadow + Savage Silence; energy from Arcane Energize + Zenurik.')
+
+b('Atlas Prime', role='Landslide brawler under Rubble Heap (free, 2x damage, 2x speed above 1400 Rubble); Petrify vulnerability; Rumblers',
+  helm=('Roar', 'Tectonics'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Augur Secrets','Stretch','Rubble Heap'],
+  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','T:CM','CM','ZA'], focus='Madurai', comp='Panzer Vulpaphyla',
+  cond=['Rubble Heap: Landslide free + 2x damage above 1400 Rubble','Roar (subsumed): +30% x Str damage','Petrify damage vulnerability'],
+  surv='Rubble armor (passive), Umbral health/armor, Petrify CC, Arcane Reaper armor/regen on melee kills',
+  bp='Rubble Heap threshold 1400 Rubble. Landslide crit 35% base x2: Melee Crit Damage shards apply.',
+  notes='v4.3 audit: Nourish -> Roar. Rubble Heap makes Landslide energy-free, so Nourish energy multiplier is largely wasted; Roar multiplies all Landslide damage. Tectonics (bulwark) is the low-value ability. Streamline -> Augur Secrets.')
+
+b('Banshee Prime', role='U44 Banshee support-nuker: Sonic Boom full armor strip, Sonar weak-point multiplier, Silence Eximus/ability disable, Resonance chaining',
+  helm=('NO HELMINTH', 'U44 kit: every cast applies 5 Puncture (passive); Sonic Boom armor strip reaches 100% at ~143% Str; Silence stuns and disables Eximus/enemy abilities; Sonar is the core multiplier; Sound Quake is the nuke. No ability is dead weight.'),
+  aura='Corrosive Projection', exilus='Power Drift',
+  mods=['Umbral Intensify','Transient Fortitude','Primed Continuity','Stretch','Primed Flow','Streamline','Rolling Guard','Resonance'],
   arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','T:CS','CD','AC','ZH'], focus='Zenurik', comp='Helios Prime',
-  cond=['Sonar weak points count for Acuity/Incarnon charging','Resonance chains Sonar on weak-spot kills'],
-  surv='Low-armor caster: Sound Quake brief invulnerability, Silence replaced (stun aura loss accepted), reliance on Zenurik + Energize and team support',
-  bp='Sonar multiplier 5x base at rank 3, scales with Str; Sonic Boom 70% armor reduction; prioritize Str > Range > Duration.',
-  notes='Silence subsumed out because Roar stacks with Sonar; Savage Silence therefore unused (collection only).')
-b('Baruuk Prime', role='Desert Wind exalted melee with Serene Storm restraint DR; Reactive Storm status',
+  cond=['Sonar spots count as weak points (Acuity, Deadhead, Incarnon charge)','Resonance re-triggers Sonar on weak-spot kills','Passive: 5 Puncture per cast within 20m'],
+  surv='Silence aura (stun + Eximus disable) is the core defence on a 135-armor frame; Sound Quake brief invulnerability; Rolling Guard',
+  bp='Sonic Boom 70% armor strip x Str -> 100% at ~143% (met at 244%). Sonar multiplier scales with Str.',
+  notes='v4.3 audit: Roar-over-Silence reversed. U44 Silence is an Eximus/ability-disable stun aura; Roar (+30% x Str, subsumed) does not compensate for losing it. Savage Silence remains available but not slotted.')
+
+b('Baruuk Prime', role='Desert Wind exalted melee (Reactive Storm hybrid status) with Desolate Hands DR, Lull/Endless Lullaby CC',
   helm=('Roar', 'Elude'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Streamline','Rolling Guard','Reactive Storm'],
-  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','T:CM','ZA','ZH'], focus='Naramon', comp='Panzer Vulpaphyla',
-  cond=['Restraint (passive) damage reduction up to 50%+','Reactive Storm converts Desert Wind to elemental by Desert Wind status'],
-  surv='Restraint DR, Umbral set, Lull sleep CC, Rolling Guard', bp='Range affects Lull and Desert Wind waves; Str drives Desert Wind damage.')
-b('Caliban Prime', role='Sentient Wrath armor-strip CC + Lethal Progeny summoner',
-  helm=('Molt', 'Razor Gyre'), aura='Corrosive Projection', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Streamline','Rolling Guard','Reactive Storm','Endless Lullaby'],
+  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','ZA','ZA','ZH'], focus='Naramon', comp='Panzer Vulpaphyla',
+  cond=['Reactive Storm: +250% Desert Wind status, damage type matches enemy weakness','Serene Storm DR 25% x Str (cap 40%)','Endless Lullaby: Lull retriggers on finisher/kill, +50% duration'],
+  surv='Desolate Hands up to 90% DR (9 daggers at >=112.5% Str), Serene Storm DR cap 40% at 160% Str, Lull sleep, Rolling Guard',
+  bp='Desolate Hands cap 9 daggers (Str >=112.5%); Serene Storm DR cap 40% (Str 160%). Both met at 217%.',
+  notes='v4.3 audit: Roar over Elude kept with justification - Elude dodging is interrupted by attacking, so it is incompatible with a Desert Wind melee loop. Stretch -> Endless Lullaby. Melee Crit Damage shard removed (status-hybrid Desert Wind).')
+
+b('Caliban Prime', role='Sentient Wrath raise -> Razor Gyre (2x damage to raised, health/shield/energy restore per enemy) -> Fusion Strike full armor/shield strip',
+  helm=('Roar', 'Lethal Progeny'), aura='Corrosive Projection', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Augur Reach','Streamline','Primed Flow'],
-  arcanes=['Arcane Camisado','Molt Augmented'], shards=['T:CS','CS','ZA','ZH','AC'], focus='Unairu', comp='Panzer Vulpaphyla',
-  cond=['Arcane Camisado: minion attacks up to +60% Str next cast','Sentient adaptation passive'],
-  surv='Adaptive resistance passive + Adaptation-style Sentient passive, Umbral set, Molt (subsumed) decoy+speed',
-  bp='Sentient Wrath armor strip scales with Str; Range for Wrath radius.', notes='Razor Mortar augment not used (Razor Gyre replaced).')
-b('Chroma Prime', role='Vex Armor damage/armor self-buff weapon platform',
+  arcanes=['Molt Augmented','Arcane Energize'], shards=['T:CS','CS','ZA','ZH','AC'], focus='Unairu', comp='Panzer Vulpaphyla',
+  cond=['Razor Gyre: 1000 dps Tau to Wrath-raised enemies; energy refund per enemy (inversely with Efficiency)','Sentient Wrath damage vulnerability up to 35% x Str','Roar (subsumed)'],
+  surv='Adaptive Armor passive, Razor Gyre health/shield restore per enemy, Umbral set',
+  bp='Fusion Strike strips 100% armor/shields at 200% Str (164% with Corrosive Projection) - met at 217%.',
+  notes='v4.3 audit: v4.2 replaced Razor Gyre (his sustain and the Wrath x2 synergy) - corrected. Lethal Progeny replaced instead: summons level with Caliban rank x Str and do not scale into Steel Path. Arcane Camisado (minion-based) removed.')
+
+b('Chroma Prime', role='Vex Armor self-buff weapon platform (Scorn armor / Fury damage) with Cold Elemental Ward armor',
   helm=('Nourish', 'Spectral Scream'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Guardian Armor'],
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Augur Secrets'],
   arcanes=['Arcane Avenger','Molt Augmented'], shards=['T:CS','T:CS','ZA','ZH','AC'], focus='Madurai', comp='Adarza Kavat',
-  cond=['Vex Armor Scorn/Fury stacks from damage taken/dealt','Elemental Ward element (Heat=health/armor? set by emissive)'],
-  surv='Vex Armor armor multiplier, Elemental Ward (choose Heat/Cold), Umbral set',
-  bp='Vex Armor Fury/Scorn cap scale with Str; Duration for uptime.')
-b('Citrine Prime', role='Crystallize/Prismatic Gem support and Fractured Blast status farmer',
-  helm=('NO HELMINTH', 'Kit complete; all four abilities used'), aura='Growing Power', exilus='Power Drift',
+  cond=['Vex Armor Scorn (armor) and Fury (base damage) caps scale with Str','Elemental Ward element locked by emissive colour (Cold = armor) once Spectral Scream is replaced','Nourish: energy multiplier + Viral weapon damage'],
+  surv='Vex Armor Scorn armor + Cold Ward armor on Umbral Fiber base, Umbral health',
+  bp='No hard cap; Str raises Fury/Scorn caps; Duration 25s base uptime.',
+  notes='v4.3 audit: Nourish over Spectral Scream confirmed - Spectral Scream range scales only with cube root of Range and Vex Armor is a native damage buff (subsumed Roar carries a 1-damage-buff limit). Guardian Armor (squad-only DR) replaced with Augur Secrets. Set emissive colour to a Cold hue.')
+
+b('Citrine Prime', role='Status support: Prismatic Gem (+100% x Str weapon status chance, status duration) carried by companion; Crystallize crit; Preserving Shell DR; Fractured Blast orb economy',
+  helm=('NO HELMINTH', 'All four abilities are core: Fractured Blast drives orb/energy economy and passive regen, Preserving Shell DR, Prismatic Gem status support, Crystallize crit/weak points'),
+  aura='Growing Power', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Prismatic Companion'],
   arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','CS','CD','ZA','AH'], focus='Vazarin', comp='Panzer Vulpaphyla',
-  cond=['Passive health regen grows with health orbs (Amber Health orb shard)'],
-  surv='Passive regen, Preserving Shell, Umbral set', bp='Prismatic Gem damage/status scale with Str; Duration for gem uptime.')
+  cond=['Passive regen grows per Health Orb (Amber Health Orb shard)','Prismatic Companion: gem follows the companion, +50% gem duration'],
+  surv='Passive regen, Preserving Shell DR, Umbral set',
+  bp='Prismatic Gem status chance bonus scales with Str; status duration bonus with Duration.',
+  notes='v4.3 audit: confirmed; no change.')
+
 b('Cyte-09', role='Neutralizer weak-point sniper; Resupply ammo/energy; Evade invisibility',
   helm=('Roar', 'Seek'), aura='Growing Power', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Rolling Guard'],
