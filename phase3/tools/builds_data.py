@@ -560,3 +560,7 @@ NORMAL_STR_FRAMES = ['Nyx Prime','Limbo Prime','Loki Prime','Octavia Prime','Tit
 for _f in NORMAL_STR_FRAMES:
     _s = B[_f]['shards']
     if 'T:CS' in _s: _s[_s.index('T:CS')] = 'CS'
+# ---------------- v4.3 FINAL-CANDIDATE: Corroding Barrage is ARCHIVED (wiki: succeeded by Viral Tempest in U34, same augment card)
+_swap('Hydroid Prime', 'Corroding Barrage', 'Rousing Plunder')
+_upd('Hydroid Prime', cond=['Tempest Barrage: native 100% Corrosive status (post-rework) = the passive stack engine', 'Passive: 10 Corrosive stacks = 100% armor removal; Plunder converts stacks into its Corrosive damage/armor buff', 'Rousing Plunder: +50% to Plunder max Corrosive damage and armor, heals allies'],
+     notes='B3: Pilfering Swarm is a loot augment (optional farming swap). FC: Corroding Barrage archived (U34) -> Rousing Plunder; Viral Tempest is the alternative (Viral already supplied by the Viral weapons)')

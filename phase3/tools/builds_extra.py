@@ -450,8 +450,6 @@ def validate_comp(c):
         for i in (engine.mod(m) or {}).get('Incompatible') or []:
             if i in mods: errs.append(f'{m} incompatible with {i}')
     return errs
-# XR: Primed Shred is a Daily Tribute milestone reward (untradeable, not purchasable) -> tradeable Shred in the status template
-RIFLE_STATUS[RIFLE_STATUS.index('Primed Shred')] = 'Shred'
 def required_mods():
     """Every mod used by a final build (frames, Exalted bodies, weapons, Exalteds, companions, companion weapons, Venari)."""
     import builds_data as _BD
@@ -473,5 +471,23 @@ def required_mods():
         for m in mods: add(m, 'Companion weapons')
     for m in VENARI: add(m, 'Venari Prime')
     return req
-for _k in [('Frost Prime','Primary'),('Nezha Prime','Primary')]:
-    _m = WEAPON_OVERRIDE[_k]['mods']; _m[_m.index('Primed Shred')] = 'Shred'
+# ---------------- v4.3 FINAL-CANDIDATE corrections (doctrine: procurement constraints never modify the optimized build)
+# Primed Shred restored everywhere (the XR swap to Shred was a procurement-driven downgrade); Daily Tribute milestone, 0p.
+# Heavy-attack templates: Amalgam Organ Shatter (+85% CD, +60% Heavy Attack Wind Up) beats Organ Shatter (+90% CD) when every hit is a heavy attack.
+for _t in (HEAVY_ATTACK, HEAVY_KULLERVO):
+    _t[_t.index('Organ Shatter')] = 'Amalgam Organ Shatter'
+# Swift Deth is archived (U24: attack precepts replaced by Assault Mode; old copies cannot be equipped with it) -> Assault Mode
+_m = COMP['Dethcube Prime']['mods']; _m[_m.index('Swift Deth')] = 'Assault Mode'
+# Every untradeable/account-bound mod that competes with a mod used in a final build, ruled on mechanics only.
+# RESTORE = the account-bound mod is the optimal choice and is in the build (earned requirement, 0p); KEEP = the tradeable mod is genuinely better.
+ACCOUNT_BOUND_RULINGS = {
+ 'Primed Shred': ('Shred', 'RESTORE', '+55% Fire Rate / +2.2 Punch Through vs Shred +30% / +1.2: strictly better on every stat at the same drain and polarity. The XR swap to Shred was a procurement-driven downgrade and is reverted.'),
+ 'Amalgam Organ Shatter': ('Organ Shatter', 'RESTORE (heavy-attack builds only)', 'Heavy-attack DPS = damage / (wind-up + swing). +60% Heavy Attack Wind Up for -5% Crit Damage (+85% vs +90%, about -2.6% on the crit multiplier) is a net gain when every hit is a heavy attack. Normal-attack combo builds keep Organ Shatter (wind-up does nothing there).'),
+ 'Umbral Vitality': ('Parasitic Vitality', 'RESTORE (frame builds) / KEEP Parasitic Vitality on Nidus', 'Umbral set bonus (each extra Umbral mod amplifies the others) makes the 3-piece set the frame-build standard. Nidus: Parasitic Vitality scales with Parasitic Link targets and feeds Arcane Bellicose (B4 ruling).'),
+ 'Primed Fury': ('Berserker Fury', 'KEEP Berserker Fury', '+55% flat Attack Speed vs Berserker Fury +70% at 2 stacks (on melee kill, 10s), which stays up on horde-clearing melee builds.'),
+ 'Sacrificial Pressure': ('Primed Pressure Point', 'KEEP Primed Pressure Point', '+165% Melee Damage vs +110% (x1.33 vs Sentients only = 146%): lower against every faction.'),
+ 'Amalgam Serration': ('Serration', 'KEEP Serration', '+165% vs +155% Damage; the +25% Sprint Speed has no damage value.'),
+ 'Amalgam Barrel Diffusion': ('Barrel Diffusion', 'KEEP Barrel Diffusion', '+120% vs +110% Multishot; Dodge Speed has no damage value.'),
+ 'Amalgam Shotgun Barrage': ('Shotgun Barrage', 'KEEP Shotgun Barrage', '+90% vs +85% Fire Rate; Revive Speed has no damage value.'),
+ 'Primed Streamline': ('Streamline', 'KEEP Streamline (no choice)', 'Archived mod (wiki), not obtainable.'),
+}

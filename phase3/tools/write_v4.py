@@ -102,6 +102,8 @@ add(['  Credits needed to max every PvE mod yourself',f'=SUMIFS({rng("Credits to
 add(['Arcanes via R0 copies (sum where available, required set)',f'=SUMIFS({rng("Max via R0 copies (Realistic)")},{rng("Category")},"Arcane",{rng("Counted in Player-Trade Total?")},"Yes")'])
 add(['Non-tradeable frames/weapons/companions (farm/quest/vendor/Dojo)',f'=COUNTIFS({rng("Status")},"FARMABLE*")','','','','','','items; 0p by definition'])
 add(['Incarnon Genesis adapters (Steel Path Circuit)',f'=COUNTIFS({rng("Adapter required?")},"Incarnon*")','','','','','','adapters'])
+add(['Build-required mods: account-bound / earned (0p, see EARNED REQUIREMENTS)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"ACCOUNT-BOUND*")','','','','','','Umbral x3 (The Sacrifice), Primed Shred (Daily Tribute), Amalgam Organ Shatter (Thermia Fractures)'])
+add(['Build-required mods with NO market price (excluded from totals)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"BUILD REQUIRED*",{rng("Status")},"*UNAVAILABLE*")','','','','','','Must be 0 for FINAL; any such row would be acquired by farm / private trade outside these totals'])
 add(['Archon Shards (account-bound)',330,'','','','','','66 frames x 5; v3 shard plan covers only 230'])
 add([])
 add(['Official Platinum pack',4600,199.99,'','','','','Current undiscounted USD price (v3)'])
@@ -113,7 +115,8 @@ for t in ['Mods are ~70% of the player-trade total. Buying every PvE mod already
           'Conservative mod pricing is wide because many max-rank books are thin (few sellers). Use Realistic for decisions; Conservative is an allowance.',
           'Prime frames/weapons are priced as complete sets; buying parts or cracking relics is cheaper but slower.',
           'Account purchase comparison: the $1,000 / 23,000p benchmark should be compared to the portion of THIS procurement universe a candidate account already satisfies (equivalency audit), not to its raw inventory. Purchase risk is separate.',
-          'Platinum totals exclude Forma, Archon Shards, Focus, Helminth, Incarnon Genesis, Endo and credits (all farmable/account-bound).']:
+          'Platinum totals exclude Forma, Archon Shards, Focus, Helminth, Incarnon Genesis, Endo and credits (all farmable/account-bound).',
+          'Platinum totals EXCLUDE any unpriced private-trade acquisition: a build-required row with Status MARKET DATA UNAVAILABLE contributes 0p (count in section 6; v4.3 FINAL has none - Corroding Barrage and Swift Deth were archived mods, replaced by Rousing Plunder and Assault Mode, both priced). Earned account-bound build requirements (Umbral x3, Primed Shred, Amalgam Organ Shatter) are 0p by definition - see EARNED REQUIREMENTS.']:
     add(['  - '+t])
 for row_ in ms.iter_rows(min_row=5):
     for c in row_[1:7]:
@@ -143,7 +146,7 @@ newsheet('Roster v4 (live)',['Frame','Version','Introduced','Abilities (live)','
 oi=[('Protea','RESOLVED v4.3 B4: Roar over Grenade Fan + Temporal Artillery + Temporal Erosion','No action'),
     ('Dante','Noctua ruled additional Exalted (no Secondary replacement); Noctua build kept for Wordwarden','OPTIONAL preference only: in-game check if a Secondary replacement is ever wanted (not a LIVE TEST)'),
     ('Sirius & Orion','RESOLVED v4.3 B5 (wiki): Orion comes with a pre-installed Orokin Reactor; one Reactor per S&O is correct','No action'),
-    ('Banshee (time-limited)','Wiki: every player logging in 23 Sep - 7 Oct 2026 receives a free base Banshee with a pre-installed Reactor AND a Warframe slot (U44 rework gift)','Claim before 7 Oct 2026: the base frame can be sold to free one Warframe slot (-20p net). Not counted in the model (account-state dependent)'),
+    ('Banshee (TIME-SENSITIVE, not in baseline)','Wiki: every player logging in 23 Sep - 7 Oct 2026 receives a free base Banshee (pre-installed Reactor + its own Warframe slot; U44 rework gift). Base Banshee is the Helminth donor for Silence, which Ash Prime subsumes (the only Silence build).','PREFERRED USE: feed her to the Helminth as Ash\'s Silence donor - this also frees the slot she arrived with. Her pre-installed Reactor is consumed with her (non-transferable) and does NOT reduce the 65-Reactor procurement count. Opportunity only: the model keeps baseline economics unless the claim is confirmed.'),
     ('Signature preference','v4.1 allocated uncontested no-bonus signatures (Temple Riot-848, Mirage Akzani, S&O Pride)','Revert to Athodai / Prisma Twin Gremlins / Caustacyst if preferred; counts unchanged'),
     ('Builds','RESOLVED v4.2/v4.3: per-frame aura/exilus/mods/Arcanes/shards/focus/companion builds for all 66 frames (FRAME BUILDS, optimization-audited 66/66)','No action'),
     ('Archon Shards','RESOLVED v4.2/v4.3: all 330 shard positions assigned (see ARCHON SHARD ASSIGNMENTS)','No action'),

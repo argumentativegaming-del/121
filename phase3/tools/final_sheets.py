@@ -66,6 +66,11 @@ hdr=['Optimization audit','Frame','Build identity / gameplay','Helminth ability'
      'Shard 1','Shard 2','Shard 3','Shard 4','Shard 5','Focus School','Companion','Companion weapon','Primary','Secondary','Melee','Exalted / intrinsic','Exalted build','Weapon Arcanes','Incarnon evolutions','Element / status assumptions','Mod capacity (cost/cap, Reactor)','Forma estimate (frame)','LIVE TEST REQUIRED','Notes','Completeness']
 sheet('FRAME BUILDS',hdr,rows,{'Build identity / gameplay':45,'Warframe mods (8)':70,'Survivability architecture':40,'Breakpoints / targets':40,'Conditional stat sources':40,'Incarnon evolutions':60,'Element / status assumptions':60,'Weapon Arcanes':45,'LIVE TEST REQUIRED':50,'Notes':45},idx=1)
 if 'FRAME BUILDS — FINAL' in wb.sheetnames: del wb['FRAME BUILDS — FINAL']
+_FC_HEAVY=' FC: Organ Shatter -> Amalgam Organ Shatter on the heavy-attack melee (+60% Heavy Attack Wind Up; account-bound, 0p).'
+for _f in ('Frost Prime','Gara Prime','Khora Prime','Kullervo','Voruna Prime'): AB.AUDIT[_f]['final'] += _FC_HEAVY
+for _f in ('Frost Prime','Nezha Prime','Saryn Prime','Nokko','Dante'): AB.AUDIT[_f]['final'] += ' FC: Primed Shred restored on the rifle/bow (XR had downgraded it to Shred for procurement reasons).'
+AB.AUDIT['Hydroid Prime']['final'] += ' FC: Corroding Barrage is ARCHIVED (wiki, U34: card now Viral Tempest). Tempest Barrage natively has 100% Corrosive status, so the stack engine needs no augment -> slot goes to Rousing Plunder (+50% Plunder max Corrosive damage/armor + ally heal); Viral Tempest is the alternative.'
+AB.AUDIT['Hydroid Prime']['why'] += ' FC: Rousing Plunder raises the cap of the build\'s scaling layer (Plunder buff on every weapon and ability); Viral is already supplied by the Viral weapons.'
 oa=[[f,a.get('outcome',''),a['v42'],a['phase2'],a['live'],a['problems'],a['final'],a['why'],a['delta']] for f,a in AB.AUDIT.items()]
 sheet('OPTIMIZATION AUDIT',['FRAME','OUTCOME','v4.2 CONFIGURATION','PREVIOUS PHASE 2 CONFIGURATION','CURRENT LIVE MECHANICS THAT MATTER','PROBLEMS FOUND','OPTIMIZED FINAL CONFIGURATION','WHY THIS WINS','PROCUREMENT DELTA'],oa,
       {'v4.2 CONFIGURATION':40,'PREVIOUS PHASE 2 CONFIGURATION':35,'CURRENT LIVE MECHANICS THAT MATTER':60,'PROBLEMS FOUND':50,'OPTIMIZED FINAL CONFIGURATION':70,'WHY THIS WINS':50,'PROCUREMENT DELTA':35},idx=1)
@@ -153,10 +158,13 @@ dl.append(['CHANGED ITEMS','','','',''])
 for x in changed:
     r=x[1]; o=x[2]; dl.append([r['Category'],r['Item'],'','','',f"{o.get('Priority')} -> {r.get('Priority')}",f"{o['Counted in Player-Trade Total?']} -> {r['Counted in Player-Trade Total?']}"])
 dl.append(['NEW ACCOUNT-BOUND REQUIREMENTS','Umbral Intensify / Umbral Vitality / Umbral Fiber (one copy each; The Sacrifice, extra copies 100,000 Simaris standing) - used by 58-68 builds simultaneously (mods are shared)','','','',''])
+dl.append(['NEW ACCOUNT-BOUND REQUIREMENTS','Primed Shred (Daily Tribute milestone; 5 rifle/bow builds) and Amalgam Organ Shatter (Thermia Fractures; 5 heavy-attack builds) - 0p, see EARNED REQUIREMENTS','','','',''])
 dl.append(['NEW ACCOUNT-BOUND REQUIREMENTS',f'Archon Shards: 330 positions ({taus} Tauforged, {len(sh)-taus} normal) - v3 planned 230 incl. invalid "Primary Critical Chance" Crimson option','','','',''])
 dl.append(['NEW ACCOUNT-BOUND REQUIREMENTS','All five Focus schools used (Madurai, Zenurik, Vazarin, Naramon, Unairu)','','','',''])
-dl.append(['NEW FARM REQUIREMENTS','Helminth donors to subsume: base Rhino (Roar), base Grendel (Nourish), base Saryn (Molt); Rebuild Shields is a Helminth-native ability','','','',''])
-dl.append(['NEW FARM REQUIREMENTS','Swift Deth (Dethcube precept) - no Warframe.Market listing','','','',''])
+_HC=collections.Counter(b['helm'][0] for b in BD.B.values() if b['helm'][0]!='NO HELMINTH')
+_FR=json.load(open('warframes.json')); _FR=_FR.get('Warframes',_FR); _DON={v.get('Subsumed'):k for k,v in _FR.items() if v.get('Subsumed') and not k.endswith('Prime')}
+dl.append(['NEW FARM REQUIREMENTS','Helminth donors to subsume (one base frame per ability): '+'; '.join(f"base {_DON.get(a_,'?')} ({a_}, {n_} frame{'s' if n_>1 else ''})" for a_,n_ in _HC.most_common())+' - base Banshee may come free from the 23 Sep - 7 Oct 2026 login gift (see Open Items)','','','',''])
+dl.append(['RESOLVED (FINAL-CANDIDATE)','Swift Deth and Corroding Barrage had no market price because both are ARCHIVED (wiki): Swift Deth -> Assault Mode (U24), Corroding Barrage -> succeeded by Viral Tempest (U34). Builds now use Assault Mode (Dethcube) and Rousing Plunder (Hydroid); both priced. Build-required unpriced rows: 0','','','',''])
 dl.append(['NEW FARM REQUIREMENTS','32 Incarnon Genesis adapters (Steel Path Circuit) - optional 120p each via Cavalero now in Optional Convenience','','','',''])
 dl.append(['NEW PLATINUM REQUIREMENTS',f"Arcane set re-derived from builds: +{sum(pv(x[1],'Realistic Platinum') for x in added if x[1]['Category']=='Arcane'):,.0f}p realistic added","","","",""])
 dl.append(['PLATINUM REMOVED',f"Arcanes dropped: -{sum(pv(x[2],'Realistic Platinum') for x in removed if x[1]['Category']=='Arcane'):,.0f}p; companions unassigned: -{sum(pv(x[2],'Realistic Platinum') for x in removed if x[1]['Category']=='Companion'):,.0f}p realistic","","","",""])
@@ -165,22 +173,37 @@ dl.append(['PLAYER-TRADE TOTAL v4.2 (F/R/C)','',round(T_new[0]),round(T_new[1]),
 dl.append(['DELTA','',round(T_new[0]-T_old[0]),round(T_new[1]-T_old[1]),round(T_new[2]-T_old[2])])
 dl.append(['Infrastructure change','Companion slots: v4.1 20 slots (120p gross / 60p net) -> v4.2 12 slots (72p gross / 12p net); new optional Incarnon Genesis line 3,840p (32 x 120p)'])
 sheet('BUILD PROCUREMENT DELTA',['Category / section','Item','Floor Pt','Realistic Pt','Conservative Pt','Status / note','Priority / note'],dl,{'Item':80},idx=7)
+# ---------- EARNED REQUIREMENTS ledger (account-bound items a final build requires; 0p, never substituted)
+_P=json.load(open('proc.json')); _REQ=X.required_mods()
+er=[]
+for r_ in _P:
+    if r_['Category']=='Mod' and str(r_.get('Priority','')).startswith('ACCOUNT-BOUND'):
+        u_=sorted(_REQ.get(r_['Item'],[])); er.append(['MOD',r_['Item'],r_['Priority'].replace(' (build required)',''),len(u_),', '.join(u_),r_['Acquisition Method'],0,'BUILD-REQUIRED (earned)'])
+_ash=[f for f,b in BD.B.items() if b['helm'][0]=='Silence']
+for a_,n_ in _HC.most_common():
+    d_=_DON.get(a_,'?'); u_=sorted(f for f,b in BD.B.items() if b['helm'][0]==a_)
+    er.append(['HELMINTH DONOR',f'base {d_} ({a_})','ACCOUNT-BOUND / FARM',n_,', '.join(u_),'Subsume once; ability then usable on every frame' + (' - TIME-SENSITIVE: free base Banshee login gift 23 Sep - 7 Oct 2026 is the preferred donor (frees her slot; her Reactor is non-transferable and does not reduce Reactor procurement). Opportunity only, not in baseline.' if a_=='Silence' else ''),0,'BUILD-REQUIRED (earned)'])
+er.append(['ARCHON SHARDS',f'{len(sh)} positions ({taus} Tauforged)','ACCOUNT-BOUND / ARCHON HUNTS',66,'All frames','Archon Hunts / Netracells / Archimedea; Ascent Fusion 3 normal -> 1 Tauforged',0,'BUILD-REQUIRED (earned)'])
+er.append([]); er.append(['ACCOUNT-BOUND RULINGS','Untradeable mod','Ruling','vs tradeable','','Mechanical reason','',''])
+for m_,(alt_,rul_,why_) in X.ACCOUNT_BOUND_RULINGS.items(): er.append(['RULING',m_,rul_,alt_,'',why_,'',''])
+sheet('EARNED REQUIREMENTS',['Type','Item','Classification','Builds','Used by','Acquisition','Platinum','Status'],er,{'Item':30,'Classification':30,'Used by':60,'Acquisition':80},idx=8)
 # ---------- Open items + completeness
 ws=sheet('BUILD OPEN ITEMS',['Frame / scope','LIVE TEST REQUIRED / open item'],LIVE,{'LIVE TEST REQUIRED / open item':120},idx=8)
 nexal=len(X.EXALTED)+1+len(BD.EXALTED_FRAMES)
 ninc=sum(1 for r in wcfg if r['evo_family']); ninc_ok=sum(1 for r in wcfg if r['evo_family'] and r['incarnon'])
+import subprocess as _sp
+_sp.run(['python3','xcheck.py'],check=True,capture_output=True)
+_xc=json.load(open('xcheck.json'))
+STATE='FINAL' if _xc['ok'] else 'FINAL-CANDIDATE'
 rep=[('Frames complete',f'{complete} / 66'),('Helminth decisions',f"{sum(1 for b in BD.B.values() if b['helm'])} / 66"),('Aura/Exilus',f"{sum(1 for b in BD.B.values() if b.get('aura') and b.get('exilus'))} / 66"),
      ('Full mod configs',f"{sum(1 for b in BD.B.values() if len(b['mods'])==8)} / 66"),('Arcane pairs',f"{sum(1 for b in BD.B.values() if len(b['arcanes'])==2)} / 66"),('Archon Shards',f'{len(sh)} / 330'),
      ('Focus Schools',f"{sum(1 for b in BD.B.values() if b['focus'])} / 66"),('Companions',f"{sum(1 for b in BD.B.values() if b['comp'])} / 66"),
      ('Weapon configurations complete',f"{sum(1 for f in alloc if all((s in wbyf[f]) or (f,s) in EXREP for s in ('Primary','Secondary','Melee')))} / 66"),
-     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - FINAL (cross-roster audit passed)'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
+     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - {STATE} (cross-roster audit '+('passed)' if _xc['ok'] else 'FAILED)')),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
      ('Element-order validator (weapons + Exalteds)',f"{sum(1 for r in wcfg if not r['elem_errs'])+sum(1 for w in X.EXALTED if not X.exalted_element(w)[1])} / {len(wcfg)+len(X.EXALTED)} pass")]
 ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=9)
-s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds (v4.3 FINAL)',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
+s=wb['Phase 3 Summary']; s.append([]); s.append(['','','',f'Frame builds (v4.3 {STATE})',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
 # ---------- v4.3 CROSS-ROSTER AUDIT sheet (from xcheck.py)
-import subprocess as _sp
-_sp.run(['python3','xcheck.py'],check=True,capture_output=True)
-_xc=json.load(open('xcheck.json'))
 _ws=sheet('CROSS-ROSTER AUDIT',['Check','Result','Status','Note'],[[r[0],str(r[1]),r[2],r[3]] for r in _xc['rows']],{'Check':45,'Result':30,'Note':110},idx=1)
 _ws.append([]); _ws.append(['OVERALL','ALL PASS' if _xc['ok'] else 'FAILURES PRESENT'])
 # ---------- v4.3 XR stale-text sweep: obsolete v3 notes in carried-over sheets

@@ -46,7 +46,20 @@ astale=[a for a,r in pa.items() if r['Counted in Player-Trade Total?']=='Yes' an
 chk('Missing procurement rows', len(miss)+len(amiss), not miss and not amiss, f'{len(req)} build-required mods, {len(arcs)} build-required Arcanes')
 chk('Required Arcanes priced as required / stale required', f'{len(anot)} / {len(astale)}', not anot and not astale)
 st=collections.Counter(pm[m.lower()]['Status'] for m in req)
-chk('Build-required mod pricing', dict(st), True, 'ACCOUNT-BOUND = Umbral x3; MARKET DATA UNAVAILABLE = Corroding Barrage, Swift Deth (in-game trade only)')
+unpriced=[m for m in req if 'UNAVAILABLE' in str(pm[m.lower()]['Status'])]
+chk('Build-required mod pricing', dict(st), not unpriced, f'{sum(1 for m in req if pm[m.lower()]["Status"]=="OK")} market-priced; ACCOUNT-BOUND (earned, 0p) = '+', '.join(sorted(m for m in req if pm[m.lower()]['Status']=='ACCOUNT-BOUND'))+f'; unpriced = {len(unpriced)}')
+_ARCH=set(json.load(open('archived_list.json')))
+arch=sorted(m for m in req if m in _ARCH)
+chk('Archived (unobtainable) mods in final builds', len(arch), not arch, ', '.join(arch) or 'wiki {{Archived}} list checked against every build-required mod')
+_MD=json.load(open('mods.json'))['Mods']
+_alts={k:[i for i in (v.get('Incompatible') or []) if i in req] for k,v in _MD.items() if v.get('Tradable') is False and not v.get('IsFlawed')}
+for k,v in _MD.items():
+    base=k.replace('Primed ','').replace('Amalgam ','').replace('Umbral ','')
+    if v.get('Tradable') is False and not v.get('IsFlawed') and base!=k and base in req: _alts.setdefault(k,[]).append(base)
+unruled=sorted(k for k,v in _alts.items() if v and k not in X.ACCOUNT_BOUND_RULINGS)
+restore_missing=sorted(k for k,(a,r,w) in X.ACCOUNT_BOUND_RULINGS.items() if r.startswith('RESTORE') and k not in req)
+chk('Account-bound alternatives ruled on mechanics (no procurement substitution)', f'{len(unruled)} unruled / {len(restore_missing)} RESTORE rulings not in builds', not unruled and not restore_missing,
+    '; '.join(f'{k}: {r}' for k,(a,r,w) in X.ACCOUNT_BOUND_RULINGS.items()))
 bad_out=[r['frame'] for r in W if r['arcane']=='Secondary Outburst']
 bad_anim=[r['frame'] for r in W if r['arcane']=='Melee Animosity' and r['template'] not in ('HEAVY_ATTACK',)]
 chk('Outburst on combo builds / Animosity without heavy build', f'{len(bad_out)} / {len(bad_anim)}', not bad_out and not bad_anim)
