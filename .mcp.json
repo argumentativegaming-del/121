@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "warframe-market": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "warframe-market-mcp"
+      ],
+      "env": {}
+    }
+  }
+}
