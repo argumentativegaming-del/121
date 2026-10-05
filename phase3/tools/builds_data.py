@@ -76,80 +76,118 @@ b('Citrine Prime', role='Status support: Prismatic Gem (+100% x Str weapon statu
   bp='Prismatic Gem status chance bonus scales with Str; status duration bonus with Duration.',
   notes='v4.3 audit: confirmed; no change.')
 
-b('Cyte-09', role='Neutralizer weak-point sniper; Resupply ammo/energy; Evade invisibility',
-  helm=('Roar', 'Seek'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Rolling Guard'],
-  arcanes=['Arcane Avenger','Molt Augmented'], shards=['T:CS','CS','T:CP','ZA','AC'], focus='Madurai', comp='Helios Prime',
-  cond=['Passive: weak point kills +1% weak point CC up to 300%','Roar (subsumed)'],
-  surv='Evade invisibility, Umbral set, Rolling Guard', bp='Neutralizer damage is exalted; Str for Roar; no hard cap.',
-  notes='No live augments for Cyte-09.')
-b('Dagath', role='Wyrd Scythes/Doom slash-status reaper; Rakhali\'s Cavalry mount',
-  helm=('Roar', "Rakhali's Cavalry"), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Spectral Spirit'],
-  arcanes=['Molt Augmented','Arcane Energize'], shards=['T:CS','CS','CD','ZH','AC'], focus='Madurai', comp='Panzer Vulpaphyla',
-  cond=['Doom transfers damage', 'Wyrd Scythes slash procs'], surv='Passive revive, Umbral set', bp='Str for Doom/Scythes; Duration for Doom.',
-  notes="Roar replaces Rakhali's Cavalry so Grave Spirit (Spectral Spirit augment) is retained.")
-b('Dante', role='Dark/Light Verse tome caster: Tragedy armor strip + Final Verse nukes; Noctua exalted scanner',
-  helm=('Nourish', 'Light Verse'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Noctua Swarm'],
+b('Cyte-09', role='Weak-point sniper: Seek (+75% x Str weak-point damage, 10m punch through) -> Neutralizer ricochets; Resupply sniper extra hit; Evade invisibility chained by weak-point kills',
+  helm=('NO HELMINTH', 'All four abilities feed the weak-point loop: Seek weak-point damage/punch through, Resupply sniper extra hit (+50% x Str) and instant reload, Evade invisibility extended by weak-point kills (can outlast its 60s cooldown), Neutralize is the Primary replacement'),
+  aura='Dead Eye', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Augur Secrets','Rolling Guard'],
+  arcanes=['Arcane Crepuscular','Molt Augmented'], shards=['T:CS','CS','CD','ZA','ZH'], focus='Madurai', comp='Helios Prime',
+  cond=['Seek: +75% x Str added to weak-point multiplier','Resupply: sniper extra hit +50% x Str','Evade invisibility -> Arcane Crepuscular (+30% Str, x3 final crit damage)','Passive: up to +300% weak-point crit chance'],
+  surv='Evade (cleanse, shield-gate bypass, invisibility), Umbral health/armor, Rolling Guard',
+  bp='No hard cap; Str scales Seek and Resupply multipliers. Neutralizer costs 10 energy/shot (Efficiency and Flow matter).',
+  notes='v4.3 batch 2: v4.2 replaced Seek with Roar - corrected. Aura Growing Power -> Dead Eye (+52.5% sniper damage; Neutralizer is the damage engine). No live Cyte-09 augments.')
+
+b('Dagath', role='Doom reaper: Spectral Spirit makes weapons/abilities apply Doom; Wyrd Scythes spread/refresh Doom; Rakhali\'s Cavalry permanently strips defenses of Doomed foes',
+  helm=('NO HELMINTH', 'Closed loop: Doom (100% damage redirection at 286% Str) <- Spectral Spirit (100% Doom application) <- Wyrd Scythes (spread/refresh Doom, 95% slow at 272%) -> Rakhali\'s Cavalry (defense strip on Doomed, full after two hits at 143%). Replacing any ability breaks the loop.'),
+  aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Transient Fortitude','Augur Secrets','Primed Continuity','Streamline','Spectral Spirit'],
+  arcanes=['Molt Augmented','Arcane Energize'], shards=['T:CS','CS','CD','ZH','ZA'], focus='Madurai', comp='Panzer Vulpaphyla',
+  cond=['Passive Abundant Abyss: orbs can quadruple','Grave Spirit: +50% x Str weapon crit damage, death-avoidance spectral form'],
+  surv='Grave Spirit spectral form, Umbral set, quadrupled health orbs (passive)',
+  bp='Doom redirection cap 100% at 286% Str (build reaches 296%); Wyrd Scythes slow 95% at 272%; NO Amber casting-speed shard (casting speed shortens Cavalry invulnerability).',
+  notes='v4.3 batch 2: v4.2 Roar over Rakhali\'s Cavalry broke the Doom defense-strip loop - corrected to NO HELMINTH.')
+
+b('Dante', role='Verse caster: full Final Verse system (Triumph LL, Wordwarden LD, Pageflight DL, Tragedy DD); Wordwarden carries Noctua mods',
+  helm=('Roar', 'Noctua'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Augur Secrets'],
   arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','CS','CD','ZA','AC'], focus='Zenurik', comp='Helios Prime',
-  cond=['Passive: +50% status chance on fully scanned targets'], surv='Overguard from Verses, Umbral set',
-  bp='Tragedy armor strip and Final Verse scale with Str.',
-  live=['Light Verse replaced by Nourish: confirm Verse combos still reach Tragedy/Wordwarden via Dark Verse + Final Verse -> LIVE TEST REQUIRED'],
-  notes='Noctua kept as additional Exalted; no Secondary replacement (ruling unchanged).')
-b('Ember Prime', role='Inferno/Fireball heat CC nuker with Immolation DR',
-  helm=('Roar', 'Fire Blast'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Exothermic'],
+  cond=['Passive: +50% status chance (multiplicative) on fully scanned targets','Pageflight status-chance vulnerability','Roar (subsumed)'],
+  surv='Light Verse and Triumph Overguard (cap 15,000 x Str), 1s invulnerability on Verse casts',
+  bp='Final Verse range 30m x Range; Triumph/Light Verse Overguard caps scale with Str.',
+  notes='v4.3 batch 2 CORRECTION: Light Verse restored (v4.2 Nourish over Light Verse left only Tragedy functional). Helminth moved to Noctua: wiki confirms Wordwarden still casts and keeps Noctua mods/Str when Noctua is subsumed over. Noctua Swarm dropped (its ability is replaced). Onos remains the Secondary.')
+
+b('Ember Prime', role='Inferno heat nuker: Fire Blast full armor strip, Immolation DR, Hot Shot / Topaz heat-kill crit on weapons',
+  helm=('Roar', 'Fireball'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Healing Flame','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Exothermic'],
   arcanes=['Arcane Hot Shot','Molt Augmented'], shards=['T:CS','THC','THC','ZA','AC'], focus='Madurai', comp='Dethcube Prime',
-  cond=['Arcane Hot Shot: weapon CC from ability heat procs','Topaz Secondary CC on heat kill x2'], surv='Immolation DR, Umbral set',
-  bp='Immolation DR scales with Str; Inferno range.')
-b('Equinox Prime', role='Maim damage storage nuke / Pacify DR support',
-  helm=('Roar', 'Rest & Rage'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Transient Fortitude','Stretch','Augur Reach','Primed Flow','Streamline','Umbral Vitality','Peaceful Provocation'],
+  cond=['Passive: +5% Str per burning enemy in Affinity Range','Arcane Hot Shot: +6% weapon crit per ability heat proc (x50)','Topaz x2: secondary crit on heat kills','Healing Flame overheal -> Overguard'],
+  surv='Immolation DR (cap 90% at 125% Str), Healing Flame Overguard, Umbral Fiber',
+  bp='Fire Blast armor strip 100% at 100% Str per cast; Immolation DR cap at 125% Str; both met.',
+  notes='v4.3 batch 2 CORRECTION: v4.2 replaced Fire Blast (her armor strip) and kept Fireball. Roar now replaces Fireball. Umbral Vitality -> Healing Flame (2-piece Umbral set).')
+
+b('Equinox Prime', role='Two-form Equinox: Night (Pacify DR, Mend accumulation, Rest sleep) -> Energy Transfer -> Day (Maim release, Provoke Str buff, Rage vulnerability)',
+  helm=('NO HELMINTH', 'Both forms are used: Metamorphosis is the form switch; Rage gives 50% x Str damage vulnerability (more with Provoke), Rest sleeps; Pacify/Provoke and Mend/Maim are the two halves joined by Energy Transfer. No ability is redundant.'),
+  aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Stretch','Augur Reach','Primed Flow','Streamline','Energy Transfer','Peaceful Provocation'],
   arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','T:CS','CS','ZH','AC'], focus='Zenurik', comp='Dethcube Prime',
-  cond=['Roar (subsumed)'], surv='Pacify mode DR when needed; Umbral Vitality', bp='Maim stores damage; Str/Range priority.',
-  notes='Roar replaces Rest & Rage (Pacify & Provoke covers DR); Metamorphosis retained for form swap.')
-b('Excalibur Umbra', role='Exalted Umbra Blade waves/melee with Radial Howl CC',
-  helm=('Roar', 'Radial Howl'), aura='Growing Power', exilus="Warrior's Rest",
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Chromatic Blade'],
-  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','T:CM','ZA','AC'], focus='Naramon', comp='Adarza Kavat',
-  cond=['Passive: +10% damage & attack speed with swords','Chromatic Blade: emissive element on Exalted Blade'],
-  surv='Umbral set (native Umbra polarities), Exalted Blade blocking', bp='Exalted Blade waves scale with Str/Range.',
-  notes="Warrior's Rest is Umbra's Exilus augment (live).")
-b('Follie', role='Shadowgraph/Plein Air ink caster; Enkaus alt-fire Inkblot synergy',
-  helm=('Roar', 'Forced Perspective'), aura='Growing Power', exilus='Power Drift',
+  cond=['Energy Transfer: 100% of Mend/Maim charge conserved on form switch','Peaceful Provocation: Pacify slow aura / Provoke +15% Str','Rage vulnerability x Str'],
+  surv='Night: Pacify max DR = 1 - 0.5/Str (76% at 210%), Mend shields/overshields; Metamorphosis armor/shield on switch',
+  bp='Pacify DR rises with Str; Maim/Mend drain affected by Efficiency and Duration (Duration kept at 100%).',
+  notes='v4.3 batch 2 CORRECTION: v4.2 Roar over Rest & Rage removed Rage vulnerability and Rest sleep. Transient Fortitude removed (Duration 100% keeps Maim drain and Rest/Rage uptime).')
+
+b('Excalibur Umbra', role='Exalted Blade (Chromatic Blade Electricity + Melee Influence) with Radial Howl 25m stun and Surging Dash combo building',
+  helm=('Roar', 'Radial Javelin'), aura='Growing Power', exilus="Warrior's Rest",
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Streamline','Chromatic Blade','Surging Dash'],
+  arcanes=['Arcane Fury','Molt Augmented'], shards=['T:CS','CS','T:CM','ZA','AC'], focus='Naramon', comp='Adarza Kavat',
+  cond=['Passive: +10% damage/attack speed with swords incl. Exalted Blade','Chromatic Blade: +300% status, element by emissive (Electricity hue)','Surging Dash: +8 combo per enemy hit','Warrior\'s Rest: +15% Str'],
+  surv='Radial Howl stun (finisher-vulnerable), Slash Dash invulnerability, Umbral set',
+  bp='Exalted Blade damage scales with Str; Radial Howl duration/range.',
+  notes='v4.3 batch 2 CORRECTION: v4.2 replaced Radial Howl (core CC). Radial Javelin (0% base crit) is replaced instead. Primed Flow -> Surging Dash.')
+
+b('Follie', role='Ink caster: Plein Air full defense strip, Self Portrait DR zone, Forced Perspective invulnerable teleport/cleanse; Enkaus alt-fire Inkblot',
+  helm=('Roar', 'Shadowgraph'), aura='Growing Power', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Augur Secrets'],
   arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','CS','CD','ZA','AC'], focus='Zenurik', comp='Dethcube Prime',
-  cond=['Inkblot passive: 50% slow, 20% orb drop chance'], surv='Self Portrait DR (own, uncapped), Umbral set', bp='Str for ink damage; no augments exist.',
-  notes='No live Follie augments.')
-b('Frost Prime', role='Snow Globe defense anchor + Freeze/Ice Wave cold CC',
-  helm=('Rebuild Shields', 'Freeze'), aura='Growing Power', exilus='Power Drift',
+  cond=['Inkblot passive: 50% slow, 20% orb chance','Enkaus alt-fire applies Inkblot and siphons ammo from ability Inkblot'],
+  surv='Forced Perspective 3.5s invulnerability + cleanse, Self Portrait DR (cap 90% at 180% Str), Umbral set',
+  bp='Plein Air full strip at 200% Str (164% with Corrosive Projection); Self Portrait cap 180%. Build 241%.',
+  notes='v4.3 batch 2 CORRECTION: v4.2 replaced Forced Perspective (survival). Shadowgraph replaced instead: its objects do not scale with Str and are on cooldowns. No live Follie augments.')
+
+b('Frost Prime', role='Snow Globe anchor + Avalanche full armor strip; Cold-stacking platform for Frostbite/Shiver weapons',
+  helm=('Roar', 'Freeze'), aura='Growing Power', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Icy Avalanche'],
   arcanes=['Arcane Ice Storm','Molt Augmented'], shards=['T:CS','CS','ZA','ZS','AC'], focus='Vazarin', comp='Wyrm Prime',
-  cond=['Arcane Ice Storm: Str/Dur stacks on freeze'], surv='Snow Globe, Icy Avalanche overguard, Umbral set', bp='Globe health scales with Str.',
-  notes='Freeze replaced; Freeze Force augment unused.')
-b('Gara Prime', role='Splinter Storm DR + Mass Vitrify; Shattered Lash exalted (Ability Combo)',
+  cond=['Arcane Ice Storm: +2% Str/Dur per freeze (x20)','Icy Avalanche Overguard','Roar (subsumed)'],
+  surv='Snow Globe (health x Str incl. 5x armor), Icy Avalanche Overguard, Umbral set',
+  bp='Avalanche full armor strip at 167% Str (met).',
+  notes='v4.3 batch 2 REFINED: Freeze remains the replaced slot; Rebuild Shields -> Roar (Frost has no damage amplifier; shields are not his defence layer).')
+
+b('Gara Prime', role='Splinter Storm DR + Mass Vitrify vulnerability ring; Shattered Lash exalted breaks the ring (Shattered Storm)',
   helm=('Roar', 'Spectrorage'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Mending Splinters'],
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Shattered Storm','Streamline','Mending Splinters'],
   arcanes=['Molt Augmented','Arcane Reaper'], shards=['T:CS','CS','ZA','ZH','AC'], focus='Madurai', comp='Panzer Vulpaphyla',
-  cond=['Splinter Storm DR up to 90%'], surv='Splinter Storm DR, Mending Splinters heal, Umbral set', bp='Splinter Storm DR caps at 90% via Str.')
-b('Garuda Prime', role='Blood Altar/Bloodletting sustain with Garuda Talons melee',
-  helm=('Roar', 'Dread Mirror'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Blood Forge'],
-  arcanes=['Arcane Reaper','Molt Augmented'], shards=['T:CS','CS','T:CM','ZH','AH'], focus='Naramon', comp='Panzer Vulpaphyla',
-  cond=['Passive: up to +100% damage from kills'], surv='Blood Altar lifesteal, Bloodletting energy, Umbral set', bp='Str for Altar heal.',
-  notes='Blood Forge augments Bloodletting (kept). Dread Mirror replaced; Dread Ward unused.')
-b('Gauss Prime', role='Redline battery speed/fire-rate; Thermal Sunder cold/heat; Acceltra/Akarius sprint reload bonus',
-  helm=('Roar', 'Kinetic Plating'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Thermal Transfer'],
+  cond=['Shattered Storm: breaking Mass Vitrify with Shattered Lash applies Splinter Storm to struck enemies','Passive blind -> finishers benefit from Splinter Storm/Vitrify multipliers'],
+  surv='Splinter Storm DR cap 90% at 129% Str, Mending Splinters heal, Mass Vitrify invulnerable cast',
+  bp='Splinter Storm DR cap 129% Str (met).',
+  notes='v4.3 batch 2 REFINED: Spectrorage evaluated (high-threat mirrors) and still replaced - Mass Vitrify + passive blind already cover CC, and Shattered Storm builds the Lash/Vitrify loop. Primed Flow -> Shattered Storm.')
+
+b('Garuda Prime', role='Talons melee with Dread Mirror (execute <40%, frontal shield, Dread Ward unkillable), Blood Altar sustain, Bloodletting energy',
+  helm=('Roar', 'Seeking Talons'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Stretch','Dread Ward'],
+  arcanes=['Arcane Reaper','Arcane Fury'], shards=['T:CS','CS','T:CM','ZH','AH'], focus='Naramon', comp='Panzer Vulpaphyla',
+  cond=['Passive: up to +100% multiplicative damage from kills','Dread Ward: unkillable 8s on Dread Mirror kill'],
+  surv='Dread Mirror frontal shield (blocks stagger), Dread Ward, Blood Altar heal, Bloodletting cleanse, Arcane Reaper',
+  bp='Dread Mirror capture multiplier scales with Str.',
+  notes='v4.3 batch 2 CORRECTION: v4.2 replaced Dread Mirror (defence + execute). Seeking Talons (100-energy priming) replaced instead. Blood Forge -> Dread Ward (Talons do not reload).')
+
+b('Gauss Prime', role='Battery loop: Mach Rush charges battery -> Redline (fire rate/reload/attack speed) for Acceltra/Akarius; Kinetic Plating DR/immunities',
+  helm=('Roar', 'Thermal Sunder'), aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Primed Flow','Streamline','Augur Secrets','Mach Crash'],
   arcanes=['Arcane Avenger','Molt Augmented'], shards=['T:CS','CS','ZA','ZS','AC'], focus='Madurai', comp='Adarza Kavat',
-  cond=['Battery level drives Redline and shield recharge'], surv='Shield recharge passive, Umbral set', bp='Str for Redline fire-rate; Kinetic Plating dropped.')
-b('Grendel Prime', role='Feast/Nourish support; Pulverize ball DR; Regurgitate',
-  helm=('Rebuild Shields', 'Regurgitate'), aura='Growing Power', exilus='Power Drift',
-  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Hearty Nourishment'],
-  arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','CS','ZA','ZH','AC'], focus='Vazarin', comp='Panzer Vulpaphyla',
-  cond=['Nourish energy multiplier (native, full strength)'], surv='Huge health pool, Hearty Nourishment overguard, Umbral set',
-  bp='Nourish multiplier scales with Str.')
+  cond=['Kinetic Plating: DR up to 100% by battery, status immunities, energy per hit; gives Mach Rush 100% Slash status','Redline weapon buffs; signature sprint-reload bonuses'],
+  surv='Kinetic Plating DR (min DR rises with Str, cap 50% min at 250%), shield recharge passive, Umbral set',
+  bp='Kinetic Plating min DR = 20% x Str (48% at 241%).',
+  notes='v4.3 batch 2 CORRECTION: v4.2 replaced Kinetic Plating (his defence and the Mach Rush Slash synergy). Thermal Sunder replaced instead: Gauss damage is weapon-based (Redline + signatures), and Sunder\'s held drain competes with the Redline battery. Thermal Transfer -> Mach Crash.')
+
+b('Grendel Prime', role='Feast/Nourish support tank: native full-strength Nourish (2x energy, +75% x Str Viral to allies), Gourmand armor stomach, Regurgitate 75% armor strip',
+  helm=('NO HELMINTH', 'Feast (stomach/armor/aura disable), native Nourish (stronger than any subsumed copy), Pulverize (strip/heal/mobility; Helminth abilities cannot be cast while rolling), Regurgitate (75% armor strip + nuke). v4.2 Rebuild Shields was meaningless on a 95-shield frame.'),
+  aura='Growing Power', exilus='Power Drift',
+  mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Streamline','Gourmand','Hearty Nourishment'],
+  arcanes=['Arcane Energize','Molt Augmented'], shards=['T:CS','CS','ZA','ZA','ZH'], focus='Vazarin', comp='Panzer Vulpaphyla',
+  cond=['Gourmand: Feast costs 200 health, +150 armor per stomach enemy (2,000 at cap)','Hearty Nourishment: status immunity per stomach victim','Nourish energy multiplier x Str'],
+  surv='1,295 health, Gourmand armor up to +2,000, Umbral Fiber, Hearty Nourishment immunity, Nourish/Pulverize heals',
+  bp='Nourish energy multiplier and Viral bonus scale with Str; Nourish radius 25m x Range.',
+  notes='v4.3 batch 2 CORRECTION: Rebuild Shields over Regurgitate removed.')
+
 b('Gyre Prime', role='Rotorswell crit-boost electric caster; Cathode Grace',
   helm=('Roar', 'Arcsphere'), aura='Growing Power', exilus='Power Drift',
   mods=['Umbral Intensify','Umbral Vitality','Umbral Fiber','Primed Continuity','Stretch','Primed Flow','Streamline','Coil Recharge'],

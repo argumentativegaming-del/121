@@ -1,7 +1,8 @@
 import json, collections, math, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB
+import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2
+class AB: AUDIT={**AB1.AUDIT, **AB2.AUDIT}
 X.apply_shard_policy()
 F='Warframe_Phase3_Procurement_Master_v4_Economic_Model.xlsx'
 wb=openpyxl.load_workbook(F)
@@ -35,8 +36,7 @@ LIVE=[]
 for f,b in BD.B.items():
     for l in b.get('live') or []: LIVE.append((f,l))
 LIVE=[x for x in LIVE if x[0]!='Dante']
-LIVE += [('Dante','CORRECTION REQUIRED (v4.3 audit queue): v4.2 Nourish-over-Light-Verse breaks Final Verse (needs Light+Light Triumph, Dark+Light Pageflight, Light+Dark Wordwarden). Fix in batch D.'),
-         ('Saryn Prime','REAUDIT (queue): v4.2 Roar over Toxic Lash vs Phase 2 Roar over Molt'),('Styanax Prime','REAUDIT (queue): v4.2 Roar over Rally Point vs Phase 2 Nourish over Axios Javelin'),
+LIVE += [         ('Saryn Prime','REAUDIT (queue): v4.2 Roar over Toxic Lash vs Phase 2 Roar over Molt'),('Styanax Prime','REAUDIT (queue): v4.2 Roar over Rally Point vs Phase 2 Nourish over Axios Javelin'),
          ('Protea Prime','OPTIMIZATION REVIEW (queue): Roar over Grenade Fan vs native Temporal Anchor/Erosion configurations'),
          ('Orion','Whether Orion has independent Arcane/Archon Shard slots (separately moddable Exalted Warframe). Shards/Arcanes recorded on Sirius & Orion only -> LIVE TEST REQUIRED'),
 
@@ -59,19 +59,19 @@ for r in engine.ROWS:
     lv='; '.join(l for ff,l in LIVE if ff==f) or '-'
     checks=[b['helm'], b.get('aura'), b.get('exilus'), len(b['mods'])==8, len(b['arcanes'])==2, len(b['shards'])==5, b['focus'], b['comp'], not rr['errs']]
     ok=all(checks); complete+=ok
-    rows.append(['v4.3 AUDITED (batch 1)' if f in AB.AUDIT else 'PENDING optimization audit',f,b['role'],b['helm'][0],b['helm'][1] if b['helm'][0]!='NO HELMINTH' else 'NO HELMINTH: '+b['helm'][1],st['Strength'],st['Duration'],st['Range'],st['Efficiency'],b.get('bp'),
+    rows.append([('v4.3 AUDITED: '+AB.AUDIT[f].get('outcome','')) if f in AB.AUDIT else 'PENDING optimization audit',f,b['role'],b['helm'][0],b['helm'][1] if b['helm'][0]!='NO HELMINTH' else 'NO HELMINTH: '+b['helm'][1],st['Strength'],st['Duration'],st['Range'],st['Efficiency'],b.get('bp'),
                  '; '.join(b.get('cond') or []),b.get('aura'),b.get('aura2'),b.get('exilus'),' | '.join(b['mods']),', '.join(rr['augs']) or '-',b.get('surv'),b['arcanes'][0],b['arcanes'][1],
                  *[shard_txt(c) for c in b['shards']],b['focus'],b['comp'],comp['weapon'],wtxt('Primary') or ('Neutralizer (Exalted)' if f=='Cyte-09' else 'Lizzie (Exalted)' if f=='Temple' else 'Artemis Bow Prime (Exalted)' if f=='Ivara Prime' else 'Razorwing: Dex Pixia Prime' if f=='Titania Prime' else '-'),
                  wtxt('Secondary') or ('Balefire Charger Prime (Exalted)' if f=='Hildryn Prime' else '-'),
                  wtxt('Melee') or {'Baruuk Prime':'Desert Wind Prime (Exalted)','Excalibur Umbra':'Exalted Umbra Blade','Garuda Prime':'Garuda Prime Talons','Mesa Prime':'Regulators Prime (project Melee credit)','Sevagoth Prime':'Shadow Claws Prime','Titania Prime':'Diwata Prime','Valkyr Prime':'Valkyr Prime Talons','Wukong Prime':'Iron Staff Prime'}.get(f,'-'),
                  ', '.join(exal) or '-', 'See EXALTED BUILDS' if exal else '-', warc, inc, elem, f"{cap['cost']}/{cap['capacity']} ({'fits' if cap['fits'] else 'OVER'})", cap['forma'], lv, b.get('notes'), 'COMPLETE' if ok else 'INCOMPLETE: '+'; '.join(rr['errs'])])
-import audit_batch1 as AB
+
 hdr=['Optimization audit','Frame','Build identity / gameplay','Helminth ability','Replaces','Strength %','Duration %','Range %','Efficiency %','Breakpoints / targets','Conditional stat sources','Aura','Aura 2 (Jade)','Exilus','Warframe mods (8)','Augment(s)','Survivability architecture','Arcane 1','Arcane 2',
      'Shard 1','Shard 2','Shard 3','Shard 4','Shard 5','Focus School','Companion','Companion weapon','Primary','Secondary','Melee','Exalted / intrinsic','Exalted build','Weapon Arcanes','Incarnon evolutions','Element / status assumptions','Mod capacity (cost/cap, Reactor)','Forma estimate (frame)','LIVE TEST REQUIRED','Notes','Completeness']
 sheet('FRAME BUILDS',hdr,rows,{'Build identity / gameplay':45,'Warframe mods (8)':70,'Survivability architecture':40,'Breakpoints / targets':40,'Conditional stat sources':40,'Incarnon evolutions':60,'Element / status assumptions':60,'Weapon Arcanes':45,'LIVE TEST REQUIRED':50,'Notes':45},idx=1)
 if 'FRAME BUILDS — FINAL' in wb.sheetnames: del wb['FRAME BUILDS — FINAL']
-oa=[[f,a['v42'],a['phase2'],a['live'],a['problems'],a['final'],a['why'],a['delta']] for f,a in AB.AUDIT.items()]
-sheet('OPTIMIZATION AUDIT',['FRAME','v4.2 CONFIGURATION','PREVIOUS PHASE 2 CONFIGURATION','CURRENT LIVE MECHANICS THAT MATTER','PROBLEMS FOUND','OPTIMIZED FINAL CONFIGURATION','WHY THIS WINS','PROCUREMENT DELTA'],oa,
+oa=[[f,a.get('outcome',''),a['v42'],a['phase2'],a['live'],a['problems'],a['final'],a['why'],a['delta']] for f,a in AB.AUDIT.items()]
+sheet('OPTIMIZATION AUDIT',['FRAME','OUTCOME','v4.2 CONFIGURATION','PREVIOUS PHASE 2 CONFIGURATION','CURRENT LIVE MECHANICS THAT MATTER','PROBLEMS FOUND','OPTIMIZED FINAL CONFIGURATION','WHY THIS WINS','PROCUREMENT DELTA'],oa,
       {'v4.2 CONFIGURATION':40,'PREVIOUS PHASE 2 CONFIGURATION':35,'CURRENT LIVE MECHANICS THAT MATTER':60,'PROBLEMS FOUND':50,'OPTIMIZED FINAL CONFIGURATION':70,'WHY THIS WINS':50,'PROCUREMENT DELTA':35},idx=1)
 # ---------- FRAME MOD CONFIGS
 mc=[]

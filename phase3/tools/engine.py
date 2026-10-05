@@ -110,7 +110,7 @@ def validate(frame, bd):
     augs = []
     for m in allm:
         v = mod(m) or {}
-        if v.get('Type') in (base, frame, 'Excalibur Umbra') or (h != 'NO HELMINTH' and augment_target(v) == h):
+        if v.get('Type') in (base, frame, 'Excalibur Umbra', 'Excalibur' if frame=='Excalibur Umbra' else '#') or (h != 'NO HELMINTH' and augment_target(v) == h):
             tgt = augment_target(v); augs.append(m + (' (via Helminth '+h+')' if augment_target(v) == h else ''))
             if augment_target(v) == h: continue
             if tgt and h != 'NO HELMINTH' and tgt == rep: errs.append(f'augment {m} targets replaced ability {rep}')

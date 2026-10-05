@@ -34,25 +34,30 @@ COMP_WEAPON_BUILD = {
 }
 
 # ---------------- Exalted / separately moddable builds
-MELEE_CRIT = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','Primed Reach','Virulent Scourge']
+# v4.3: element mods ordered so combinations are correct (Cold before Toxin = Viral; unpaired Electricity after a completed pair)
+MELEE_CRIT = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','North Wind','Virulent Scourge']
+MELEE_INFLUENCE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Condition Overload','North Wind','Virulent Scourge','Voltaic Strike']
 # v4.3: pseudo-Exalted melee (Landslide/Shattered Lash/Whipclaw) do not benefit from Attack Speed -> Berserker Fury replaced by Gladiator Might
-PSEUDO_MELEE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Gladiator Might','Condition Overload','Virulent Scourge','Molten Impact']
+PSEUDO_MELEE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Gladiator Might','Condition Overload','North Wind','Virulent Scourge']
 # Shadow Clones (Blade Storm): 5% base crit / 1.2x / 5% status -> relative crit/status mods are near-useless; finisher-damage stack instead
-SHADOW_CLONES = ['Covert Lethality','Finishing Touch','Primed Pressure Point','Organ Shatter','Gladiator Might','Condition Overload','Virulent Scourge','Molten Impact']
+SHADOW_CLONES = ['Covert Lethality','Finishing Touch','Primed Pressure Point','Organ Shatter','Gladiator Might','Condition Overload','North Wind','Virulent Scourge']
 RIFLE_CRIT = ['Serration','Galvanized Chamber','Point Strike','Vital Sense','Hammer Shot','Galvanized Aptitude','Primed Cryo Rounds','Malignant Force']
-PISTOL_CRIT = ['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Galvanized Crosshairs','Primed Heated Charge','Pathogen Rounds','Galvanized Shot']
-SHOTGUN = ['Primed Point Blank','Galvanized Hell','Primed Ravage','Critical Deceleration','Galvanized Savvy','Primed Charged Shell','Toxic Barrage','Incendiary Coat']
+PISTOL_CRIT = ['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Galvanized Crosshairs','Galvanized Shot','Deep Freeze','Pathogen Rounds']
+SHOTGUN = ['Primed Point Blank','Galvanized Hell','Primed Ravage','Critical Deceleration','Galvanized Savvy','Chilling Grasp','Toxic Barrage','Primed Charged Shell']
+NEUTRALIZER = ['Primary Acuity','Serration','Galvanized Scope','Bladed Rounds','Vital Sense','Hammer Shot','Primed Cryo Rounds','Malignant Force']
+TEMPLATE_ELEMENT = {'RIFLE_CRIT':'Viral (Primed Cryo Rounds -> Malignant Force)','PISTOL_CRIT':'Viral (Deep Freeze -> Pathogen Rounds)','SHOTGUN':'Viral + Electricity (Chilling Grasp -> Toxic Barrage, then Primed Charged Shell unpaired)',
+                    'MELEE_CRIT':'Viral (North Wind -> Virulent Scourge)','MELEE_INFLUENCE':'Viral + Electricity (North Wind -> Virulent Scourge, Voltaic Strike unpaired: required to trigger Melee Influence)','PSEUDO_MELEE':'Viral','SHADOW_CLONES':'Viral'}
 EXALTED = {
- 'Neutralizer':('Cyte-09','Primary',RIFLE_CRIT,'Primary Deadhead','Viral+Heat','Weak-point sniper; Primary Deadhead on weak point kills'),
+ 'Neutralizer':('Cyte-09','Primary',NEUTRALIZER,'Primary Deadhead','Viral','Weak-point sniper: Primary Acuity (+350% weak point dmg/crit; ricochets trigger on weak point hits), Galvanized Scope/Bladed Rounds (enabled on Exalteds in U38.5). Exilus: Hush. Primary Deadhead on weak point kills'),
  'Artemis Bow Prime':('Ivara Prime','Primary',RIFLE_CRIT,'Primary Deadhead','Viral+Heat','Charged multi-arrow; bow uses rifle mods'),
  'Lizzie':('Temple','Primary',RIFLE_CRIT,'Primary Merciless','Viral+Heat','Exalted guitar (Primary replacement)'),
  'Balefire Charger Prime':('Hildryn Prime','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Shield-fed exalted'),
  'Regulators Prime':('Mesa Prime','Secondary',PISTOL_CRIT,'Secondary Deadhead','Viral+Heat','Peacemaker exalted (project Melee credit)'),
  'Dex Pixia Prime':('Titania Prime','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Razorwing pistols'),
  'Glory':('Jade','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Additional Exalted'),
- 'Noctua':('Dante','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Additional Exalted tome; scans targets'),
+ 'Noctua':('Dante','Secondary',PISTOL_CRIT,'Secondary Encumber','Viral','Subsumed over by Roar; build persists because Wordwarden inherits Noctua mods and can trigger Secondary Encumber (wiki). Galvanized Shot scales incorrectly on Wordwarden (bug noted on wiki).'),
  'Desert Wind Prime':('Baruuk Prime','Melee',MELEE_CRIT,None,'Viral+Heat (Reactive Storm overrides)','Exalted fists'),
- 'Exalted Umbra Blade':('Excalibur Umbra','Melee',MELEE_CRIT,None,'Viral+Heat (Chromatic Blade emissive)','Exalted Blade'),
+ 'Exalted Umbra Blade':('Excalibur Umbra','Melee',MELEE_INFLUENCE,None,'Chromatic Blade Electricity (emissive) + Viral','Exalted Blade; Slash Dash inherits these mods and the Arcane'),
  'Garuda Prime Talons':('Garuda Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','Normal-ish weapon, no heavy attacks/Exilus'),
  'Shadow Claws Prime':('Sevagoth Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Exalted Shadow claws'),
  'Valkyr Prime Talons':('Valkyr Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Hysteria talons'),
@@ -64,7 +69,8 @@ EXALTED = {
  'Whipclaw Prime':('Khora Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
 }
 EXALTED_ARCANE = {'Desert Wind Prime': 'Melee Duplicate', 'Exalted Umbra Blade': 'Melee Duplicate', 'Garuda Prime Talons': 'Melee Duplicate', 'Shadow Claws Prime': 'Melee Duplicate', 'Valkyr Prime Talons': 'Melee Duplicate', 'Iron Staff Prime': 'Melee Duplicate', 'Diwata Prime': 'Melee Duplicate', 'Landslide Fists Prime': 'Melee Duplicate', 'Shattered Lash Prime': 'Melee Duplicate', 'Whipclaw Prime': 'Melee Duplicate', 'Regulators Prime': 'Secondary Merciless', 'Balefire Charger Prime': 'Secondary Merciless', 'Dex Pixia Prime': 'Secondary Merciless', 'Glory': 'Secondary Merciless', 'Noctua': 'Secondary Merciless'}
-BATCH1_EXALTED = {'Shadow Clones Prime','Landslide Fists Prime','Desert Wind Prime'}
+BATCH1_EXALTED = {'Shadow Clones Prime','Landslide Fists Prime','Desert Wind Prime','Neutralizer','Noctua','Exalted Umbra Blade','Shattered Lash Prime','Garuda Prime Talons'}
+EXALTED_ARCANE['Exalted Umbra Blade']='Melee Influence'; EXALTED_ARCANE['Noctua']='Secondary Encumber'
 for _w,_a in EXALTED_ARCANE.items():
     _f,_slot,_mods,_old,_el,_n=EXALTED[_w]
     EXALTED[_w]=(_f,_slot,_mods,_a,_el,_n+('' if _w in BATCH1_EXALTED else ' [Arcane provisional - re-review in frame batch]'))
@@ -86,7 +92,8 @@ def wclass(w):
 def norm_attack(v):
     a=(v.get('Attacks') or [{}])[0]
     return a.get('CritChance') or 0, a.get('StatusChance') or 0
-def template(slot, cls):
+def template(slot, cls, arcane=None):
+    if slot=='Melee' and arcane=='Melee Influence': return 'MELEE_INFLUENCE', MELEE_INFLUENCE
     if slot=='Melee': return 'MELEE_CRIT', MELEE_CRIT
     if slot=='Primary' and cls in ('Shotgun',): return 'SHOTGUN', SHOTGUN
     if slot=='Secondary': return 'PISTOL_CRIT', PISTOL_CRIT
@@ -140,7 +147,29 @@ WEAPON_OVERRIDE = {
  ('Caliban Prime','Melee'): dict(arcane='Melee Duplicate', why='Venato signature boosts combo-count chance on normal attacks, not heavy attacks'),
  ('Chroma Prime','Secondary'): dict(incarnon=['EVO2: Reified Bane','EVO3: Exact Penance','EVO4: Survivor\'s Edge'], why='Haven Foray needs Overshields (Chroma has none); always-on perks'),
 }
-AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime'}
+WEAPON_OVERRIDE.update({
+ ('Cyte-09','Secondary'): dict(arcane='Secondary Deadhead', incarnon=['EVO2: Hoplite Virtue','EVO3: Lex Talionis','EVO4: Critical Parallel'], why='Weak-point frame; Trusty Sidearm needs a channeled ability (none)'),
+ ('Dagath','Primary'): dict(kind='crit', why='Grave Spirit adds +50% x Str crit damage to all weapons'),
+ ('Dagath','Secondary'): dict(incarnon=['EVO2: Mauler\'s Magazine','EVO3: Rapid Reinforcement','EVO4: Fatal Affliction'], why='Reload-from-empty crit damage (satisfiable); Doom Viral + weapon statuses feed Fatal Affliction'),
+ ('Dante','Primary'): dict(kind='status', incarnon=['EVO2: Rapid Wrath','EVO3: Retribution\'s Vessel','EVO4: Elemental Excess','EVO5: Devouring Attrition'], why='Dante +50% status on scanned targets and Pageflight vulnerability favour status; Devouring Attrition rewards non-crit hits'),
+ ('Dante','Secondary'): dict(incarnon=['EVO2: Rapid Wrath','EVO3: Rapid Reinforcement','EVO4: Lethal Lance','EVO5: Impaler\'s Ferocity'], why='Lethal Lance (punch through on kill) satisfies Impaler\'s Ferocity (punch-through hits +200%)'),
+ ('Dante','Melee'): dict(incarnon=['EVO2: Lethal Impetus','EVO3: Adept Reflexes','EVO4: Swift Transmute','EVO5: Vulnerability Serum'], why='Status-oriented Dante; impaled +35% flat status'),
+ ('Ember Prime','Secondary'): dict(kind='crit', arcane='Secondary Merciless', why='7% crit x5 multiplier + flat crit from Arcane Hot Shot and Topaz heat-kill shards; Heat element target'),
+ ('Equinox Prime','Primary'): dict(incarnon=['EVO2: Forceful Finality','EVO3: Extended Volley','EVO4: Fatal Affliction'], why='Fortress Salvo needs >450 armor (not reached); Maim slash procs + weapon statuses'),
+ ('Equinox Prime','Secondary'): dict(incarnon=['EVO2: Carnage Reign','EVO3: Evolved Autoloader','EVO4: Neurotoxin'], why='Ready Retaliation documented as not working; Commodore +20% on 5% base is weak'),
+ ('Excalibur Umbra','Primary'): dict(incarnon=['EVO2: Munitions Grit','EVO3: Void\'s Guidance','EVO4: Critical Parallel'], why='Daring Reverie needs a channeled ability'),
+ ('Excalibur Umbra','Secondary'): dict(incarnon=['EVO2: Deathtrap Trigger','EVO3: Awakened Readiness','EVO4: Commodore\'s Fortune'], why='Lone Gun needs no Primary equipped (Umbra carries Braton Prime)'),
+ ('Follie','Primary'): dict(why='Signature: alt-fire applies Inkblot; siphons ammo from ability Inkblot - keep Enkaus alt-fire in the loop'),
+ ('Frost Prime','Primary'): dict(arcane='Primary Frostbite', why='Cold beam on a Cold-stacking frame: crit damage/multishot per Cold status'),
+ ('Frost Prime','Secondary'): dict(arcane='Secondary Shiver', why='Frost stacks Cold statuses (Ice Wave/Globe/Avalanche); +45% damage per Cold status'),
+ ('Frost Prime','Melee'): dict(arcane='Melee Animosity', incarnon=['EVO2: Master\'s Shatter','EVO3: Kinetic Harmony','EVO4: Mounting Avalanche'], why='Cold-target combo perks satisfied by Frost; heavy-attack hammer'),
+ ('Gara Prime','Melee'): dict(arcane='Melee Animosity', why='Volnus Prime signature +100% radial slam -> heavy slam build'),
+ ('Garuda Prime','Secondary'): dict(incarnon=['EVO2: Fatal Affliction','EVO3: Rapid Reinforcement','EVO4: Critical Parallel'], why='Stalker\'s Vendetta needs Dread and Hate equipped'),
+ ('Gauss Prime','Secondary'): dict(arcane='Secondary Merciless', why='Explosive kill-chaining under Redline'),
+ ('Gauss Prime','Melee'): dict(incarnon=['EVO2: Whirling Flurry','EVO3: Adept Reflexes','EVO4: Swift Transmute','EVO5: Kinetic Harmony'], why='Attack speed + heavy wind-up'),
+})
+AUDITED_FRAMES = {'Ash Prime','Atlas Prime','Banshee Prime','Baruuk Prime','Caliban Prime','Chroma Prime','Citrine Prime',
+                  'Cyte-09','Dagath','Dante','Ember Prime','Equinox Prime','Excalibur Umbra','Follie','Frost Prime','Gara Prime','Garuda Prime','Gauss Prime','Grendel Prime'}
 def weapon_configs():
     rows=[]
     for r in engine.ROWS:
@@ -151,7 +180,9 @@ def weapon_configs():
             if w=='Vinquibus (Melee)': cls='Bayonet'
             cc,sc=norm_attack(v) if v else (0,0)
             kind='crit' if cc>=0.24 else ('status' if sc>=0.28 else ('crit' if cc>=sc else 'status'))
-            tname,tmods=template(slot,cls)
+            ov0=WEAPON_OVERRIDE.get((f,slot),{})
+            arc0=ov0.get('arcane') or weapon_arcane(slot,cls,w,f,ov0.get('kind') or kind)
+            tname,tmods=template(slot,cls,arc0)
             fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
             inc=[]
             if fam: inc=evo_pick(fam,kind)
@@ -159,7 +190,7 @@ def weapon_configs():
             if ov.get('kind'): kind=ov['kind']
             if ov.get('incarnon'): inc=ov['incarnon']
             rows.append(dict(audited=f in AUDITED_FRAMES, why=ov.get('why',''), frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
-                             arcane=ov.get('arcane') or weapon_arcane(slot,cls,w,f,kind),element=element(kind,w,f),incarnon=inc,evo_family=fam,
+                             arcane=arc0,element=('Adversary innate element (see Adversary sheet) + ' if w.startswith(('Kuva ','Tenet ')) else '')+TEMPLATE_ELEMENT[tname],incarnon=inc,evo_family=fam,
                              forma='5 Forma to Rank 40 + ~3 polarization' if w.startswith(('Kuva ','Tenet ')) else ('~4 (Incarnon)' if fam else '~3')))
     return rows
 
