@@ -61,11 +61,13 @@ def f2(cat,flag,col): return f'=SUMIFS({rng(col)},{rng("Category")},"{cat}",{rng
 add(['Conclave/PvP-only mods (max rank)']+[f2('Mod','PvP subtotal',c) for c in ('Floor Platinum','Realistic Platinum','Conservative Platinum')])
 add(['Remaining Arcane collection (all other tradeable Arcanes, max rank)']+[f2('Arcane','Collection (optional)',c) for c in ('Floor Platinum','Realistic Platinum','Conservative Platinum')])
 add(['Signature archguns (Larkspur Prime; Mandonel/Arbucep farmed)']+[f2('Archgun','Optional',c) for c in ('Floor Platinum','Realistic Platinum','Conservative Platinum')])
+add(['Signature extras for Exalted-replaced/shared slots (Reconifex, Cobra & Crane Prime; Skiajati/Wrath farmed)']+[f2('Signature Extra','Optional',c) for c in ('Floor Platinum','Realistic Platinum','Conservative Platinum')])
+add(['Upcoming / not live (Brysko, Corecracker, Rain & Shine, Hound, Sentient shotgun, Tigris Incarnon)','EXCLUDED','EXCLUDED','EXCLUDED'])
 add([])
 add(['2. FIXED / DIRECT INFRASTRUCTURE','Count','Unit Pt','Gross Pt','Free slots','Net Pt','','Basis'],True)
 ia=ms.max_row+1
 add(['Warframe slots',66,20,'=B{0}*C{0}'.format(ia),5,'=(B{0}-E{0})*C{0}'.format(ia),'','Free: 3 starter, Excalibur Umbra (Sacrifice), Nora\'s Mix'])
-add(['Weapon slots (2 per 12p)',ws_count,6,'=CEILING(B{0}/2,1)*12'.format(ia+1),23,'=CEILING((B{0}-E{0})/2,1)*12'.format(ia+1),'',f'{ws_count} slot-taking weapons (Exalted/intrinsic excluded; Vinquibus counted once). Free: 11 starter + 12 junction/quest'])
+add(['Weapon slots (2 per 12p)',ws_count,6,'=CEILING(B{0}/2,1)*12'.format(ia+1),23,'=CEILING((B{0}-E{0})/2,1)*12'.format(ia+1),'',f'{ws_count} slot-taking weapons (Exalted/intrinsic excluded; Vinquibus counted once). Free: 11 starter + 12 junction/quest (quest weapons such as Thornbak, Broken War, Skiajati and Rumblejack must be sold to free theirs)'])
 add(['Companion slots (2 per 12p)',COMP_SLOTS,6,'=CEILING(B{0}/2,1)*12'.format(ia+2),10,'=MAX(0,CEILING((B{0}-E{0})/2,1)*12)'.format(ia+2),'','13 v3 companions + 7 sentinel robotic weapons share companion slots; 10 starter'])
 ib=ms.max_row
 FI=add(['FIXED INFRASTRUCTURE TOTAL','','',f'=SUM(D{ia}:D{ib})','',f'=SUM(F{ia}:F{ib})'],True)
@@ -137,15 +139,23 @@ for r in rows:
 newsheet('Roster v4 (live)',['Frame','Version','Introduced','Abilities (live)','Passive (live)','Helminth ability (live)','Signature weapons (live)'],ro,{'Abilities (live)':55,'Passive (live)':70,'Signature weapons (live)':40},idx=3)
 oi=[('Protea','Helminth Roar on Temporal Anchor conflicts with Temporal Artillery','Pick: Roar over Grenade Fan (recommended) or drop Temporal Artillery'),
     ('Dante','Noctua ruled additional Exalted (no Secondary replacement)','LIVE TEST REQUIRED if replacement is wanted'),
-    ('Sirius & Orion','v3 LIVE TEST intrinsic weapons: Pride/Wrath signatures exist (bonus not implemented)','Ordinary Battacor/Spectra Vandal/Caustacyst kept'),
+    ('Sirius & Orion','Orion is an Exalted Warframe sharing rank/upgrades; Reactor count assumes one per S&O','LIVE CHECK: confirm Orion shares the Reactor'),
+    ('Signature preference','v4.1 allocated uncontested no-bonus signatures (Temple Riot-848, Mirage Akzani, S&O Pride)','Revert to Athodai / Prisma Twin Gremlins / Caustacyst if preferred; counts unchanged'),
     ('Builds','v3 holds no per-frame aura/exilus/mod/arcane/shard/focus sheets','Mods are covered by the all-mods mandate and Arcanes by the required + collection lines; per-frame build sheets still need authoring'),
     ('Archon Shards','Plan covers 230 of 330 shard slots','Extend shard plan to all 66 frames'),
-    ('Sentinel weapons','v3 lists 7 sentinels without robotic weapons','Specify (affects companion slots/catalysts)'),
-    ('Brysko','Upcoming Tau frame (Corecracker exalted pistol, Rain & Shine fists)','Integrate on release'),
+    ('Sentinel weapons','Resolved v4.1: default weapons bundled (Verglas Prime, Prime Laser Rifle, Deth Machine Rifle Prime, Burst Laser Prime, Deconstructor Prime, Vulklok, Artax)','Change only if non-default sentinel weapons are wanted'),
+    ('Brysko','Tracked in Upcoming (Not Live); excluded from live cost','Integrate on release: frame, Corecracker ruling, Rain & Shine, Hound, Sentient shotgun'),
+    ('Tigris Incarnon','Announced Incarnon adapter (Nekros Tigris Prime) not live','Add Genesis row on release'),
     ('Adversary elements','v3 had no element targets; v4 set them','Confirm per-frame elements'),
     ('Variant families','Vectis/Prime, Trumna/Prime, Dual Keres/Prime, Epitaph/Prime, Cedo/Prime, Pyrana/Prime, Ohma/Prisma Ohma','Distinct items; optional further uniqueness pass'),
     ('Account purchase','No candidate account inventory supplied','Provide export for the equivalency audit')]
 newsheet('Open Items',['Area','Issue','Action'],oi,{'Issue':80,'Action':70},idx=4)
+import subprocess; subprocess.run(['python3','recon.py'],capture_output=True)
+rec=json.load(open('recon.json'))
+rs=newsheet('Live Content Reconciliation',['LIVE ITEM','Release (frames in that update)','Slot','Class','Association','PRESENT IN WORKBOOK?','CURRENT ASSIGNMENT','PROCUREMENT ROW?','ACTION REQUIRED'],rec,
+   {'LIVE ITEM':26,'Release (frames in that update)':34,'Association':36,'CURRENT ASSIGNMENT':34,'PROCUREMENT ROW?':46,'ACTION REQUIRED':80},idx=2)
+up=[[r['Item'],r['Variant'],r['Assigned Frame(s)'],r['Notes'],r['Status']] for r in proc if r['Category']=='Upcoming (Not Live)']
+newsheet('Upcoming (Not Live)',['Item','Type','Frame','Notes','Status'],up,{'Item':28,'Type':34,'Notes':70,'Status':36},idx=3)
 # ---- Update existing sheets
 ws=wb['Weapons']; ws.delete_rows(2,ws.max_row)
 ws.cell(1,8,'v4 Signature status'); ws.cell(1,9,'Mechanical frame bonus'); ws.cell(1,10,'Incarnon?'); ws.cell(1,11,'v3 value'); hdr(ws)

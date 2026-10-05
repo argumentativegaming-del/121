@@ -91,6 +91,31 @@ for wn,f in [('Larkspur Prime','Hildryn Prime'),('Mandonel','Qorvex'),('Arbucep'
         p=price(s,None); row(Category='Archgun',Item=wn,**base,**{'Acquisition Method':'Player trade','Tradeable?':'Yes','Counted in Player-Trade Total?':'Optional'},**mk(p))
     else:
         row(Category='Archgun',Item=wn,**base,**{'Acquisition Method':'Farm / vendor','Tradeable?':'No','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No'})
+
+# ---------------- v4.1 live-content reconciliation additions
+VARIANT_NOTES={'Synapse':'Coda Synapse live (U38.5)','Pox':'Coda Pox live (U38.5)','Catabolyst':'Coda Catabolyst live (U38.5)','Hirudo':'Coda Hirudo live (U38.5)',
+ 'Pathocyst':'Coda Pathocyst live (U38.5)','Bubonico':'Coda Bubonico live (U42)','Sporothrix':'Coda Sporothrix live (U38.5)','Ghoulsaw':'Kuva Ghoulsaw live (U42)',
+ 'Glaxion Vandal':'Tenet Glaxion live (U35.6)'}
+for r in proc:
+    if r['Category']=='Weapon' and r['Item'] in VARIANT_NOTES:
+        r['Notes']=((r['Notes']+'; ') if r['Notes'] else '')+VARIANT_NOTES[r['Item']]+' - doctrine: no automatic Coda/adversary substitution; optional upgrade'
+for wn,f,why in [('Reconifex','Cyte-09','Signature rifle; Primary replaced by Neutralizer (doctrine)'),('Skiajati','Excalibur Umbra','Signature nikana; Melee replaced by Exalted Blade. Quest reward from The Sacrifice (own free slot)'),
+                 ('Cobra & Crane Prime','Baruuk Prime','Signature (sleep on first combo strike); Melee replaced by Desert Wind'),('Wrath','Sirius & Orion','Orion signature heavy scythe; twins share one Melee slot (Pride allocated)')]:
+    s_=slug_for(wn); sig=meta.SIG.get(wn,(f,'Signature'))
+    base={'Assigned Frame(s)':f,'Slot':'Signature extra','Signature status':'Signature - '+f,'Mechanical frame bonus':sig[1],'Priority':'Optional (signature extra)','Quantity':1,'Source/Reasoning':why,'Catalyst?':'Optional'}
+    if s_: row(Category='Signature Extra',Item=wn,**base,**{'Acquisition Method':'Player trade','Tradeable?':'Yes','Counted in Player-Trade Total?':'Optional'},**mk(price(s_,None)))
+    else: row(Category='Signature Extra',Item=wn,**base,**{'Acquisition Method':'Farm / vendor / quest','Tradeable?':'No','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No'})
+for wn,comp in [('Verglas Prime','Nautilus Prime'),('Prime Laser Rifle','Wyrm Prime'),('Deth Machine Rifle Prime','Dethcube Prime'),('Burst Laser Prime','Shade Prime'),('Deconstructor Prime','Helios Prime'),('Vulklok','Diriga'),('Artax','Taxon')]:
+    row(Category='Companion Weapon',Item=wn,**{'Assigned Frame(s)':comp,'Slot':'Robotic','Quantity':1,'Acquisition Method':'Bundled with sentinel','Tradeable?':'No','Status':'INCLUDED WITH COMPANION','Counted in Player-Trade Total?':'No','Catalyst?':'Yes (optional)','Source/Reasoning':'Default sentinel weapon (wiki); uses one Companion slot','Priority':'Core'})
+for wn,f,why in [('Glory','Jade','Additional Exalted; does not replace Evensong/Cantare/Harmony (doctrine)'),('Noctua','Dante','Additional Exalted (first ability); Onos retained - LIVE TEST if replacement is wanted'),
+                 ('Shadow Clones Prime','Ash Prime','U38.5 Exalted conversion; cast-based, no Melee replacement (doctrine). Melee Crescendo via finishers'),('Landslide Fists Prime','Atlas Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),
+                 ('Shattered Lash Prime','Gara Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),('Whipclaw Prime','Khora Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),
+                 ('Grasp of Lohk','Xaku Prime','Ability weapon; no replacement (doctrine)'),("Ulfrun's Descent",'Voruna Prime','Ability form; no replacement (doctrine)'),('Nurinarim','Narin','Cast sword-dance ability; no Melee replacement (v4 ruling)')]:
+    row(Category='Exalted / Intrinsic',Item=wn,**{'Assigned Frame(s)':f,'Slot':'Additional (no slot replacement)','Quantity':1,'Acquisition Method':'Comes with frame','Tradeable?':'No','Status':'INCLUDED WITH FRAME','Counted in Player-Trade Total?':'No','Catalyst?':'No (frame Reactor)','Signature status':'Exalted/Intrinsic','Source/Reasoning':why})
+for it,cat,note in [('Brysko','Warframe','Tau update (Winter 2026). Comes with his own Hound companion'),('Corecracker','Exalted Secondary (Sentient revolver)','Brysko Exalted; expected Secondary-replacement candidate - rule on release'),
+                    ('Rain & Shine','Melee (Sentient Fist)','Announced with Tau; Brysko melee candidate'),('Brysko Hound','Companion (Hound)','Bundled companion; adds a companion slot when live'),
+                    ('Unnamed Sentient Shotgun','Primary (Shotgun)','Shown in Tau concept art'),('Tigris Incarnon Adapter','Incarnon','Announced 2026-04-24; not live in weapon data. Affects Nekros (Tigris Prime) when released')]:
+    row(Category='Upcoming (Not Live)',Item=it,**{'Variant':cat,'Quantity':1,'Acquisition Method':'NOT YET RELEASED','Tradeable?':'Unknown','Status':'UPCOMING - EXCLUDED FROM LIVE COST','Counted in Player-Trade Total?':'No (not live)','Assigned Frame(s)':'Brysko' if it!='Tigris Incarnon Adapter' else 'Nekros Prime','Source/Reasoning':'Wiki Upcoming Features / Warframe: Tau page (2026-10-05)','Notes':note})
 # ---------------- Adversary
 for r in rows:
     f=r[0]

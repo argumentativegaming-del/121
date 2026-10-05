@@ -79,6 +79,11 @@ CHANGES = {
  ('Wukong Prime','Secondary'):('Pyrana Prime','Ballistica Prime','Pyrana Prime duplicate (Limbo vs Wukong). Limbo keeps it (Prime Access tie-break only). Ballistica Prime Incarnon (E).'),
  ('Yareli Prime','Secondary'):('Ocucor','Kompressa Prime','Signature with a mechanical bonus (+30% Projectile Speed), tier A.'),
 }
+CHANGES.update({
+ ('Temple','Secondary'):('Athodai','Riot-848','v4.1 reconciliation: Riot-848 is Temple\'s signature machine pistol (Update 38.5). The slot is uncontested and Athodai has no Temple claim. Signature bonus is not implemented, so this is a tier D signature preference.'),
+ ('Mirage Prime','Secondary'):('Prisma Twin Gremlins','Akzani','v4.1 reconciliation: Akzani is Mirage\'s signature dual pistol; the slot is uncontested (tier D signature preference).'),
+ ('Sirius & Orion','Melee'):('Caustacyst','Pride','v4.1 reconciliation: Pride (Sirius) / Wrath (Orion) are the twins\' signature heavy scythes (Update 43). The twins share one weapon loadout, so one Melee slot. Pride is Sirius, the default Primary Son. Wrath is listed as an optional extra.'),
+})
 CORRECTIONS = [
  ('Roster','Roster may contain new frames/Primes','Live wiki data 2026-10-05: no new released frames or Primes since the 66-frame snapshot. Brysko is announced for the Tau update (Late 2026/Early 2027). Excalibur Umbra Prime is China-build only.','Roster unchanged at 66 frames. Brysko goes on a watchlist.','Frame counts unchanged.'),
  ('Uriel','Vinquibus Primary + Mios Melee','Vinquibus wiki: "Equipping Vinquibus will occupy both primary and melee weapon slots."','Uriel Melee = Vinquibus (Melee). Mios released.','One fewer weapon, slot and catalyst. Mios reassigned to Nokko.'),
@@ -97,5 +102,5 @@ CORRECTIONS = [
  ('Mesa','Regulators credited as Melee','Weapon data lists Regulators Prime as an Exalted Secondary.','Project doctrine kept (Melee credit). Game-side slot noted.','None.'),
  ('Duplicates','"Zero duplicates" after earlier cleanup','Logical audit of 66x3 slots found exact duplicates Zakti Prime, Pyrana Prime and Laetum, plus a hidden Quassus/Quassus Prime signature conflict.','All resolved (see Weapon Allocation). 0 exact duplicates.','Variant-family pairs remain by design: Vectis/Vectis Prime, Trumna/Trumna Prime, Dual Keres/Prime, Epitaph/Prime, Cedo/Prime, Pyrana/Pyrana Prime, Ohma/Prisma Ohma.'),
  ('Zephyr','Catchmoon','Catchmoon is a Kitgun chamber and not tradeable.','Kept. Classified as farmable (Solaris United).','No plat.'),
- ('Temple / Mirage / S&O','Signature weapons not used','Temple Riot-848, Mirage Akzani and Sirius/Orion Pride/Wrath are signatures, but their bonuses are "not implemented".','Allocation unchanged (no mechanical claim). Flagged for preference.','-'),
+ ('Temple / Mirage / S&O','Signature weapons left unallocated (Riot-848, Akzani, Pride/Wrath)','Live equipment reconciliation: each is the frame\'s own signature weapon for an uncontested, non-Exalted slot.','v4.1: Temple Riot-848, Mirage Akzani, S&O Pride (+ Wrath optional). Athodai, Prisma Twin Gremlins and Caustacyst released.','Weapon count unchanged; Akzani, Pride and Riot-848 procurement routes differ.'),
 ]

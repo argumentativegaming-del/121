@@ -32,7 +32,7 @@ Limbo Prime|Vectis|Pyrana Prime|Destreza Prime
 Loki Prime|Baza Prime|Spira Prime|Nikana Prime
 Mag Prime|Tenet Arca Plasmor|Mara Detron|Dakra Prime
 Mesa Prime|Cedo|Akjagara Prime|Regulators Prime
-Mirage Prime|Kuva Bramma|Prisma Twin Gremlins|Glaive Prime
+Mirage Prime|Kuva Bramma|Akzani|Glaive Prime
 Narin|Nunchasa|Aksondol|Prisma Skana
 Nekros Prime|Tigris Prime|Twin Grakatas|Galatine Prime
 Nezha Prime|Proboscis Cernos|Zakti Prime|Guandao Prime
@@ -49,9 +49,9 @@ Revenant Prime|Phantasma Prime|Tenet Cycron|Tatsu Prime
 Rhino Prime|Boltor Prime|Viper Wraith|Ankyros Prime
 Saryn Prime|Kuva Ogris|Pyrana|Dual Ichor
 Sevagoth Prime|Bubonico|Epitaph Prime|Shadow Claws Prime
-Sirius & Orion|Battacor|Spectra Vandal|Caustacyst
+Sirius & Orion|Battacor|Spectra Vandal|Pride
 Styanax Prime|Afentis Prime|Aegrit|Slaytra
-Temple|Lizzie|Athodai|Prisma Ohma
+Temple|Lizzie|Riot-848|Prisma Ohma
 Titania Prime|Razorflies|Dex Pixia Prime|Diwata Prime
 Trinity Prime|Boar Prime|Akbronco Prime|Dual Kamas Prime
 Uriel|Vinquibus (Primary)|Kuva Twin Stubbas|Vinquibus (Melee)
