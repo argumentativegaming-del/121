@@ -396,10 +396,10 @@ def weapon_configs():
 
 # ---------------- Shard policy (deliberate Tauforged allocation)
 # Tau Crimson Strength kept only where Strength is the build's primary scaling stat without a met cap.
-NORMAL_STR = {'Nyx Prime':'Psychic Bolts cap 125% met without Tau','Oberon Prime':'200% Renewal cap met without Tau','Limbo Prime':'Range/Duration build',
+NORMAL_STR = {'Nyx Prime':'Psychic Bolts cap 125% met without Tau','Limbo Prime':'Range/Duration build',
               'Loki Prime':'Range/Duration build','Octavia Prime':'Duration-driven','Titania Prime':'Razorwing duration/efficiency build','Zephyr Prime':'Turbulence duration build',
               'Vauban Prime':'CC build','Harrow Prime':'support','Trinity Prime':'support','Wisp Prime':'support','Nekros Prime':'loot/support','Citrine Prime':'support',
-              'Hildryn Prime':'shield-scaling via Expertise uses Str but shields from Azure','Lavos Prime':'cooldown build','Koumei':'luck caster'}
+              'Hildryn Prime':'shield-scaling via Expertise uses Str but shields from Azure','Koumei':'luck caster'}
 def apply_shard_policy():
     changed={}
     for f,b in BD.B.items():
@@ -418,3 +418,60 @@ for _k in [('Baruuk Prime','Secondary'),('Excalibur Umbra','Secondary'),('Garuda
     _o = WEAPON_OVERRIDE.setdefault(_k, {})
     _o['arcane'] = 'Secondary Dexterity'
     _o['why'] = (_o.get('why','') + '; ' if _o.get('why') else '') + 'SYSTEMIC FIX (B5): Secondary Outburst would consume the melee/Exalted combo this frame depends on -> Secondary Dexterity'
+
+# ---------------- v4.3 FINAL CROSS-ROSTER CONSISTENCY PASS (corrections; see Corrections Log 'XR')
+def _ov(k, **kw):
+    o = WEAPON_OVERRIDE.setdefault(k, {}); note = kw.pop('note', None)
+    o.update(kw)
+    if note: o['why'] = (o.get('why','') + '; ' if o.get('why') else '') + 'XR: ' + note
+# Melee Animosity only pays off on HEAVY attacks: heavy-intent builds get the heavy template, the rest move to Melee Duplicate
+for _k in [('Frost Prime','Melee'),('Gara Prime','Melee'),('Voruna Prime','Melee')]:
+    _ov(_k, tname='HEAVY_ATTACK', mods=HEAVY_ATTACK, note='Animosity requires heavy attacks; audited heavy intent -> heavy template (Killing Blow, Galvanized Reflex)')
+for _k in [('Chroma Prime','Melee'),('Citrine Prime','Melee'),('Grendel Prime','Melee'),('Nekros Prime','Melee'),('Nyx Prime','Melee'),('Qorvex','Melee'),('Vauban Prime','Melee')]:
+    _ov(_k, arcane='Melee Duplicate', note='default rule gave Melee Animosity (heavy-attack Arcane) to a normal-attack build -> Melee Duplicate')
+# Deadhead needs weak-point KILLS: cluster/AoE/auto weapons do not deliver them consistently
+for _k,_w in [(('Mirage Prime','Primary'),'Kuva Bramma cluster AoE'),(('Nezha Prime','Primary'),'Proboscis Cernos AoE/tether'),(('Wukong Prime','Primary'),'Zhuge Prime auto crossbow')]:
+    _ov(_k, arcane='Primary Merciless', note=f'{_w} does not weak-point kill consistently -> Primary Merciless')
+# Incarnon contradictions surviving from earlier batches
+_ov(('Dante','Primary'), tname='RIFLE_STATUS', mods=RIFLE_STATUS, note='Devouring Attrition (+2000% on NON-crit hits) + Elemental Excess (-10% crit) contradicted the crit template -> status template')
+_ov(('Atlas Prime','Secondary'), kind='status', tname='PISTOL_STATUS', mods=PISTOL_STATUS, note='Atomos Incarnon Form 18% crit / 41% status with Elemental Balance -> status template')
+_ov(('Hildryn Prime','Primary'), incarnon=['EVO2: Hoplite Virtue','EVO3: Resonant Restore',"EVO4: Survivor's Edge"], note="Hunter's Mantra conditional can never trigger (Haven drains shields, not energy); Hoplite Virtue triggers when Hildryn's casts/charged Balefire shots break her own shields")
+_ov(('Excalibur Umbra','Secondary'), note='Vasto EVO2: Lone Gun needs no Primary (Umbra carries Braton Prime); Deathtrap Trigger kept as the only option whose condition (swap from Primary, 3s) can occur')
+_B5_EXALTED_NOCTUA_EXILUS = 'Lethal Momentum'
+EXALTED_EXILUS['Noctua'] = _B5_EXALTED_NOCTUA_EXILUS   # XR: Secondary Exalted projectile weapon had no Exilus assigned
+# XR: companion mod incompatibilities (validate_comp never checked the Incompatible field)
+for _c in ('Adarza Kavat','Smeeta Kavat','Huras Kubrow'):
+    _m = COMP[_c]['mods']; _m[_m.index('Enhanced Vitality')] = 'Link Redirection'   # Enhanced Vitality is incompatible with Link Vitality
+_m = COMP['Wyrm Prime']['mods']; _m[_m.index('Metal Fiber')] = 'Enhanced Vitality'      # Metal Fiber is incompatible with Link Fiber
+_validate_comp_old = validate_comp
+def validate_comp(c):
+    errs = _validate_comp_old(c); mods = COMP[c]['mods']
+    for m in mods:
+        for i in (engine.mod(m) or {}).get('Incompatible') or []:
+            if i in mods: errs.append(f'{m} incompatible with {i}')
+    return errs
+# XR: Primed Shred is a Daily Tribute milestone reward (untradeable, not purchasable) -> tradeable Shred in the status template
+RIFLE_STATUS[RIFLE_STATUS.index('Primed Shred')] = 'Shred'
+def required_mods():
+    """Every mod used by a final build (frames, Exalted bodies, weapons, Exalteds, companions, companion weapons, Venari)."""
+    import builds_data as _BD
+    req = {}
+    def add(m, who):
+        if m: req.setdefault(m, set()).add(who)
+    for f, b in _BD.B.items():
+        for m in b['mods'] + [b.get('aura'), b.get('aura2'), b.get('exilus')]: add(m, f)
+    for f, c in _BD.EXALTED_FRAMES.items():
+        for m in c['mods'] + [c.get('aura'), c.get('exilus')]: add(m, f)
+    for r in weapon_configs():
+        for m in r['mods']: add(m, r['weapon'])
+    for w, (f, s, m, a, e, n) in EXALTED.items():
+        for x in m: add(x, w)
+        add(EXALTED_EXILUS.get(w), w)
+    for c, cfg in COMP.items():
+        for m in cfg['mods']: add(m, c)
+    for k, (mods, t) in COMP_WEAPON_BUILD.items():
+        for m in mods: add(m, 'Companion weapons')
+    for m in VENARI: add(m, 'Venari Prime')
+    return req
+for _k in [('Frost Prime','Primary'),('Nezha Prime','Primary')]:
+    _m = WEAPON_OVERRIDE[_k]['mods']; _m[_m.index('Primed Shred')] = 'Shred'

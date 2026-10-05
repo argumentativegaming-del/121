@@ -196,10 +196,10 @@ for nm,s in COMP:
     used=nm in USED_COMP
     users=', '.join(sorted(f_ for f_,b_ in _BD.B.items() if b_['comp']==nm))
     if s and 'imprint' not in s:
-        p=price(s,None); row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Prime sentinel','Quantity':1,'Acquisition Method':'Player trade (set)','Tradeable?':'Yes','Priority':'Core' if used else 'Optional (no v4.2 build assignment)','Catalyst?':'Reactor','Counted in Player-Trade Total?':'Yes' if used else 'Optional','Source/Reasoning':'v3 companion list; v4.2 assignment' if used else 'v3 list; unassigned in v4.2 FINAL builds','Notes':'Default sentinel weapon bundled'},**mk(p))
+        p=price(s,None); row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Prime sentinel','Quantity':1,'Acquisition Method':'Player trade (set)','Tradeable?':'Yes','Priority':'Core' if used else 'Optional (no v4.3 final build assignment)','Catalyst?':'Reactor','Counted in Player-Trade Total?':'Yes' if used else 'Optional','Source/Reasoning':'v3 companion list; v4.3 final assignment' if used else 'v3 list; unassigned in v4.3 final builds','Notes':'Default sentinel weapon bundled'},**mk(p))
     else:
-        row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Beast/Sentinel','Quantity':1,'Acquisition Method':'Breed / incubate / vendor (imprint optional trade)' if s else 'Farm / vendor / incubate','Tradeable?':'Imprint only' if s else 'No','Priority':'Core' if used else 'Optional (no v4.2 build assignment)','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No','Market Slug':s,'Source/Reasoning':'v3 companion list' + ('' if used else '; unassigned in v4.2')})
-row(Category='Mod',Item='Swift Deth',**{'Variant':'Dethcube precept','Required Rank':5,'Quantity':1,'Acquisition Method':'In-game trade / Simaris-or-drop (no WFM listing)','Tradeable?':'Yes (wiki)','Status':'MARKET DATA UNAVAILABLE','Mod Category':'Dethcube','Counted in Player-Trade Total?':'No (no data)','Source/Reasoning':'v4.2 build-required (Dethcube Prime companion config); no Warframe.Market listing'})
+        row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Beast/Sentinel','Quantity':1,'Acquisition Method':'Breed / incubate / vendor (imprint optional trade)' if s else 'Farm / vendor / incubate','Tradeable?':'Imprint only' if s else 'No','Priority':'Core' if used else 'Optional (no v4.3 final build assignment)','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No','Market Slug':s,'Source/Reasoning':'v3 companion list' + ('' if used else '; unassigned in v4.2')})
+row(Category='Mod',Item='Swift Deth',**{'Variant':'Dethcube precept','Required Rank':5,'Quantity':1,'Acquisition Method':'In-game trade / Simaris-or-drop (no WFM listing)','Tradeable?':'Yes (wiki)','Status':'MARKET DATA UNAVAILABLE','Mod Category':'Dethcube','Counted in Player-Trade Total?':'No (no data)','Source/Reasoning':'v4.3 build-required (Dethcube Prime companion config); no Warframe.Market listing'})
 # ---------------- Arcanes
 for s,i in sorted(items.items()):
     if 'arcane_enhancement' not in i['tags']: continue
@@ -215,7 +215,26 @@ for s,i in sorted(items.items()):
         note=f'Cheaper via {copies}x R0 ({via}p realistic) than buying max rank'
     row(Category='Arcane',Item=nm,**{'Variant':wa.get('Type') or ','.join(x for x in i['tags'] if x not in ('arcane_enhancement',)),'Required Rank':mr,'Quantity':1,'Acquisition Method':'Player trade (max rank)','Tradeable?':'Yes',
         'R0 Realistic':p0.get('realistic'),'Max via R0 copies (Realistic)':via,
-        'Counted in Player-Trade Total?':'Yes' if nm in REQ_ARC_V3+REQ_ARC_V4 else 'Collection (optional)','Priority':'Required (v4.2 frame builds)' if nm in REQ_ARC_V3 else ('Required (v4.2 weapon/exalted builds)' if nm in REQ_ARC_V4 else 'Collection (optional)'),'Notes':note,
+        'Counted in Player-Trade Total?':'Yes' if nm in REQ_ARC_V3+REQ_ARC_V4 else 'Collection (optional)','Priority':'Required (v4.3 final frame builds)' if nm in REQ_ARC_V3 else ('Required (v4.3 final weapon/exalted builds)' if nm in REQ_ARC_V4 else 'Collection (optional)'),'Notes':note,
         'Source/Reasoning':'Arcanes share across items like mods (one max-rank copy covers every build).'},**d)
+# ---------------- v4.3 XR: quest weapons that arrive with their own free weapon slot AND a pre-installed Orokin Catalyst (wiki)
+QUEST_SLOT_CATALYST={'Grimoire':'Whispers in the Walls','Nataruk':'The New War'}
+for r_ in proc:
+    if r_['Category']=='Weapon' and r_['Item'] in QUEST_SLOT_CATALYST:
+        r_['Catalyst?']=f"Pre-installed (quest: {QUEST_SLOT_CATALYST[r_['Item']]})"; r_['Notes']=((r_.get('Notes') or '')+' Comes with its own free weapon slot and a pre-installed Orokin Catalyst (wiki).').strip()
+# ---------------- v4.3 XR: build-required vs collection classification for mods + account-bound required mods
+_REQ_MODS=_BX.required_mods()
+_have={r_['Item'].lower():r_ for r_ in proc if r_['Category']=='Mod'}
+for r_ in proc:
+    if r_['Category']=='Mod':
+        if r_['Item'].lower() in {m.lower() for m in _REQ_MODS}: r_['Priority']='BUILD REQUIRED (also collection)'
+        elif r_.get('Counted in Player-Trade Total?')=='Yes': r_['Priority']='COLLECTION REQUIRED'
+        elif r_.get('Counted in Player-Trade Total?')=='PvP subtotal': r_['Priority']='COLLECTION (PvP, separate subtotal)'
+for m_,who_ in sorted(_REQ_MODS.items()):
+    if m_.lower() in _have: continue
+    v_=modbyn.get(m_.lower()) or {}
+    how_={'Umbral Intensify':'Quest: The Sacrifice (1 copy) / Cephalon Simaris extra copies','Umbral Vitality':'Quest: The Sacrifice (1 copy) / Cephalon Simaris extra copies','Umbral Fiber':'Quest: The Sacrifice (1 copy) / Cephalon Simaris extra copies'}.get(m_,'Account-bound reward (wiki: untradeable)')
+    row(Category='Mod',Item=m_,**{'Assigned Frame(s)':', '.join(sorted(who_))[:300],'Variant':v_.get('Type'),'Required Rank':v_.get('MaxRank'),'Quantity':1,'Acquisition Method':how_,'Tradeable?':'No','Priority':'ACCOUNT-BOUND / FARM (build required)',
+        'Status':'ACCOUNT-BOUND','Mod Category':v_.get('Type'),'Counted in Player-Trade Total?':'No','Source/Reasoning':'v4.3 XR: build-required mod with no trade path; 0p'})
 json.dump(proc,open('proc.json','w'))
 print(len(proc), collections.Counter(r['Category'] for r in proc))

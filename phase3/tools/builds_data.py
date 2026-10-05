@@ -543,3 +543,20 @@ _upd('Yareli Prime', helm=('Roar', 'Riptide'),
      notes='B5: v4.2 subsumed Sea Snares while running Merulina Guardian (which needs kills during Sea Snares). Riptide subsumed instead.')
 _upd('Zephyr Prime', helm=('Roar', 'Airburst'),
      notes='B5: Tail Wind restored (airborne upkeep for the +150% weapon crit passive; 12.5 energy airborne). Airburst subsumed - Tornado already groups.')
+
+# ---------------- v4.3 cross-roster consistency pass: Arcane activation fixes
+_upd('Zephyr Prime', arcanes=['Arcane Energize', 'Molt Augmented'])   # XR: Avenger needs being damaged; Turbulence deflects projectiles/hitscan
+_upd('Nidus Prime', arcanes=['Arcane Bellicose', 'Molt Augmented'])   # XR: Reaper needs melee kills (Nidus kills with abilities); Parasitic Vitality health -> Bellicose cap (+72% Str)
+_upd('Rhino Prime', arcanes=['Arcane Energize', 'Molt Augmented'])    # XR: Reaper needs melee kills (Rhino Charge/Stomp kills are ability kills); 150-energy frame
+# ---------------- v4.3 cross-roster pass: LIVE TEST resolutions from live documentation
+_upd('Koumei', live=[], notes=(B['Koumei'].get('notes') or '') + ' XR: RESOLVED - Koumei passive (wiki): The Five Fates "has no interaction with Helminth subsumed abilities", so Roar casts do not roll dice; Omikuji/Omamori/Bunraku still roll. Decision unchanged (Kumihimo has the weakest Steel Path scaling).')
+_upd('Mesa Prime', live=[], notes=(B['Mesa Prime'].get('notes') or '') + ' XR: RESOLVED - Peacemaker page (wiki): "Peacemaker targets the enemy\'s torso" -> no weak-point hits, so Deadhead/Arcane Precision cannot trigger; Secondary Merciless confirmed.')
+
+# ---------------- v4.3 XR: deliberate Tauforged allocation BAKED into the build data.
+# (engine.run() reloads this module, which previously discarded builds_extra.apply_shard_policy() - 79 Tau shown instead of the documented policy.)
+# Oberon (Smite 75% cap needs 215% Str) and Lavos (Catalyze/Str-driven after the B3 correction) keep Tau Strength.
+NORMAL_STR_FRAMES = ['Nyx Prime','Limbo Prime','Loki Prime','Octavia Prime','Titania Prime','Zephyr Prime','Vauban Prime','Harrow Prime','Trinity Prime',
+                     'Wisp Prime','Nekros Prime','Citrine Prime','Hildryn Prime','Koumei']
+for _f in NORMAL_STR_FRAMES:
+    _s = B[_f]['shards']
+    if 'T:CS' in _s: _s[_s.index('T:CS')] = 'CS'

@@ -24,7 +24,8 @@ def rng(c): return f"'Procurement Master'!${L[c]}$2:${L[c]}${N}"
 # ---- static computations (snapshot)
 def S(cat,flag,col): return sum((r[col] or 0) for r in proc if r['Category']==cat and r['Counted in Player-Trade Total?']==flag)
 ws_count=sum(1 for r in proc if r['Category'] in ('Weapon','Adversary Weapon') and r['Quantity']==1)
-cat_count=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1)
+cat_count=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1 and not str(r.get('Catalyst?')).startswith('Pre-installed'))
+quest_slot=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1 and str(r.get('Catalyst?')).startswith('Pre-installed (quest'))
 import build as _b
 COMP_SLOTS=len(_b.USED_COMP)+sum(1 for c in _b.USED_COMP if c in ('Dethcube Prime','Helios Prime','Wyrm Prime','Diriga','Nautilus Prime','Shade Prime','Taxon'))
 # ---- Economic Model (replace)
@@ -68,16 +69,16 @@ add([])
 add(['2. FIXED / DIRECT INFRASTRUCTURE','Count','Unit Pt','Gross Pt','Free slots','Net Pt','','Basis'],True)
 ia=ms.max_row+1
 add(['Warframe slots',66,20,'=B{0}*C{0}'.format(ia),5,'=(B{0}-E{0})*C{0}'.format(ia),'','Free: 3 starter, Excalibur Umbra (Sacrifice), Nora\'s Mix'])
-add(['Weapon slots (2 per 12p)',ws_count,6,'=CEILING(B{0}/2,1)*12'.format(ia+1),23,'=CEILING((B{0}-E{0})/2,1)*12'.format(ia+1),'',f'{ws_count} slot-taking weapons (Exalted/intrinsic excluded; Vinquibus counted once). Free: 11 starter + 12 junction/quest (quest weapons such as Thornbak, Broken War, Skiajati and Rumblejack must be sold to free theirs)'])
-add(['Companion slots (2 per 12p)',COMP_SLOTS,6,'=CEILING(B{0}/2,1)*12'.format(ia+2),10,'=MAX(0,CEILING((B{0}-E{0})/2,1)*12)'.format(ia+2),'',f'{COMP_SLOTS} = 8 assigned companions + 4 bundled sentinel weapons (v4.2 builds); 10 starter'])
+add(['Weapon slots (2 per 12p)',ws_count,6,'=CEILING(B{0}/2,1)*12'.format(ia+1),23+quest_slot,'=CEILING((B{0}-E{0})/2,1)*12'.format(ia+1),'',f'{ws_count} slot-taking weapons (Exalted/intrinsic excluded; Vinquibus counted once). Free: 11 starter + 12 junction/quest + {quest_slot} weapons that bring their own slot (Grimoire, Nataruk) (other quest weapons such as Thornbak, Broken War, Skiajati and Rumblejack must be sold to free theirs)'])
+add(['Companion slots (2 per 12p)',COMP_SLOTS,6,'=CEILING(B{0}/2,1)*12'.format(ia+2),10,'=MAX(0,CEILING((B{0}-E{0})/2,1)*12)'.format(ia+2),'',f'{COMP_SLOTS} = 8 assigned companions + 4 bundled sentinel weapons (v4.3 final builds); 10 starter'])
 ib=ms.max_row
 FI=add(['FIXED INFRASTRUCTURE TOTAL','','',f'=SUM(D{ia}:D{ib})','',f'=SUM(F{ia}:F{ib})'],True)
 add([])
 add(['3. OPTIONAL CONVENIENCE (plat shortcut for farmable items)','Count','Unit Pt','Pt','','','','Basis'],True)
 oa=ms.max_row+1
-add(['Orokin Reactors',65,20,f'=B{oa}*C{oa}','','','','66 frames minus Excalibur Umbra (pre-installed). Cyte-09 counted: verify'])
-add(['Orokin Catalysts',cat_count,20,f'=B{oa+1}*C{oa+1}','','','',f'{cat_count} ordinary non-adversary weapons (Kuva/Tenet pre-installed; Exalted use frame Reactor)'])
-add(['Incarnon Genesis via Cavalero (plat, one-time each)',32,120,f'=B{oa+2}*C{oa+2}','','','','v4.2: wiki - rotation adapters purchasable for 120p incl. install resources (U39). Otherwise farm Steel Path Circuit'])
+add(['Orokin Reactors',65,20,f'=B{oa}*C{oa}','','','','66 frames minus Excalibur Umbra (pre-installed). Sirius & Orion counted once for Sirius; Orion\'s Reactor is pre-installed (wiki). Verified v4.3 XR against every frame page.'])
+add(['Orokin Catalysts',cat_count,20,f'=B{oa+1}*C{oa+1}','','','',f'{cat_count} ordinary non-adversary weapons (Kuva/Tenet pre-installed; Grimoire/Nataruk quest pre-installed; Exalted use frame Reactor)'])
+add(['Incarnon Genesis via Cavalero (plat, one-time each)',32,120,f'=B{oa+2}*C{oa+2}','','','','wiki (U39): rotation adapters purchasable for 120p incl. install resources (U39). Otherwise farm Steel Path Circuit'])
 OC=add(['OPTIONAL CONVENIENCE TOTAL','','',f'=SUM(D{oa}:D{oa+2})'],True)
 add([])
 add(['4. RECONSTRUCTION TOTALS','Floor Pt','Realistic Pt','Conservative Pt','USD Floor','USD Realistic','USD Conservative'],True)
@@ -140,15 +141,16 @@ for r in rows:
     ro.append([f,'Prime' if f.endswith('Prime') else ('Umbra' if 'Umbra' in f else 'Base (no Prime)'),v.get('Introduced'),', '.join(v.get('Abilities') or []),(v.get('Passive') or '').replace('\n',' ')[:300],v.get('Subsumed') or b.get('Subsumed'),', '.join(k for k,s in meta.SIG.items() if s[0]==f)])
 newsheet('Roster v4 (live)',['Frame','Version','Introduced','Abilities (live)','Passive (live)','Helminth ability (live)','Signature weapons (live)'],ro,{'Abilities (live)':55,'Passive (live)':70,'Signature weapons (live)':40},idx=3)
 oi=[('Protea','RESOLVED v4.3 B4: Roar over Grenade Fan + Temporal Artillery + Temporal Erosion','No action'),
-    ('Dante','Noctua ruled additional Exalted (no Secondary replacement)','LIVE TEST REQUIRED if replacement is wanted'),
+    ('Dante','Noctua ruled additional Exalted (no Secondary replacement); Noctua build kept for Wordwarden','OPTIONAL preference only: in-game check if a Secondary replacement is ever wanted (not a LIVE TEST)'),
     ('Sirius & Orion','RESOLVED v4.3 B5 (wiki): Orion comes with a pre-installed Orokin Reactor; one Reactor per S&O is correct','No action'),
+    ('Banshee (time-limited)','Wiki: every player logging in 23 Sep - 7 Oct 2026 receives a free base Banshee with a pre-installed Reactor AND a Warframe slot (U44 rework gift)','Claim before 7 Oct 2026: the base frame can be sold to free one Warframe slot (-20p net). Not counted in the model (account-state dependent)'),
     ('Signature preference','v4.1 allocated uncontested no-bonus signatures (Temple Riot-848, Mirage Akzani, S&O Pride)','Revert to Athodai / Prisma Twin Gremlins / Caustacyst if preferred; counts unchanged'),
-    ('Builds','v3 holds no per-frame aura/exilus/mod/arcane/shard/focus sheets','Mods are covered by the all-mods mandate and Arcanes by the required + collection lines; per-frame build sheets still need authoring'),
-    ('Archon Shards','Plan covers 230 of 330 shard slots','Extend shard plan to all 66 frames'),
+    ('Builds','RESOLVED v4.2/v4.3: per-frame aura/exilus/mods/Arcanes/shards/focus/companion builds for all 66 frames (FRAME BUILDS, optimization-audited 66/66)','No action'),
+    ('Archon Shards','RESOLVED v4.2/v4.3: all 330 shard positions assigned (see ARCHON SHARD ASSIGNMENTS)','No action'),
     ('Sentinel weapons','Resolved v4.1: default weapons bundled (Verglas Prime, Prime Laser Rifle, Deth Machine Rifle Prime, Burst Laser Prime, Deconstructor Prime, Vulklok, Artax)','Change only if non-default sentinel weapons are wanted'),
     ('Brysko','Tracked in Upcoming (Not Live); excluded from live cost','Integrate on release: frame, Corecracker ruling, Rain & Shine, Hound, Sentient shotgun'),
     ('Tigris Incarnon','Announced Incarnon adapter (Nekros Tigris Prime) not live','Add Genesis row on release'),
-    ('Adversary elements','v3 had no element targets; v4 set them','Confirm per-frame elements'),
+    ('Adversary elements','RESOLVED v4.3: progenitor elements included in the element-order validator (203/203 configs valid)','No action'),
     ('Variant families','Vectis/Prime, Trumna/Prime, Dual Keres/Prime, Epitaph/Prime, Cedo/Prime, Pyrana/Prime, Ohma/Prisma Ohma','Distinct items; optional further uniqueness pass'),
     ('Account purchase','No candidate account inventory supplied','Provide export for the equivalency audit')]
 newsheet('Open Items',['Area','Issue','Action'],oi,{'Issue':80,'Action':70},idx=4)
@@ -209,7 +211,7 @@ for row_ in ws.iter_rows(min_row=2):
 ws=wb['Archon Shards']; ws.append(['TOTAL PLANNED',230,'','','v4: 66 frames x 5 = 330 slots; 100 unplanned','OPEN'])
 ws=wb['Account Infrastructure']
 for row_ in ws.iter_rows(min_row=2):
-    if row_[0].value=='Orokin Catalysts': ws.cell(row_[0].row,2,f'{cat_count} ordinary non-adversary weapons (v4)')
+    if row_[0].value=='Orokin Catalysts': ws.cell(row_[0].row,2,f'{cat_count} ordinary non-adversary weapons (v4.3: Grimoire/Nataruk pre-installed)')
     if row_[0].value=='Elemental Vice': ws.cell(row_[0].row,2,'12 baseline (v4: 12 adversary weapons)')
     if row_[0].value=='Orokin Reactors': ws.cell(row_[0].row,2,'65 (66 frames minus Umbra)')
 ws=wb['Normalization Log']

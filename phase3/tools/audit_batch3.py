@@ -130,3 +130,6 @@ AUDIT['Khora Prime'].update(outcome='CORRECTED',
   final='Roar over VENARI (ability; Venari herself stays). Ensnare + Whipclaw propagation loop restored, Strangledome kept for anchored defence, Accumulating Whipclaw kept. Rest of the Batch 3 build unchanged (Whipclaw Prime Primed Reach, Dual Keres Prime heavy, Hystrix Prime Deadhead). LIVE TEST: which Venari posture persists once the ability is subsumed.',
   why='Steel Path endurance: Ensnare + Whipclaw keeps re-pulling and disabling whole packs into one 10m blast (x2 damage on ensnared), Roar adds x1.65 on top, and the only cost is losing Venari posture control/instant revive. NO HELMINTH was competitive but leaves the near-free Venari slot unused; subsuming Strangledome or Ensnare costs a density tool.',
   delta='None.')
+# ---------------- v4.3 cross-roster pass: LIVE TEST resolutions
+AUDIT['Koumei']['final'] += ' XR: LIVE TEST RESOLVED - wiki: The Five Fates have no interaction with Helminth subsumed abilities (Roar does not roll dice).'
+AUDIT['Mesa Prime']['final'] += ' XR: LIVE TEST RESOLVED - wiki: Peacemaker targets the torso, so no weak-point hits; Merciless confirmed.'

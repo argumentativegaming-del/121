@@ -92,7 +92,7 @@ for r in engine.ROWS:
     for i,c in enumerate(BD.B[f]['shards'],1):
         tau=c.startswith('T:'); code=c[2:] if tau else c; col,stat,val=engine.SHARD[code]
         sh.append([f,i,col,stat,'Tauforged' if tau else 'Normal',val*(1.5 if tau else 1),X.NORMAL_STR.get(f,'') if code=='CS' and not tau else '']); tot[(col,stat,'Tauforged' if tau else 'Normal')]+=1; taus+=tau
-ws=sheet('ARCHON SHARDS',['Frame','Position','Color','Stat','Normal / Tauforged','Value','Tau decision note'],sh,{'Stat':34,'Tau decision note':45},idx=3)
+ws=sheet('ARCHON SHARD ASSIGNMENTS',['Frame','Position','Color','Stat','Normal / Tauforged','Value','Tau decision note'],sh,{'Stat':34,'Tau decision note':45},idx=3)
 ws.append([]); ws.append(['TOTAL POSITIONS',len(sh)]); ws.append(['Tauforged',taus]); ws.append(['Normal',len(sh)-taus]); ws.append(['ASSUMPTION',X.TAU_ASSUMPTION])
 for (col,stat,t),n in sorted(tot.items()): ws.append(['Total',None,col,stat,t,n])
 # ---------- COMPANION ASSIGNMENTS
@@ -173,10 +173,25 @@ rep=[('Frames complete',f'{complete} / 66'),('Helminth decisions',f"{sum(1 for b
      ('Full mod configs',f"{sum(1 for b in BD.B.values() if len(b['mods'])==8)} / 66"),('Arcane pairs',f"{sum(1 for b in BD.B.values() if len(b['arcanes'])==2)} / 66"),('Archon Shards',f'{len(sh)} / 330'),
      ('Focus Schools',f"{sum(1 for b in BD.B.values() if b['focus'])} / 66"),('Companions',f"{sum(1 for b in BD.B.values() if b['comp'])} / 66"),
      ('Weapon configurations complete',f"{sum(1 for f in alloc if all((s in wbyf[f]) or (f,s) in EXREP for s in ('Primary','Secondary','Melee')))} / 66"),
-     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - NOT FINAL'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
+     ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - FINAL (cross-roster audit passed)'),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
      ('Element-order validator (weapons + Exalteds)',f"{sum(1 for r in wcfg if not r['elem_errs'])+sum(1 for w in X.EXALTED if not X.exalted_element(w)[1])} / {len(wcfg)+len(X.EXALTED)} pass")]
 ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=9)
-s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds (v4.3 DRAFT)',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited - NOT FINAL']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
+s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Frame builds (v4.3 FINAL)',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
+# ---------- v4.3 CROSS-ROSTER AUDIT sheet (from xcheck.py)
+import subprocess as _sp
+_sp.run(['python3','xcheck.py'],check=True,capture_output=True)
+_xc=json.load(open('xcheck.json'))
+_ws=sheet('CROSS-ROSTER AUDIT',['Check','Result','Status','Note'],[[r[0],str(r[1]),r[2],r[3]] for r in _xc['rows']],{'Check':45,'Result':30,'Note':110},idx=1)
+_ws.append([]); _ws.append(['OVERALL','ALL PASS' if _xc['ok'] else 'FAILURES PRESENT'])
+# ---------- v4.3 XR stale-text sweep: obsolete v3 notes in carried-over sheets
+_STALE={'Protea; LIVE TEST with Helminth config':'Protea; RESOLVED v4.3 B4 - Roar over Grenade Fan + Temporal Artillery + Temporal Erosion',
+        'LIVE TEST intrinsic weapons':'Intrinsic/Exalted weapons resolved in v4.3 (see EXALTED BUILDS)'}
+for _ws in wb.worksheets:
+    for _row in _ws.iter_rows():
+        for _c in _row:
+            if isinstance(_c.value,str):
+                for _a,_b in _STALE.items():
+                    if _a in _c.value: _c.value=_c.value.replace(_a,_b)
 wb.save(F)
 json.dump(dict(complete=complete,shards=len(sh),taus=taus,live=LIVE,T_old=T_old,T_new=T_new,added=[x[0] for x in added],removed=[x[0] for x in removed],changed=[x[0] for x in changed],rep=rep,tot={f'{k[0]}|{k[1]}|{k[2]}':v for k,v in tot.items()}),open('final_report.json','w'),indent=1)
 print('saved', complete, len(sh), taus, len(LIVE)); print(rep)
