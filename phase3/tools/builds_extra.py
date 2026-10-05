@@ -1,0 +1,160 @@
+"""Companion configs, Exalted builds, weapon configurations, shard policy for v4.2 FINAL."""
+import json, re
+import engine, builds_data as BD
+W = json.load(open('weapons_all.json'))
+EVO = json.load(open('evolutions.json'))
+
+# ---------------- Companion configurations (one config per companion; shared by every frame that uses it)
+COMP = {
+ 'Adarza Kavat': dict(weapon='Adarza Claws', role='Crit support: Cat\'s Eye crit buff; Tenacious Bond final crit multiplier', mods=["Cat's Eye",'Reflect','Primed Animal Instinct','Primed Pack Leader','Link Fiber','Link Vitality','Tenacious Bond','Vicious Bond','Hastened Deflection','Enhanced Vitality']),
+ 'Panzer Vulpaphyla': dict(weapon='Panzer Claws', role='Viral priming (Viral Quills), Martyr Symbiosis revive, status spread', mods=['Viral Quills','Panzer Devolution','Martyr Symbiosis','Primed Pack Leader','Primed Animal Instinct','Link Fiber','Link Vitality','Contagious Bond','Vicious Bond','Hastened Deflection']),
+ 'Smeeta Kavat': dict(weapon='Smeeta Claws', role='Loot/energy economy: Charm buffs; Duplex Bond clones on energy spent', mods=['Charm','Mischief','Primed Animal Instinct','Primed Pack Leader','Link Fiber','Link Vitality','Enhanced Vitality','Duplex Bond','Tenacious Bond','Loyal Retriever']),
+ 'Huras Kubrow': dict(weapon='Huras Claws', role='Stealth: Stalk shares invisibility; Covert Bond', mods=['Stalk','Hunt','Primed Animal Instinct','Primed Pack Leader','Link Fiber','Link Vitality','Covert Bond','Tenacious Bond','Hastened Deflection','Enhanced Vitality']),
+ 'Dethcube Prime': dict(weapon='Deth Machine Rifle Prime', role='Energy economy: Energy Generator; Mystic Bond free casts', mods=['Energy Generator','Vaporize','Swift Deth','Primed Regen','Guardian','Vacuum','Link Fiber','Link Redirection','Mystic Bond','Manifold Bond']),
+ 'Helios Prime': dict(weapon='Deconstructor Prime', role='Scanning (codex/Investigator), Detect Vulnerability weak points', mods=['Investigator','Detect Vulnerability','Targeting Receptor','Primed Regen','Guardian','Vacuum','Link Fiber','Link Redirection','Mystic Bond','Manifold Bond']),
+ 'Wyrm Prime': dict(weapon='Prime Laser Rifle', role='Defensive: Negate status cleanse, Crowd Dispersion; Reinforced Bond', mods=['Negate','Crowd Dispersion','Primed Regen','Guardian','Vacuum','Link Fiber','Link Redirection','Metal Fiber','Reinforced Bond','Manifold Bond']),
+ 'Diriga': dict(weapon='Vulklok', role='Electric priming (Arc Coil / Electro Pulse) for electricity casters', mods=['Arc Coil','Electro Pulse','Calculated Shot','Primed Regen','Guardian','Vacuum','Link Fiber','Link Redirection','Mystic Bond','Manifold Bond']),
+}
+COMP_TYPES = {'Adarza Kavat':{'Adarza Kavat','Kavat'},'Panzer Vulpaphyla':{'Panzer Vulpaphyla','Vulpaphyla'},'Smeeta Kavat':{'Smeeta Kavat','Kavat'},'Huras Kubrow':{'Huras Kubrow','Kubrow'},
+              'Dethcube Prime':{'Dethcube','Sentinel','Robotic'},'Helios Prime':{'Helios','Sentinel','Robotic'},'Wyrm Prime':{'Wyrm','Sentinel','Robotic'},'Diriga':{'Diriga','Sentinel','Robotic'}}
+BEAST = {'Adarza Kavat','Panzer Vulpaphyla','Smeeta Kavat','Huras Kubrow'}
+def validate_comp(c):
+    errs=[]; cfg=COMP[c]
+    for m in cfg['mods']:
+        v=engine.mod(m)
+        if not v: errs.append('unknown '+m); continue
+        t=v.get('Type'); ok=COMP_TYPES[c]|{'Companion'}|({'Beast'} if c in BEAST else {'Robotic','Sentinel'})
+        if t not in ok: errs.append(f'{m} type {t} not usable on {c}')
+    if len(set(cfg['mods']))!=len(cfg['mods']): errs.append('dup')
+    return errs
+# Companion weapon builds
+COMP_WEAPON_BUILD = {
+ 'Beast claws (Adarza/Panzer/Smeeta/Huras)': (['Bite','Maul','Bell Ringer','Hunter Synergy','Sepsis Claws','Shocking Claws','Venom Teeth','Precision Conditioning'], {'Claws'}),
+ 'Sentinel rifles (Deth Machine Rifle Prime, Deconstructor Prime*, Prime Laser Rifle, Vulklok)': (['Serration','Split Chamber','Point Strike','Vital Sense','Hellfire','Malignant Force','High Voltage','Galvanized Aptitude'], {'Rifle','Primary'}),
+}
+
+# ---------------- Exalted / separately moddable builds
+MELEE_CRIT = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','Primed Reach','Virulent Scourge']
+PSEUDO_MELEE = ['Primed Pressure Point','Blood Rush','Weeping Wounds','Organ Shatter','Berserker Fury','Condition Overload','Virulent Scourge','Molten Impact']
+RIFLE_CRIT = ['Serration','Galvanized Chamber','Point Strike','Vital Sense','Hammer Shot','Galvanized Aptitude','Primed Cryo Rounds','Malignant Force']
+PISTOL_CRIT = ['Hornet Strike','Galvanized Diffusion','Primed Pistol Gambit','Primed Target Cracker','Galvanized Crosshairs','Primed Heated Charge','Pathogen Rounds','Galvanized Shot']
+SHOTGUN = ['Primed Point Blank','Galvanized Hell','Primed Ravage','Critical Deceleration','Galvanized Savvy','Primed Charged Shell','Toxic Barrage','Incendiary Coat']
+EXALTED = {
+ 'Neutralizer':('Cyte-09','Primary',RIFLE_CRIT,'Primary Deadhead','Viral+Heat','Weak-point sniper; Primary Deadhead on weak point kills'),
+ 'Artemis Bow Prime':('Ivara Prime','Primary',RIFLE_CRIT,'Primary Deadhead','Viral+Heat','Charged multi-arrow; bow uses rifle mods'),
+ 'Lizzie':('Temple','Primary',RIFLE_CRIT,'Primary Merciless','Viral+Heat','Exalted guitar (Primary replacement)'),
+ 'Balefire Charger Prime':('Hildryn Prime','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Shield-fed exalted'),
+ 'Regulators Prime':('Mesa Prime','Secondary',PISTOL_CRIT,'Secondary Deadhead','Viral+Heat','Peacemaker exalted (project Melee credit)'),
+ 'Dex Pixia Prime':('Titania Prime','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Razorwing pistols'),
+ 'Glory':('Jade','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Additional Exalted'),
+ 'Noctua':('Dante','Secondary',PISTOL_CRIT,'Secondary Merciless','Viral+Heat','Additional Exalted tome; scans targets'),
+ 'Desert Wind Prime':('Baruuk Prime','Melee',MELEE_CRIT,None,'Viral+Heat (Reactive Storm overrides)','Exalted fists'),
+ 'Exalted Umbra Blade':('Excalibur Umbra','Melee',MELEE_CRIT,None,'Viral+Heat (Chromatic Blade emissive)','Exalted Blade'),
+ 'Garuda Prime Talons':('Garuda Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','Normal-ish weapon, no heavy attacks/Exilus'),
+ 'Shadow Claws Prime':('Sevagoth Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Exalted Shadow claws'),
+ 'Valkyr Prime Talons':('Valkyr Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Hysteria talons'),
+ 'Iron Staff Prime':('Wukong Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Primal Fury staff'),
+ 'Diwata Prime':('Titania Prime','Melee',MELEE_CRIT,None,'Viral+Heat','Razorwing sword'),
+ 'Shadow Clones Prime':('Ash Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo); no heavy-attack mods'),
+ 'Landslide Fists Prime':('Atlas Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
+ 'Shattered Lash Prime':('Gara Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
+ 'Whipclaw Prime':('Khora Prime','Melee',PSEUDO_MELEE,None,'Viral+Heat','U38.5 Exalted (Ability Combo)'),
+}
+VENARI = ['Primed Pack Leader','Primed Animal Instinct','Link Fiber','Link Vitality','Enhanced Vitality','Vicious Bond','Contagious Bond','Hastened Deflection']
+def validate_mods(mods, allowed):
+    errs=[]
+    for m in mods:
+        v=engine.mod(m)
+        if not v: errs.append('unknown '+m)
+        elif v.get('Type') not in allowed: errs.append(f'{m} type {v.get("Type")}')
+    if len(set(mods))!=len(mods): errs.append('dup')
+    return errs
+SLOT_TYPES = {'Primary':{'Rifle','Primary','Sniper','Bow','Assault Rifle'},'Secondary':{'Pistol','Secondary'},'Melee':{'Melee'},'Shotgun':{'Shotgun','Primary'}}
+
+# ---------------- Weapon configurations
+def wclass(w):
+    v=W.get(w) or W.get(w+' (Primary)') or {}
+    return v.get('Class') or '?', v
+def norm_attack(v):
+    a=(v.get('Attacks') or [{}])[0]
+    return a.get('CritChance') or 0, a.get('StatusChance') or 0
+def template(slot, cls):
+    if slot=='Melee': return 'MELEE_CRIT', MELEE_CRIT
+    if slot=='Primary' and cls in ('Shotgun',): return 'SHOTGUN', SHOTGUN
+    if slot=='Secondary': return 'PISTOL_CRIT', PISTOL_CRIT
+    return 'RIFLE_CRIT', RIFLE_CRIT
+ARC_RULE = {}
+def weapon_arcane(slot, cls, w, frame, kind):
+    if slot=='Primary':
+        if cls in ('Sniper Rifle','Bow','Crossbow') : return 'Primary Deadhead'
+        if cls=='Shotgun': return 'Shotgun Vendetta'
+        if 'Kuva' in w or 'Tenet' in w: return 'Primary Merciless'
+        return 'Primary Merciless'
+    if slot=='Secondary':
+        if frame in ('Ash Prime','Excalibur Umbra','Valkyr Prime','Wukong Prime','Garuda Prime','Kullervo','Baruuk Prime','Voruna Prime'): return 'Secondary Outburst'
+        if kind=='status': return 'Secondary Encumber'
+        return 'Secondary Merciless'
+    if slot=='Melee':
+        if frame=='Ash Prime': return 'Melee Crescendo'
+        if kind=='status': return 'Melee Influence'
+        if cls in ('Heavy Blade','Heavy Scythe','Hammer','Scythe') : return 'Melee Animosity'
+        return 'Melee Duplicate'
+def element(kind, w, frame):
+    if w.startswith(('Kuva ','Tenet ')): return 'Adversary innate element (see Adversary sheet) + Viral'
+    if kind=='status': return 'Corrosive + Viral (status priority, Condition Overload/Galvanized scaling)'
+    return 'Viral + Heat (Steel Path generalist; swap Heat->Corrosive vs armored Grineer)'
+def evo_family(w):
+    base=w.replace(' Prime','').replace(' Vandal','').replace(' Wraith','').replace('Prisma ','')
+    for k in EVO:
+        if k==base: return k
+    return None
+def evo_pick(fam, kind):
+    tiers=EVO[fam]['tiers']; picks=[]
+    for t in sorted(tiers):
+        opts=tiers[t]
+        if t=='EVO1' or not opts: continue
+        def score(o):
+            e=(o['perk']+' '+o['effect']).lower(); s=0
+            if kind=='crit': s+= 3*('critical' in e) + 2*('multishot' in e) + 1*('damage' in e) - 1*('status' in e and 'critical' not in e)
+            else: s+= 3*('status' in e) + 2*('multishot' in e) + 1*('damage' in e)
+            s+= 0.5*('incarnon form' in e and 'damage' in e)
+            s-= 1*('reload' in e and t!='EVO3') ; s-= 1.5*('ammo' in e and 'damage' not in e)
+            return s
+        best=max(opts,key=score); picks.append(f"{t}: {best['perk']}")
+    return picks
+def weapon_configs():
+    rows=[]
+    for r in engine.ROWS:
+        f=r[0]
+        for slot,w in zip(['Primary','Secondary','Melee'],r[1:]):
+            cls,v=wclass(w)
+            if cls=='Exalted Weapon' or w in ('Razorflies','Garuda Prime Talons'): continue
+            if w=='Vinquibus (Melee)': cls='Bayonet'
+            cc,sc=norm_attack(v) if v else (0,0)
+            kind='crit' if cc>=0.24 else ('status' if sc>=0.28 else ('crit' if cc>=sc else 'status'))
+            tname,tmods=template(slot,cls)
+            fam=evo_family(w.replace(' (Primary)','').replace(' (Melee)',''))
+            inc=[]
+            if fam: inc=evo_pick(fam,kind)
+            rows.append(dict(frame=f,slot=slot,weapon=w,cls=cls,cc=cc,sc=sc,kind=kind,template=tname,mods=tmods,
+                             arcane=weapon_arcane(slot,cls,w,f,kind),element=element(kind,w,f),incarnon=inc,evo_family=fam,
+                             forma='5 Forma to Rank 40 + ~3 polarization' if w.startswith(('Kuva ','Tenet ')) else ('~4 (Incarnon)' if fam else '~3')))
+    return rows
+
+# ---------------- Shard policy (deliberate Tauforged allocation)
+# Tau Crimson Strength kept only where Strength is the build's primary scaling stat without a met cap.
+NORMAL_STR = {'Nyx Prime':'Psychic Bolts cap 125% met without Tau','Oberon Prime':'200% Renewal cap met without Tau','Limbo Prime':'Range/Duration build',
+              'Loki Prime':'Range/Duration build','Octavia Prime':'Duration-driven','Titania Prime':'Razorwing duration/efficiency build','Zephyr Prime':'Turbulence duration build',
+              'Vauban Prime':'CC build','Harrow Prime':'support','Trinity Prime':'support','Wisp Prime':'support','Nekros Prime':'loot/support','Citrine Prime':'support',
+              'Hildryn Prime':'shield-scaling via Expertise uses Str but shields from Azure','Lavos Prime':'cooldown build','Koumei':'luck caster'}
+def apply_shard_policy():
+    changed={}
+    for f,b in BD.B.items():
+        sh=list(b['shards'])
+        if f in NORMAL_STR and 'T:CS' in sh:
+            sh[sh.index('T:CS')]='CS'; changed[f]=NORMAL_STR[f]
+        b['shards']=sh
+    return changed
+TAU_ASSUMPTION = ('Tauforged shards are FINITE. They are allocated deliberately: Tau Crimson Strength only on frames whose primary scaling stat is uncapped Strength; '
+                  'Tau Melee Crit Damage on melee-centric frames; Tau Primary Status / Secondary Crit on weapon-reliant frames. All other positions use normal shards. '
+                  'Ascent Fusion (3 normal -> 1 Tauforged) is the planned conversion route; acquisition is account-bound (Archon Hunts / Netracells / Archimedea).')

@@ -181,14 +181,25 @@ for v in MODS.values():
         if v['Name'].lower() not in byname:
             row(Category='Mod',Item=v['Name'],**{'Variant':v.get('Type'),'Required Rank':v.get('MaxRank'),'Quantity':1,'Acquisition Method':'Player trade (in-game only)','Tradeable?':'Yes (wiki)','Status':'MARKET DATA UNAVAILABLE','Mod Category':v.get('Type'),'Counted in Player-Trade Total?':'No (no data)','Source/Reasoning':'Wiki lists as tradeable; no Warframe.Market listing'})
 REQ_ARC_V3=['Molt Augmented','Arcane Energize','Arcane Grace','Arcane Guardian','Arcane Fury','Arcane Strike','Arcane Aegis','Arcane Avenger','Arcane Precision','Arcane Velocity','Molt Efficiency','Molt Reconstruct','Arcane Blessing','Melee Crescendo']
-REQ_ARC_V4=['Primary Merciless','Primary Deadhead','Primary Dexterity','Secondary Merciless','Secondary Deadhead','Secondary Dexterity','Melee Influence','Melee Animosity','Melee Duplicate','Melee Exposure','Melee Vortex']
+REQ_ARC_V4_OLD=['Primary Merciless','Primary Deadhead','Primary Dexterity','Secondary Merciless','Secondary Deadhead','Secondary Dexterity','Melee Influence','Melee Animosity','Melee Duplicate','Melee Exposure','Melee Vortex']
+# v4.2: required Arcanes derived from FINAL builds (frame arcanes + weapon arcanes + exalted arcanes)
+import builds_data as _BD, builds_extra as _BX
+_BX.apply_shard_policy()
+REQ_FRAME_ARC=sorted({a for b_ in _BD.B.values() for a in b_['arcanes']})
+REQ_WEAP_ARC=sorted({r_['arcane'] for r_ in _BX.weapon_configs() if r_['arcane']}|{v_[3] for v_ in _BX.EXALTED.values() if v_[3]})
+REQ_ARC_V3=REQ_FRAME_ARC
+REQ_ARC_V4=REQ_WEAP_ARC
+USED_COMP={b_['comp'] for b_ in _BD.B.values()}
 # ---------------- Companions (v3 list)
 COMP=[('Panzer Vulpaphyla',None),('Nautilus Prime','nautilus_prime_set'),('Wyrm Prime','wyrm_prime_set'),('Dethcube Prime','dethcube_prime_set'),('Diriga',None),('Adarza Kavat','adarza_kavat_imprint'),('Smeeta Kavat','smeeta_kavat_imprint'),('Shade Prime','shade_prime_set'),('Huras Kubrow',None),('Sahasa Kubrow',None),('Helios Prime','helios_prime_set'),('Taxon',None),('Helminth Charger',None)]
 for nm,s in COMP:
+    used=nm in USED_COMP
+    users=', '.join(sorted(f_ for f_,b_ in _BD.B.items() if b_['comp']==nm))
     if s and 'imprint' not in s:
-        p=price(s,None); row(Category='Companion',Item=nm,**{'Slot':'Companion','Variant':'Prime sentinel','Quantity':1,'Acquisition Method':'Player trade (set)','Tradeable?':'Yes','Priority':'Core','Catalyst?':'Reactor','Counted in Player-Trade Total?':'Yes','Source/Reasoning':'v3 companion list','Notes':'Sentinel weapon not specified in v3 - OPEN'},**mk(p))
+        p=price(s,None); row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Prime sentinel','Quantity':1,'Acquisition Method':'Player trade (set)','Tradeable?':'Yes','Priority':'Core' if used else 'Optional (no v4.2 build assignment)','Catalyst?':'Reactor','Counted in Player-Trade Total?':'Yes' if used else 'Optional','Source/Reasoning':'v3 companion list; v4.2 assignment' if used else 'v3 list; unassigned in v4.2 FINAL builds','Notes':'Default sentinel weapon bundled'},**mk(p))
     else:
-        row(Category='Companion',Item=nm,**{'Slot':'Companion','Variant':'Beast/Sentinel','Quantity':1,'Acquisition Method':'Breed / incubate / vendor (imprint optional trade)' if s else 'Farm / vendor / incubate','Tradeable?':'Imprint only' if s else 'No','Priority':'Core','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No','Market Slug':s,'Source/Reasoning':'v3 companion list'})
+        row(Category='Companion',Item=nm,**{'Assigned Frame(s)':users,'Slot':'Companion','Variant':'Beast/Sentinel','Quantity':1,'Acquisition Method':'Breed / incubate / vendor (imprint optional trade)' if s else 'Farm / vendor / incubate','Tradeable?':'Imprint only' if s else 'No','Priority':'Core' if used else 'Optional (no v4.2 build assignment)','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No','Market Slug':s,'Source/Reasoning':'v3 companion list' + ('' if used else '; unassigned in v4.2')})
+row(Category='Mod',Item='Swift Deth',**{'Variant':'Dethcube precept','Required Rank':5,'Quantity':1,'Acquisition Method':'In-game trade / Simaris-or-drop (no WFM listing)','Tradeable?':'Yes (wiki)','Status':'MARKET DATA UNAVAILABLE','Mod Category':'Dethcube','Counted in Player-Trade Total?':'No (no data)','Source/Reasoning':'v4.2 build-required (Dethcube Prime companion config); no Warframe.Market listing'})
 # ---------------- Arcanes
 for s,i in sorted(items.items()):
     if 'arcane_enhancement' not in i['tags']: continue
@@ -204,7 +215,7 @@ for s,i in sorted(items.items()):
         note=f'Cheaper via {copies}x R0 ({via}p realistic) than buying max rank'
     row(Category='Arcane',Item=nm,**{'Variant':wa.get('Type') or ','.join(x for x in i['tags'] if x not in ('arcane_enhancement',)),'Required Rank':mr,'Quantity':1,'Acquisition Method':'Player trade (max rank)','Tradeable?':'Yes',
         'R0 Realistic':p0.get('realistic'),'Max via R0 copies (Realistic)':via,
-        'Counted in Player-Trade Total?':'Yes' if nm in REQ_ARC_V3+REQ_ARC_V4 else 'Collection (optional)','Priority':'Required (v3 build list)' if nm in REQ_ARC_V3 else ('Required (v4 weapon-arcane baseline)' if nm in REQ_ARC_V4 else 'Collection (optional)'),'Notes':note,
+        'Counted in Player-Trade Total?':'Yes' if nm in REQ_ARC_V3+REQ_ARC_V4 else 'Collection (optional)','Priority':'Required (v4.2 frame builds)' if nm in REQ_ARC_V3 else ('Required (v4.2 weapon/exalted builds)' if nm in REQ_ARC_V4 else 'Collection (optional)'),'Notes':note,
         'Source/Reasoning':'Arcanes share across items like mods (one max-rank copy covers every build).'},**d)
 json.dump(proc,open('proc.json','w'))
 print(len(proc), collections.Counter(r['Category'] for r in proc))

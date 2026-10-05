@@ -1,0 +1,1854 @@
+{
+ "Skana": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Guardian's Promise",
+     "effect": "Increase Base Damage by +X.; With Overshields: +80% Heavy Attack Efficiency."
+    },
+    {
+     "perk": "Wartime Nerve",
+     "effect": "Increase Base Damage by +X.; +9 Combo Count on undamaged enemies.; Enemies are undamaged as long as their health and shield have not been damaged.; *Damaging Overguard is not taken into account."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+0.4 Range"
+    },
+    {
+     "perk": "Resolute Force",
+     "effect": "+6s Combo Duration"
+    },
+    {
+     "perk": "Swift Break",
+     "effect": "+50% Heavy Attack Wind Up Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Status Chance by +Y%."
+    },
+    {
+     "perk": "Elemental Excess",
+     "effect": "Increase Base Status Chance by +X%."
+    },
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Critical Chance by +X%."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Praedos": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Reach 5x Combo and then Heavy Attack to activate Incarnon Form.; * +3 Range; * +40% Attack Speed"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Seismic Slam",
+     "effect": "+50% Slam Radius"
+    },
+    {
+     "perk": "Whirling Flurry",
+     "effect": "+20% Attack Speed"
+    },
+    {
+     "perk": "Drifting Grace",
+     "effect": "+20% Sprint Speed; +20% Slide"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Shockwave Synergy",
+     "effect": "For each enemy hit by Slam radius, gain 4 Combo Count"
+    },
+    {
+     "perk": "Reaching Lunge",
+     "effect": "+1.5m Slide Attack Range"
+    },
+    {
+     "perk": "Adept Reflexes",
+     "effect": "+20 Initial Combo"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Swift Transmute",
+     "effect": "Reach 3x Combo and Heavy Attack to activate Incarnon Form"
+    },
+    {
+     "perk": "Evolved Ascension",
+     "effect": "+30% Parkour Velocity"
+    },
+    {
+     "perk": "Vaulting Leap",
+     "effect": "Increase Double Jump strength by +100%"
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Transfigured Momentum",
+     "effect": "On Slide Kill: +50% Heavy Attack Efficiency for 30s"
+    },
+    {
+     "perk": "Kinetic Harmony",
+     "effect": "+100% Heavy Attack Wind Up Speed"
+    },
+    {
+     "perk": "Universal Readiness",
+     "effect": "Collecting ammo grants 5 Melee Combo counter"
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Atomos": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Fire high-powered grenades.; Incarnon Form becomes a semi-automatic grenade launcher whose projectiles explode in a 7.9 met"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Paladin Virtue",
+     "effect": "Increase Base Damage by +24.; With Energy Max over 700: Increase Base Critical Damage Multiplier by +1x."
+    },
+    {
+     "perk": "Hoplite Virtue",
+     "effect": "Increase Base Damage by +24.; On Shield Break: Increase Base Damage by +30 for 8s.; This is on personal shield break, not breaking enemy shields."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Moonrise Velocity",
+     "effect": "+7 Range.; Bonus stacks additively to Ruinous Extension; This bonus has no effect on Incarnon Form"
+    },
+    {
+     "perk": "Mercenary Chamber",
+     "effect": "Increase Base Ammo Capacity to 560.; This bonus not affect Incarnon form"
+    },
+    {
+     "perk": "Resonant Restore",
+     "effect": "On Reload From Empty: Increase Base Magazine Capacity by +5. Stacks up to 7x.; This bonus does not affect Incarnon form"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +20%."
+    },
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +19%."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +10%.; Increase Base Status Chance by +10%."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Vectis": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint hits charge Incarnon Transmutation; alt fire transmutes. Switching back will expend any remaining charge.; Fire slowing projectiles that explode on headshot; Incarnon Form has higher Critical Chance, but with reduced Fire Rate and"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Inciting Incident",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability Active: +2 Punch Through; Punch Through is locked to 0 in Incarnon Form, meaning the Channeled Ability bonus from this evolution applies only in the base form."
+    },
+    {
+     "perk": "Lone Enforcer",
+     "effect": "Increase Base Damage by +X.; +25% Multishot if no enemies are within 5m.; Multishot bonus is additive with Split Chamber and similar bonuses."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+60% Reload Speed."
+    },
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-60% Recoil."
+    },
+    {
+     "perk": "Silent Running",
+     "effect": "Reduce the chance an enemy will hear gunfire by 100%."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Deadhead",
+     "effect": "+25% Headshot Damage.; Bonus is additive with Vectis's Scope bonus, Target Acquired, {{Arcane|Primary Deadhead}}, and similar bonuses."
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X.; Increase Base Critical Damage Multiplier by +0.5x."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Status Chance by 30% of current Critical Chance, up to 40%; Maximum Base Status Chance increase is gained at 134% Critical Chance, requiring +345% critical chance to reach.; * Critical chance from Primary Acuity does not work,"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Lex": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Hoplite Virtue",
+     "effect": "Increase Base Damage by +X.; On Shield Break: Increase Base Damage by +80 for 8 seconds."
+    },
+    {
+     "perk": "Trusty Sidearm",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability active: +60% Ammo Efficiency."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Lex Talionis",
+     "effect": "On Headshot: -20% Weapon Recoil and +20% Accuracy for 4s. Stacks up to 4x."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +10."
+    },
+    {
+     "perk": "Ready Retaliation",
+     "effect": "On Reload From Empty: +100% Reload Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Executioner's Dawn",
+     "effect": "On Equip: +100% Headshot Damage for 4s."
+    },
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +X%."
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Critical Damage Multiplier by +0.4x."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Burston": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Forceful Finality",
+     "effect": "Increase Base Damage by +42.; +5 Base Multishot on final magazine burst.; Multishot bonus is added before mods, and is thus multiplied by multishot bonuses.; Multishot bonus does not affect the Incarnon form."
+    },
+    {
+     "perk": "Fortress Salvo",
+     "effect": "Increase Base Damage by +42.; With Armor Over 450: +2 Punch Through."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +21."
+    },
+    {
+     "perk": "Kinetic Battle",
+     "effect": "-50% Weapon Recoil."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Reaver's Rapture",
+     "effect": "On Full Burst Hit: +20% Damage, resets on Reload.; Caps at 5x for +100% damage, additive with base damage mods such as Serration.; Burst condition is not affected by multishot or punch through, but counts object hits such as nullifier bubbl"
+    },
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Critical Chance by +22%."
+    },
+    {
+     "perk": "Fatal Affliction",
+     "effect": "+40% Direct Damage per Status Type affecting the target."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Gorgon": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Hunter's Mantra",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability Active: +3 Punch Through, +40% Accuracy.; Channeled Abilities must be draining energy to be considered active. Abilities that do not drain energy over time such as Nekros Desecrate, Hildry"
+    },
+    {
+     "perk": "Hoplite Virtue",
+     "effect": "Increase Base Damage by +X.; On Shield Break: Increase Base Damage by +Y for 8s.; This is on personal shield break, not breaking enemy shields."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Resonant Restore",
+     "effect": "On Reload From Empty: Increase Base Magazine Capacity by +15. Stacks up to 3x."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed"
+    },
+    {
+     "perk": "Void's Guidance",
+     "effect": "-50% Weapon Recoil."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X; Increase Base Status Chance by +Y"
+    },
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +X"
+    },
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Critical Chance by +X"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Phenmor": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint Hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Incarnon Form changes the weapon from a semi-auto to full-auto with increased fire rate, 3 meter punch through, and its sho"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Void's Guidance",
+     "effect": "+50% Accuracy and +50% less Recoil while Aiming"
+    },
+    {
+     "perk": "Rapid Wrath",
+     "effect": "+20% Fire Rate"
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+80% Projectile Speed"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Retribution's Vessel",
+     "effect": "+50% Magazine Capacity; Does not affect Incarnon Form."
+    },
+    {
+     "perk": "Ready Retaliation",
+     "effect": "On Reload from Empty: +100% Reload Speed for 6 seconds; Affects untransformed Phenmor. Can affect transition into Incarnon form with a well-timed manual reload. Does not affect transition from Incarnon back to base form."
+    },
+    {
+     "perk": "Executioner's Fortune",
+     "effect": "On Headshot kill: 20% chance to instant Reload.; Does not affect Incarnon Form"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Survivor's Edge",
+     "effect": "+10% Critical Chance; +10% Status Chance; Bonuses are added after mods as a flat value."
+    },
+    {
+     "perk": "Incarnon Efficiency",
+     "effect": "Headshots Build +50% more Incarnon Transmutation charge.; Reduces the number of weakpoint hits required to fully charge Transmutation to 8.; * Each weakpoint hit generates 51 charge, up from 34."
+    },
+    {
+     "perk": "Elemental Excess",
+     "effect": "+20% Status Chance; -10% Critical Chance; Bonuses are added after mods as a flat value."
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Devouring Attrition",
+     "effect": "50% chance to deal +2000% damage on non-critical hits; Affects both forms.; Damage bonus is multiplicative to base damage bonuses such as Serration."
+    },
+    {
+     "perk": "Spiteful Defilement",
+     "effect": "Enemies suffering from fewer than 3 Status Effects will receive: +100% Critical Damage; Bonus is added after mods as a flat value.; Multiple instances of the same status effect are not counted separately, e.g. having 5 corrosive and 5 radia"
+    },
+    {
+     "perk": "Lingering Judgement",
+     "effect": "On 2 headshots within 2 seconds: +50% Headshot damage for 8 seconds.; Headshot damage bonus stacks additively with {{Arcane|Primary Deadhead|Primary Deadhead's}} headshot damage bonus."
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Innodem": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Reach 5x Combo and then Heavy Attack to activate Incarnon Form.; Aerial Attacks while Aim Gliding launch Radiation Damage projectiles, and Finishers increase Damage Reduction.; * +3 Range; * +40% Attack Speed; Aim glide melee attacks launch"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+0.5 Range"
+    },
+    {
+     "perk": "Bladed Harmony",
+     "effect": "+20% Attack Speed"
+    },
+    {
+     "perk": "Striking Swiftness",
+     "effect": "+30% Sprint Speed"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Hawk Momentum",
+     "effect": "Gain 5 Combo for every 10m of continuous slide; Only counts slide distance while grounded.; Weapon must be in hand for perk to apply."
+    },
+    {
+     "perk": "Skyborne Hunter",
+     "effect": "Increase range of aerial melee attacks by +0.5m.; Incarnon Form projectile and Slash, Heat, and Toxin Status Effect kills while airborne count towards generating stacks."
+    },
+    {
+     "perk": "Blade Twister",
+     "effect": "+60% Finisher Damage"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Incarnon Imago",
+     "effect": "Reach 3x Combo and Heavy Attack to activate Incarnon Form"
+    },
+    {
+     "perk": "Swooping Lunge",
+     "effect": "On Airborne Melee Kill: +50% Melee Damage for 10s. Stacks up to 3x.; Stacks additively with Pressure Point and similar bonuses."
+    },
+    {
+     "perk": "Protracted Execution",
+     "effect": "On Finisher: 20 Combo on Finisher"
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Blood Anointed",
+     "effect": "On Finisher: +40% Heavy Attack Efficiency for 40s"
+    },
+    {
+     "perk": "Stunning Brutality",
+     "effect": "On Finisher: Stun aware enemies in a 10m Radius"
+    },
+    {
+     "perk": "Armed Inspiration",
+     "effect": "Collecting ammo grants 5 Melee Combo counter"
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Kunai": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Swift Conclusion",
+     "effect": "Increase Damage by +X.; Increase Damage by +200% if enemy has less than half health.; Damage bonus if enemy has less than half health is additive with Hornet Strike in basic Kunai form, and multiplicative in Incarnon form. It is also additi"
+    },
+    {
+     "perk": "Sage's Resolve",
+     "effect": "Increase Base Damage by +X; With Channeled Ability active: +100% Multishot."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+60% Projectile Speed."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +10."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50%  Reload Speed.; Bonus stacks additively with reload speed mods such as Quickdraw."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Deathtrap Trigger",
+     "effect": "On equip from Primary:; *Increase Base Critical Chance by +X% for 4s.; *Increase Base Critical Damage Multiplier by +Y for 4s.; Bug: These are displayed as permanent bonuses in the Arsenal but only actually apply while the 4 second Deathtra"
+    },
+    {
+     "perk": "Accelerating Volley",
+     "effect": "On Fire: +20% Fire Rate for 0.5s. Stacks up to 5x.; Bonus stacks additively with fire rate mods such as Gunslinger."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +12%.; Increase Base Status Chance by +12%.; Base Status Chance increase is divided among the 2 projectiles in Incarnon mode, resulting in +6% Status Chance per projectile."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Okina": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Reach 6x Combo and then Heavy Attack to activate Incarnon Form.; Kills generate spectral daggers that target enemies, applying max Cold Status stacks.; *+100% Melee Damage; *+20% Sprint Speed; *+20% to Parkour Velocity; Kills create a spect"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Seeing Red",
+     "effect": "Increase Base Damage by +X.; 5 additional Combos on targets affected by Slash Status"
+    },
+    {
+     "perk": "Synergist Surety",
+     "effect": "Increase Base Damage by +X.; On Critical Hit: +Y% Status Damage for 10s. Stacks up to 5x."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+1 Range"
+    },
+    {
+     "perk": "Standoff",
+     "effect": "Combo Timer pauses when weapon is holstered"
+    },
+    {
+     "perk": "Swordsman's Celerity",
+     "effect": "+30% Movement Speed; Movement Speed bonus applies at all times."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%."
+    },
+    {
+     "perk": "Alchemy of War",
+     "effect": "Increase Base Status Chance by +X%.; +25% Status Duration"
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X; Increase Base Status Chance by +Y%"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Boar": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Reified Bane",
+     "effect": "Increase Base Damage by +10.; On Reload From Empty: Increase Base Damage by +14.; The damage bonus is applied after finishing a reload while the magazine is empty, and lasts indefinitely until a manual reload is initiated while the magazine"
+    },
+    {
+     "perk": "Fortress Salvo",
+     "effect": "Increase Base Damage by +16.; With Armor Over 450: +4 Punch Through"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Ready Retaliation",
+     "effect": "On Reload From Empty: +100% Reload Speed.; As the reload speed bonus is only applied at the ''end'' of the first reload from empty, the bonus will not apply to the first reload, only subsequent ones.; Bonus stacks additively with reload spe"
+    },
+    {
+     "perk": "Mercenary Chamber",
+     "effect": "Increase Base Ammo Capacity to 195."
+    },
+    {
+     "perk": "Practiced Grip",
+     "effect": "Increase Accuracy by +50%."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +12% per projectile.; Increase Base Status Chance by +96% for Incarnon Form."
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +20%.; Increase Base Critical Damage Multiplier by +0.5x."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +10%.; Increase Base Status Chance by +6% per projectile.; Increase Base Status Chance by +48% for Incarnon Form."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Bronco": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Speeding Bullet",
+     "effect": "Increase Base Damage by +X.; With Sprint Speed 1.2 or Higher: +60% Projectile Speed.; The projectile speed bonus stacks additively with projectile speed mods such as Lethal Momentum."
+    },
+    {
+     "perk": "Infused Shots",
+     "effect": "Increase Base Damage by +X.; On 50 Energy Spent: Increase Base Damage by +Y for 10s. Stacks up to 4x."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Kinetic Battle",
+     "effect": "-50% Weapon Recoil."
+    },
+    {
+     "perk": "Practised Grip",
+     "effect": "Increase Accuracy by +30%."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +2."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Enough for Everyone",
+     "effect": "+80% Ammo efficiency when 6 enemies are within 6m."
+    },
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +20%."
+    },
+    {
+     "perk": "Rain of Lead",
+     "effect": "+2 Base Multishot."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Destreza": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Reach 6x Combo and then Heavy Attack to activate Incarnon Form.; Heavy Attacks spawn 5 ghostly rapiers; * +100% Melee Damage; * +20% Sprint Speed; * +20% Parkour Velocity; * +10% Puncture Damage per Heavy Attack kill, up to 300% while trans"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Weighted Impetus",
+     "effect": "Increase Base Damage by +X; On Heavy Attack Kill: +100% Heavy Attack Wind Up Speed for 8s; Heavy Attack Wind Up Speed bonus is additive to other sources of Heavy Attack Wind Up Speed such as Killing Blow.; Bonus base damage is not applied t"
+    },
+    {
+     "perk": "Piercing Stature",
+     "effect": "Increase Base Damage by +X; On Puncture Status Effect: Gain +20% Status Chance for 6 seconds. Stacks 5x; Status Chance bonus is additive to other sources of Status Chance such as Melee Prowess and Weeping Wounds.; Stacks have independent ti"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+1 Range"
+    },
+    {
+     "perk": "Overhand",
+     "effect": "Base Heavy Attack Efficiency set at 30%"
+    },
+    {
+     "perk": "Adept Reflexes",
+     "effect": "+20 Initial Combo"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Absolute Dominion",
+     "effect": "Increase Base Status Chance by +X"
+    },
+    {
+     "perk": "Critical Forte",
+     "effect": "Increase Base Critical Multiplier by +X"
+    },
+    {
+     "perk": "Decisive Stature",
+     "effect": "Increase Base Critical Chance by 25% of current Status Chance, up to 35%; The maximum effect is reached when weapon status chance is at 140%.; * Destreza requires +900% status chance to hit max, for a base crit chance of 63%.; * Destreza Pr"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Torid": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Direct shots charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Fire a long-range Toxin beam.; Incarnon Form becomes a continuous beam weapon with a 37 meter range, and a 2.3 meter damage r"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Final Fusillade",
+     "effect": "Increase Base Damage by +51.; +3 Multishot on last shot in magazine."
+    },
+    {
+     "perk": "Plentiful Mayhem",
+     "effect": "Increase Base Damage by +31.; Multishot consumes ammo directly from Capacity and increases Damage by +60%.; Damage bonus from multishot consuming ammo is multiplicative to base damage bonuses like Serration.; Affects both modes. In the case"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+50% Projectile Speed"
+    },
+    {
+     "perk": "Renewed Horror",
+     "effect": "On Reload from Empty: Lingering damage field duration doubles on first shot."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +9.; Does not apply to Incarnon Form's Magazine."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +20%."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +15%.; Increase Base Status Chance by +15%."
+    },
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +34%."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Strun": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Tenno Targeting",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability Active: +4 Punch Through; Damage increase is per pellet."
+    },
+    {
+     "perk": "Blazing Barrel",
+     "effect": "Increase Base Damage by +X.; On Firing: +0.05 Base Multishot. Stacks up to 5x.; Damage increase is per pellet.; The in-game description of +5 Multishot is incorrect.; The Multishot bonus adds 0.25 pellets to the base Multishot of both forms"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+60% Reload Speed.; The bonus stacks additively with mods such as Tactical Pump."
+    },
+    {
+     "perk": "Galvanic Reload",
+     "effect": "On hitting a target affected by an Electricity status, 40% chance to restore 1 round in the magazine from ammo pool.; The status effect may originate from any source.; The bonus can only apply once per enemy hit.; The bonus does not affect "
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+30% Projectile Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +X%.; Increase Base Status Chance by +Y% for Incarnon Form."
+    },
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%."
+    },
+    {
+     "perk": "Brutal Edge",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Status Chance by +Y%.; Increase Base Status Chance by +Z% for Incarnon Form."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Latron": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Riddled Target",
+     "effect": "Increase Base Damage by +X.; On Puncture Status Effect: +25% Multishot for 8s. Stacks up to 4x.; The multishot bonus stacks additively with mods such as Split Chamber."
+    },
+    {
+     "perk": "Swift Punishment",
+     "effect": "Increase Base Damage by +X.; With Sprint Speed 1.2 or Higher: +30% Direct Damage per Status Type affecting the target.; Despite the description, the effect only requires 1.1 or higher sprint speed.; Equipping Amalgam Serration will allow an"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-60% Weapon Recoil."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +15."
+    },
+    {
+     "perk": "Marksman's Focus",
+     "effect": "-30% Zoom."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Flensing Spikes",
+     "effect": "Remove 20% of enemy Armor per Puncture Status.; Has no effect on enemies immune to armor removal, such as Exploiter Orb or Archons.; Can fully strip Acolytes' armor, though they cannot have more than four Puncture status stacks at once."
+    },
+    {
+     "perk": "Deadhead",
+     "effect": "+100% Headshot Damage.; The bonus stacks additively with other headshot multiplier bonuses such as the passive from {{Arcane|Primary Deadhead}}."
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Critical Damage Multiplier by +Yx."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Hate": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Swordsman's Flourish",
+     "effect": "Increase Base Damage by +30.; With Melee Weapon Equipped: +100% Combo Count Chance; Combo Count Chance bonus requires manually equipping the melee, either by holding the weapon swap key (default {{Keybind|F}}) or going into a mission with o"
+    },
+    {
+     "perk": "Stalker's Legacy",
+     "effect": "Increase Base Damage by +30.; With Dread and Despair equipped: +30 Initial Combo."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+0.8 Range"
+    },
+    {
+     "perk": "Swift Break",
+     "effect": "+60% Heavy Attack Wind Up Speed"
+    },
+    {
+     "perk": "Resolute Force",
+     "effect": "+10s Combo Duration"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Critical Chance by +10%."
+    },
+    {
+     "perk": "Absolute Dominion",
+     "effect": "Increase Base Status Chance by +20%."
+    },
+    {
+     "perk": "Subtle Force",
+     "effect": "Increase Base Critical Chance by +6%.; Increase Base Status Chance by +10%."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Onos": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint Hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Incarnon Form changes the weapon from an automatic hand cannon to charging Arm-Cannon. Holding down the trigger releases a "
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-30% Recoil"
+    },
+    {
+     "perk": "Rapid Wrath",
+     "effect": "+25% Fire Rate"
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+50% Projectile Speed"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Extended Volley",
+     "effect": "+10 Base Magazine Capacity; *Only affects untransformed Onos."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+30% Reload Speed; Affects untransformed Onos and transformation into Incarnon mode."
+    },
+    {
+     "perk": "Hunter's Rearmament",
+     "effect": "On Kill: 10% chance to replenish 10 Ammo; Only affects untransformed Onos.; Ammo is replenished to the reserve pool, not to the magazine."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Lethal Lance",
+     "effect": "On Kill: +2.5 Punch Through for 20s; Affects both modes."
+    },
+    {
+     "perk": "Incarnon Efficiency",
+     "effect": "Headshots Build +50% more Incarnon Transmutation charge.; Reduces the number of weakpoint hits required to fully charge Transmutation to 8.; * Each weakpoint hit generates 75 charge, up from 50."
+    },
+    {
+     "perk": "Elemental Excess",
+     "effect": "+20% Status Chance; -10% Critical Chance; Bonuses are added after mods as a flat value."
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Sequential Skullbuster",
+     "effect": "On Consecutive Weakpoint Hits: +30% Headshot Damage. Stacks up to 4x"
+    },
+    {
+     "perk": "Impaler's Ferocity",
+     "effect": "On Punch Through Hit: +200% Damage for 10s.; Damage bonus is additive to other base damage mods like Hornet Strike."
+    },
+    {
+     "perk": "Devastation Cascade",
+     "effect": "Hitting enemies in Incarnon Form increases the Critical Chance and Critical Damage of the fully charged blast by +5%. Stacks up to 50 times.; Bonuses are additive to mods.; Also triggers on DoT Status Effects applied by the charge-up beam, "
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Braton": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Daring Reverie",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability active: Increase Base Damage by +Y. +50% Ammo Efficiency; Channeled Abilities must be draining energy to be considered active. Abilities that do not drain energy over time such as Nekros D"
+    },
+    {
+     "perk": "Munitions Grit",
+     "effect": "Increase Base Damage by +X.; Multishot consumes ammo directly from Capacity and does +Y Damage. +20% Multishot.; Affects both modes. In the case of Incarnon Form, it pulls directly from its magazine.; Damage bonus is a unique modifier that "
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Mercenary Chamber",
+     "effect": "Increase Base Ammo Capacity to X.; The bonus does not apply to the Incarnon form."
+    },
+    {
+     "perk": "Void's Guidance",
+     "effect": "+60% Accuracy; -60% Recoil"
+    },
+    {
+     "perk": "Gunsmoke Pick Up",
+     "effect": "On Punch Through Hit: 20% chance for 10% Ammo restored.; The bonus does not apply to the Incarnon form."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X.; Increase Base Critical Damage Multiplier by +Y."
+    },
+    {
+     "perk": "Prelude of Might",
+     "effect": "With Critical Chance Below 50%: Increase Base Critical Damage Multiplier by +X.; The critical damage increase is added as base critical damage and will be affected by mods.; Condition is affected by the critical chance increase effect of Pu"
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X.; Increase Base Status Chance by +Y."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Angstrum": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Haven Foray",
+     "effect": "Increase Base Damage by +50.; With Overshields: Increase Base Damage by +50."
+    },
+    {
+     "perk": "Paladin Virtue",
+     "effect": "Increase Base Damage by +75.; With Energy Max Over 700: Increase Base Critical Damage Multiplier by +0.5x."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+30% Projectile Speed.; Bonus stacks additively with Terminal Velocity."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed.; Bonus stacks additively with reload speed mods such as Fast Hands."
+    },
+    {
+     "perk": "Hitman's Hoard",
+     "effect": "Increase Base Ammo Capacity by +9.; This bonus does not apply to the Incarnon form."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Critical Damage Multiplier by +0.2x."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Status Chance by +Y%."
+    },
+    {
+     "perk": "Fatal Affliction",
+     "effect": "+40% Direct Damage per Status Type affecting the target."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Sicarus": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Bullets ricochet.; Base damage, base Critical Chance, and base Critical Multiplier are increased. Sicarus also gains increased base Status Chance.; Shots ricochet to 1 nearby enemy within 6 meters of the main target and any subsequent targe"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Feigned Retreat",
+     "effect": "Increase Base Damage by +X.; +40% Damage to enemies below half Health.; Bonus damage is additive with mods such as \u00a0Hornet Strike but does not take into account the Base Damage increase from this perk."
+    },
+    {
+     "perk": "King's Gambit",
+     "effect": "Increase Base Damage by +X (Sicarus) / +X (Prime); x0 Critical Chance on Bodyshots, +150% Critical Chance on Weakpoint Hits.; Bodyshot modifier is multiplicative with all sources of Critical Chance, effectively making non-headshot critical "
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Void's Guidance",
+     "effect": "+40% Accuracy."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +X."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by X%.; Increase Base Status Chance to Y%."
+    },
+    {
+     "perk": "Wiseman's Regard",
+     "effect": "Increase Base Status Chance by 30% of current Critical Chance, up to 40%; Maximum Base Status Chance increase is gained at 134% Critical Chance, achievable with +734% (Sicarus) / +434% (Prime) modded Critical Chance, or +567% (Sicarus) / +3"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Ballistica": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge. Fire cross-shaped projectiles that punch through enemies; Fires a single X-shaped projectile. Deals much higher pure Slash d"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Headcracker",
+     "effect": "Increase Base Damage by +X.; On Headshot: +7.5% Fire Rate for 4s. Stacks up to 10x.; On headshot effect has a 50% chance of activating.; Fire Rate bonus is additive to other sources of Fire Rate such as Gunslinger."
+    },
+    {
+     "perk": "Prolific Perforation",
+     "effect": "Increase Base Damage by +X.; On Punch Through Hit: +10% Critical Chance for 3s. Stacks up to 8x.; Critical Chance bonus is additive to other sources of Critical Chance such as Pistol Gambit."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed"
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+50% Projectile Speed"
+    },
+    {
+     "perk": "Void's Guidance",
+     "effect": "+40% Accuracy; -40% Weapon Recoil"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status by +X per projectile.; Increase Base Status by +Y for Incarnon Form."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X.; Increase Base Status by +Y per projectile.; Increase Base Status by +Z for Incarnon Form"
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +X.; Increase Base Critical Damage Multiplier by +Y."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Laetum": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint Hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Incarnon Form changes the weapon from a semi-auto to full-auto with increased fire rate, reduced recoil, direct shots have "
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-40% Recoil"
+    },
+    {
+     "perk": "Rapid Wrath",
+     "effect": "+20% Fire Rate"
+    },
+    {
+     "perk": "Raptor's Chase",
+     "effect": "+50% Movement Speed while Aiming"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Lethal Rearmament",
+     "effect": "On Headshot: +30% Reload Speed for 12 seconds. Stacks up to 3 times.; Affects untransformed Laetum and Incarnon Form mode switching.; Stacks decay incrementally; when the buff times out, one stack is lost and the buff duration resets."
+    },
+    {
+     "perk": "Awakened Readiness",
+     "effect": "30% Magazine Reloaded per second while Holstered; Only affects untransformed Laetum."
+    },
+    {
+     "perk": "Feather of Justice",
+     "effect": "Gain 60% Ammo Efficiency while Aim Gliding or Sliding.; Does not affect Incarnon Form"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Caput Mortuum",
+     "effect": "+50% Headshot damage; Affects both modes."
+    },
+    {
+     "perk": "Incarnon Efficiency",
+     "effect": "Headshots Build +50% more Incarnon Transmutation charge.; Reduces the number of weakpoint hits required to fully charge Transmutation to 8.; * Each weakpoint hit generates 27 charge, up from 18."
+    },
+    {
+     "perk": "Elemental Excess",
+     "effect": "+20% Status Chance; -10% Critical Chance; Bonuses are added after mods as a flat value."
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Devouring Attrition",
+     "effect": "50% chance to deal +2000% damage on non-critical hits; Affects both forms.; Damage bonus is multiplicative to base damage bonuses such as Hornet Strike."
+    },
+    {
+     "perk": "Reaper's Plenty",
+     "effect": "On Headshot: +40% Ammo Efficiency for 6 seconds.; Does not affect Incarnon Form"
+    },
+    {
+     "perk": "Overwhelming Attrition",
+     "effect": "On Hit that is neither Critical nor applies a Status Effect: +400% damage for 10 seconds. Stacks up to 3 times.; Damage bonus is additive to base damage bonuses such as Hornet Strike.; When the buff times out, one stack is lost and the buff"
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Boltor": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Hunter's Mantra",
+     "effect": "Increase Base Damage by +X.; With Channeled Ability active: Punch Through +4 and +40% Accuracy."
+    },
+    {
+     "perk": "Crimson Overture",
+     "effect": "Increase Base Damage by +X.; On Kill: Increase Base Damage by +2 and +20% Ammo Efficiency for 5 seconds. Stacks up to Yx"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+60% Projectile Speed."
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +20."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+60% Reload Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +X%"
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X%; Increase Base Status Chance by +Y%"
+    },
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Paris": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Deadly Pace",
+     "effect": "Increase Base Damage by +X.; With Sprint Speed 1.2 or Higher: +80% Fire Rate.; The fire rate bonus stacks additively with fire rate mods such as Speed Trigger but does not apply twice.; Despite the description, the effect only requires 1.1 "
+    },
+    {
+     "perk": "Guardian's Might",
+     "effect": "Increase Base Damage by +X.; With Overshields: Increase Base Damage by +Y."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Ardent Trigger",
+     "effect": "On Punch Through Hit: +40% Fire Rate for 6s.; The fire rate bonus stacks additively with fire rate mods such as Speed Trigger but does not apply twice.; The bonus applies when hitting multiple enemies with either the normal or the Incarnon "
+    },
+    {
+     "perk": "Markman's Focus",
+     "effect": "-30% Zoom."
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+60% Projectile Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Vicious Promise",
+     "effect": "Increase Base Critical Chance by +40% on undamaged enemies.; Increase Base Critical Damage Multiplier by +2x on undamaged enemies.; Enemies are undamaged as long as their health and shield have not been damaged.; *Damaging Overguard is not "
+    },
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +60%."
+    },
+    {
+     "perk": "Striking Succession",
+     "effect": "On Hit: Increase Base Damage by +15 for 3s. Stacks up to 4x.; When the buff times out, one stack is lost and the buff duration resets."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Despair": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Gain embedding projectiles that explode with Heat Damage.; Incarnon Form now explodes in a 4.9 meter radius after a 0.5 second embed delay, dealing 150 Heat damage. It also has increased base damage, Critical Chance, Critical Multiplier, an"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Fatal Affliction",
+     "effect": "Increase Damage by +50.; +40% Direct Damage per Status Type affecting the target."
+    },
+    {
+     "perk": "Stalker's Vendetta",
+     "effect": "Increase Damage by +60.; With Dread and Hate equipped:; * Multishot consumes ammo directly from Capacity and increases Damage by +100%.; * +30% Multishot.; Damage bonus is a unique modifier that is multiplicative to other damage buffs.; Dam"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Marksman's Focus",
+     "effect": "-30% Zoom."
+    },
+    {
+     "perk": "Swift Deliverance",
+     "effect": "+50% Projectile Speed."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+100% Reload Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Status Chance by +24%."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Critical Chance by +12%; Increase Status Chance by +12%"
+    },
+    {
+     "perk": "Critical Parallel",
+     "effect": "Increase Base Critical Chance by +18%; Increase Base Critical Damage Multiplier by +0.4x"
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Soma": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Fortress Salvo",
+     "effect": "Increase Base Damage by +12.; With Armor Over 450: +4 Punch Through.; Damage increase is applied per pellet, giving Incarnon Form a total base damage increase of +96."
+    },
+    {
+     "perk": "Fortifying Bloodshed",
+     "effect": "Increase Base Damage by +10.; On Slash Status Kill: +100 Overshield.; Damage increase is applied per pellet, giving Incarnon Form a total base damage increase of +80.; Slash status kill grants shields, which can be overshields."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Kinetic Battle",
+     "effect": "-50% Weapon Recoil."
+    },
+    {
+     "perk": "Practiced Grip",
+     "effect": "Increase Accuracy by +50%."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Fresh Havoc",
+     "effect": "On Reload From Empty: Increase Base Damage by +6. Stacks up to 2x.; Buff lasts permanently throughout the mission but is lost on death.; Switching to Incarnon Form from empty will also trigger the buff.; Damage increase is applied per pelle"
+    },
+    {
+     "perk": "Fatal Affliction",
+     "effect": "+40% Direct Damage per Status Type affecting the target."
+    },
+    {
+     "perk": "Zeroed In",
+     "effect": "Increase Base Critical Damage Multiplier by +0.6x."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Ruvox": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Reach 6x Combo and then Heavy Attack to activate Incarnon Form.; Heavy Slam attacks impale nearby enemies on Void Spikes.; * +3 Range; * -35% Max Melee Attack Speed; * +100% of Impact Damage converted to Puncture Damage; Heavy Slam attacks "
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+1 Range"
+    },
+    {
+     "perk": "Lethal Impetus",
+     "effect": "On Kill: +15% Attack Speed for 15s. Stacks up to 3x."
+    },
+    {
+     "perk": "Gathering Momentum",
+     "effect": "Gain +5% Movement Speed per Melee Combo Multiplier"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Shockwave Synergy",
+     "effect": "For each enemy hit by Slam radius, gain 4 Combo Count."
+    },
+    {
+     "perk": "Seismic Slam",
+     "effect": "+60% Slam Radius; Does not affect the impale radius from Heavy Slam attacks."
+    },
+    {
+     "perk": "Adept Reflexes",
+     "effect": "+20 Initial Combo"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Swift Transmute",
+     "effect": "Reach 3x Combo and Heavy Attack to activate Incarnon Form"
+    },
+    {
+     "perk": "Ternary Vault",
+     "effect": "Gain +1 mid-air jumps"
+    },
+    {
+     "perk": "Inspiring Execution",
+     "effect": "+30% Combo Count Chance on Finishers for 20s"
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Brutal Efficiency",
+     "effect": "Gain +40% Heavy Attack Efficiency for 20s when impaling 5 or more enemies."
+    },
+    {
+     "perk": "Vulnerability Serum",
+     "effect": "Impaled enemies are +35% more vulnerable to Status Chance; The status chance boost is a flat 35%, allowing damage sources with 0% status chance to inflict status procs.; Any source of damage can benefit from status chance vulnerability, not"
+    },
+    {
+     "perk": "Permanent Perforation",
+     "effect": "Enemies suffer 5 Puncture Status while impaled"
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Felarx": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Attuned Accuracy",
+     "effect": "+40% Accuracy when Aiming."
+    },
+    {
+     "perk": "Kinetic Baffle",
+     "effect": "-50% Weapon Recoil; Only applies while aiming."
+    },
+    {
+     "perk": "Frictionless Flight",
+     "effect": "+50% Projectile Speed; Only applies while aiming."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Dual-Mode",
+     "effect": "Reload toggles the weapon between +100% Projectile Speed and +4m Punch Through.; Toggles for every shell loaded. For example, reloading all 6 shells will toggle 6 times, leaving it on the mode it started on.; \"Reload when holstered\" effects"
+    },
+    {
+     "perk": "Evolved Autoloader",
+     "effect": "+50% Magazine Reloaded/s when Holstered"
+    },
+    {
+     "perk": "Mounting Momentum",
+     "effect": "Reload increases Fire Rate by +10% per shell. Resets on reload.; Increasing Magazine size increases the potential bonus, but also the reload time as shells are loaded individually.; Stacks up to 99x (+990% Fire Rate).; Affects Incarnon Form"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Brutal Edge",
+     "effect": "+10% Critical Chance; +10% Status Chance; Bonuses are added after mods as a flat value.; Status Chance bonus is divided by the base multishot of 4, for only +2.5% Status Chance per pellet."
+    },
+    {
+     "perk": "Incarnon Catalyst",
+     "effect": "Headshots Build +50% more Incarnon Transmutation charge.; Reduces the number of headshots required to fully charge Transmutation to 20.; *Each headshotting-bullet generates 3 charge, up from 2."
+    },
+    {
+     "perk": "Racking Wrath",
+     "effect": "+20% Status Chance; -10% Critical Chance; Bonuses are added after mods as a flat value.; Status Chance bonus is divided by the base multishot of 4, for only +5% Status Chance per pellet."
+    }
+   ],
+   "EVO5": [
+    {
+     "perk": "Devastating Attrition",
+     "effect": "50% chance to deal +2000% damage on ''non-critical'' hits; Affects both forms.; Damage bonus is multiplicative to base damage bonuses such as Serration."
+    },
+    {
+     "perk": "Ruptured Plentitude",
+     "effect": "On Punch Through 3 enemies: +70% Ammo Efficiency for 20s"
+    },
+    {
+     "perk": "Agile Executor",
+     "effect": "Gain 50% Ammo Efficiency while Aim Gliding and Sliding"
+    }
+   ]
+  },
+  "cavalero_plat": null
+ },
+ "Sybaris": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Well Rehearsed",
+     "effect": "Increase Base Damage by +X.; On Consecutive Weakpoint Hits: Increase Base Damage by +5. Stacks up to 3x.; Resets after reloading, which can be bypassed by using\u00a0Blood Forge, but not effects that reload the weapon while holstered such as\u00a0Loc"
+    },
+    {
+     "perk": "Blazing Barrel",
+     "effect": "Increase Base Damage by +X.; On Firing: +5% Multishot. Stacks up to 10x.; Does not require the shots to hit enemies to stack.; Bonus is additive to other sources of multishot such as Split Chamber.; Resets after reloading, which can be bypa"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +X."
+    },
+    {
+     "perk": "Ready Retaliation",
+     "effect": "On Reload From Empty: +60% Reload Speed."
+    },
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-60% Weapon Recoil."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Elemental Dominance",
+     "effect": "Increase Base Status Chance by +X Effect doubles in Incarnon Form.; Sybaris Prime gains +23% Status Chance in Incarnon form, rather than the expected +16%."
+    },
+    {
+     "perk": "Reaver's Rapture",
+     "effect": "On Full Burst Hit: +20% Damage, resets on Reload; Stacks up to 4x.; Bonus is additive with other sources of base damage such as Serration.; Reset can be bypassed by using\u00a0Blood Forge, but not effects that reload the weapon while holstered s"
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Critical Chance by +X.; Increase Status Chance by +Y."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Zylok": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Precision's Payoff",
+     "effect": "Increase Base Damage by +X.; On Burst Headshots: Increase Base Damage by +20. Stacks up to 3x.; Stacks are generated if both shots from holding and releasing Zylok's trigger are headshots.; Stacks are shown as a buff, which are lost on relo"
+    },
+    {
+     "perk": "Mauler's Magazine",
+     "effect": "Increase Base Damage by +X.; On Reload From Empty: Increase Base Critical Damage Multiplier by +1x. Stacks up to 2x.; Stacks are shown as a buff, which are lost when reloading from a partial magazine or on death."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +X.; Increased Base Magazine Capacity does not affect Incarnon Form."
+    },
+    {
+     "perk": "Rapid Reinforcement",
+     "effect": "+50% Reload Speed."
+    },
+    {
+     "perk": "Void's Guidance",
+     "effect": "+60% Accuracy; -60% Recoil"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Status Chance by +Y%."
+    },
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%."
+    },
+    {
+     "perk": "Fatal Affliction",
+     "effect": "+40% Direct Damage per Status Type affecting the target."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Vasto": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Lone Gun",
+     "effect": "Increase Base Damage by +X.; With No Primary Equipped:; * Increase Base Damage by +40; * Increase Base Magazine Capacity by +14.; Increased Base Magazine Capacity does not affect Incarnon Form.; Base Damage increase is applied per pellet in"
+    },
+    {
+     "perk": "Deathtrap Trigger",
+     "effect": "Increase Base Damage by +X.; On Equip From Primary:; * Increase Base Critical Chance by +30% for 3s.; * Increase Base Critical Damage Multiplier by +Y for 3s.; Base Damage increase is applied per pellet in Incarnon Form."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +6.; Increased Base Magazine Capacity does not affect Incarnon Form."
+    },
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-50% Weapon Recoil."
+    },
+    {
+     "perk": "Awakened Readiness",
+     "effect": "+20% Magazine Reloaded per second when Holstered.; Does not apply to Incarnon Form's Magazine."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +X%."
+    },
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +10%.; Increase Base Status Chance by +10%.; Status Chance increase for Incarnon Form is divided by the innate multishot."
+    },
+    {
+     "perk": "Reaper's Plenty",
+     "effect": "On Headshot: +100% Ammo Efficiency for 2s.; Does not apply to Incarnon Form."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Dual Ichor": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Alchemist's Wrath",
+     "effect": "Increase Base Damage by +90.; 5 additional Combos on targets affected by Toxin.; Toxin fields will award the 5 bonus combo when they damage enemies affected by Toxin.; Toxic Lash and Xata's Whisper also work, and can award bonus combo indep"
+    },
+    {
+     "perk": "Ronin's Rush",
+     "effect": "Increase Base Damage by +90.; On striking target with final move of Neutral Combo: +30% Attack Speed for 33s."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+0.6 Range"
+    },
+    {
+     "perk": "Resolute Force",
+     "effect": "+7s Combo Duration."
+    },
+    {
+     "perk": "Swift Break",
+     "effect": "+100% Heavy Attack Windup Speed"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Status Chance by +34%."
+    },
+    {
+     "perk": "Poison Parasite",
+     "effect": "On killing an enemy with 3+ Toxin Stacks: +33 Heal Regen/s for 9s."
+    },
+    {
+     "perk": "Universal Readiness",
+     "effect": "Collecting ammo grants 5 Melee Combo counter."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Lato": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Haven Foray",
+     "effect": "Increase Base Damage by +X.; With Overshields: Increase Base Damage by +Y."
+    },
+    {
+     "perk": "Reified Bane",
+     "effect": "Increase Base Damage by +X.; On Reload from Empty Magazine: Increase Base Damage by +Y.; Once the damage bonus has been earned, the ONLY way to lose it is to manually reload with a non-empty magazine.; The bonus will be retained through Inc"
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Void's Guidance",
+     "effect": "+50% Accuracy; -50% Recoil"
+    },
+    {
+     "perk": "Marksman's Gain",
+     "effect": "On Headshot: 20% chance for +50% Ammo Efficiency for 6s.; The bonus can be refreshed on subsequent headshots.; The bonus does not affect the Incarnon form."
+    },
+    {
+     "perk": "Exact Penance",
+     "effect": "On Kill: 50% chance for Instant Reload.; Kills from status effects can also trigger the effect.; The bonus does not affect the Incarnon form."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Survivor's Edge",
+     "effect": "Increase Base Critical Chance by +X%.; Increase Base Status Chance by +Y%."
+    },
+    {
+     "perk": "Deathtrap Trigger",
+     "effect": "On Equip from Primary:; *Increase Base Critical Chance by +X% for 4s.; *Increase Base Critical Damage Multiplier by +Y for 4s."
+    },
+    {
+     "perk": "Carnage Reign",
+     "effect": "+40% Direct Damage per Status Type affecting the target."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Sibear": {
+  "tiers": {
+   "EVO2": [
+    {
+     "perk": "Master's Shatter",
+     "effect": "Increase Base Damage by +20.; 10 additional Combo on targets affected by Cold Status."
+    },
+    {
+     "perk": "Thane's Wrath",
+     "effect": "Increase Base Damage by +20.; With Armor Over 450: Increase Base Damage by +40."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Orokin Reach",
+     "effect": "+1 Range"
+    },
+    {
+     "perk": "Kinetic Harmony",
+     "effect": "+60% Heavy Attack Wind Up Speed"
+    },
+    {
+     "perk": "Resolute Force",
+     "effect": "+6s Combo Duration"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Mounting Avalanche",
+     "effect": "On Killing Enemy With 3+ Cold Stacks: +15 Initial Combo for 10s. Stacks up to 4x."
+    },
+    {
+     "perk": "Absolute Valor",
+     "effect": "Increase Base Critical Chance by +25%."
+    },
+    {
+     "perk": "Red Right Hand",
+     "effect": "On First Attack With Primary Equipped: Increase Base Critical Damage Multiplier by +2x.; First attack from quickswap melee deals bonus critical damage."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Dual Toxocyst": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Gain an Auto Fire mode and Ricochet.; Incarnon Form becomes fully automatic with higher Critical Chance, Critical Multiplie"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Carnage Reign",
+     "effect": "Increase Base Damage by +60.; +33% Direct Damage per Status Type affecting the target.; Damage per Status Type bonus has an unlisted requirement of \"With Energy Max \u2265 200.\""
+    },
+    {
+     "perk": "Fevered Frenzy",
+     "effect": "Increase Base Damage by +50.; On Ability Cast: +5% Multishot. Stacks up to 20x.; The multishot bonus stacks additively with multishot mods such as Barrel Diffusion.; This effect remains active until the end of the mission."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Ready Retaliation",
+     "effect": "On Reload from Empty: +100% Reload Speed.; Currently does not work."
+    },
+    {
+     "perk": "Evolved Autoloader",
+     "effect": "+50% Magazine Reloaded/s when holstered."
+    },
+    {
+     "perk": "Marksman's Hand",
+     "effect": "-50% Weapon Recoil."
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Commodore's Fortune",
+     "effect": "Increase Base Critical Chance by +20%."
+    },
+    {
+     "perk": "Neurotoxin",
+     "effect": "On Headshot: +70% Toxin for 3s."
+    },
+    {
+     "perk": "Ripper Rounds",
+     "effect": "On Kill: +3 Punch Through for 7s."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ },
+ "Furis": {
+  "tiers": {
+   "EVO1": [
+    {
+     "perk": "Incarnon Form",
+     "effect": "Weakpoint hits charge Incarnon Transmutation; Alt Fire transmutes. Switching back will expend any remaining charge.; Fire a wide Heat Damage beam.; Incarnon Form fires a short-ranged, wide Klamora Prism-like beam that deals pure Heat damage"
+    }
+   ],
+   "EVO2": [
+    {
+     "perk": "Haven Foray",
+     "effect": "Increase Base Damage by +X.; With Overshields: Increase Base Damage by +30."
+    },
+    {
+     "perk": "Stormburst",
+     "effect": "Increase Base Damage by +X.; On hitting enemies affected by Electricity Status: +0.4 Multishot for 2s. Stacks up to 3x."
+    }
+   ],
+   "EVO3": [
+    {
+     "perk": "Practiced Grip",
+     "effect": "Increase Accuracy by +50%"
+    },
+    {
+     "perk": "Extended Volley",
+     "effect": "Increase Base Magazine Capacity by +25.; The bonus does not apply to the Incarnon form."
+    },
+    {
+     "perk": "Executioner's Fortune",
+     "effect": "On Headshot: 10% chance for Instant Reload"
+    }
+   ],
+   "EVO4": [
+    {
+     "perk": "Headcracker",
+     "effect": "On Headshot: +5% Fire Rate for 2s. Stacks up to 10x.; This effect has a 50% chance of activating."
+    },
+    {
+     "perk": "Prelude of Might",
+     "effect": "With Critical Chance below 40%: Increase Base Critical Damage Multiplier by +3x.; Condition is affected by the critical chance increase effect of Puncture status."
+    },
+    {
+     "perk": "Elemental Balance",
+     "effect": "Increase Base Status Chance by +X%."
+    }
+   ]
+  },
+  "cavalero_plat": 120
+ }
+}

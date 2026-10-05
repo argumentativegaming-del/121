@@ -25,7 +25,8 @@ def rng(c): return f"'Procurement Master'!${L[c]}$2:${L[c]}${N}"
 def S(cat,flag,col): return sum((r[col] or 0) for r in proc if r['Category']==cat and r['Counted in Player-Trade Total?']==flag)
 ws_count=sum(1 for r in proc if r['Category'] in ('Weapon','Adversary Weapon') and r['Quantity']==1)
 cat_count=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1)
-COMP_SLOTS=13+7
+import build as _b
+COMP_SLOTS=len(_b.USED_COMP)+sum(1 for c in _b.USED_COMP if c in ('Dethcube Prime','Helios Prime','Wyrm Prime','Diriga','Nautilus Prime','Shade Prime','Taxon'))
 # ---- Economic Model (replace)
 idx=wb.sheetnames.index('Economic Model'); del wb['Economic Model']
 ms=wb.create_sheet('Economic Model',idx)
@@ -68,7 +69,7 @@ add(['2. FIXED / DIRECT INFRASTRUCTURE','Count','Unit Pt','Gross Pt','Free slots
 ia=ms.max_row+1
 add(['Warframe slots',66,20,'=B{0}*C{0}'.format(ia),5,'=(B{0}-E{0})*C{0}'.format(ia),'','Free: 3 starter, Excalibur Umbra (Sacrifice), Nora\'s Mix'])
 add(['Weapon slots (2 per 12p)',ws_count,6,'=CEILING(B{0}/2,1)*12'.format(ia+1),23,'=CEILING((B{0}-E{0})/2,1)*12'.format(ia+1),'',f'{ws_count} slot-taking weapons (Exalted/intrinsic excluded; Vinquibus counted once). Free: 11 starter + 12 junction/quest (quest weapons such as Thornbak, Broken War, Skiajati and Rumblejack must be sold to free theirs)'])
-add(['Companion slots (2 per 12p)',COMP_SLOTS,6,'=CEILING(B{0}/2,1)*12'.format(ia+2),10,'=MAX(0,CEILING((B{0}-E{0})/2,1)*12)'.format(ia+2),'','13 v3 companions + 7 sentinel robotic weapons share companion slots; 10 starter'])
+add(['Companion slots (2 per 12p)',COMP_SLOTS,6,'=CEILING(B{0}/2,1)*12'.format(ia+2),10,'=MAX(0,CEILING((B{0}-E{0})/2,1)*12)'.format(ia+2),'',f'{COMP_SLOTS} = 8 assigned companions + 4 bundled sentinel weapons (v4.2 builds); 10 starter'])
 ib=ms.max_row
 FI=add(['FIXED INFRASTRUCTURE TOTAL','','',f'=SUM(D{ia}:D{ib})','',f'=SUM(F{ia}:F{ib})'],True)
 add([])
@@ -76,7 +77,8 @@ add(['3. OPTIONAL CONVENIENCE (plat shortcut for farmable items)','Count','Unit 
 oa=ms.max_row+1
 add(['Orokin Reactors',65,20,f'=B{oa}*C{oa}','','','','66 frames minus Excalibur Umbra (pre-installed). Cyte-09 counted: verify'])
 add(['Orokin Catalysts',cat_count,20,f'=B{oa+1}*C{oa+1}','','','',f'{cat_count} ordinary non-adversary weapons (Kuva/Tenet pre-installed; Exalted use frame Reactor)'])
-OC=add(['OPTIONAL CONVENIENCE TOTAL','','',f'=SUM(D{oa}:D{oa+1})'],True)
+add(['Incarnon Genesis via Cavalero (plat, one-time each)',32,120,f'=B{oa+2}*C{oa+2}','','','','v4.2: wiki - rotation adapters purchasable for 120p incl. install resources (U39). Otherwise farm Steel Path Circuit'])
+OC=add(['OPTIONAL CONVENIENCE TOTAL','','',f'=SUM(D{oa}:D{oa+2})'],True)
 add([])
 add(['4. RECONSTRUCTION TOTALS','Floor Pt','Realistic Pt','Conservative Pt','USD Floor','USD Realistic','USD Conservative'],True)
 def tot(lab,extra):
