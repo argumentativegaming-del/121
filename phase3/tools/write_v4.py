@@ -61,7 +61,7 @@ for lab,cat,scope in cats:
     add([lab,f('Floor Platinum'),f('Realistic Platinum'),f('Conservative Platinum'),
          f'=COUNTIFS({rng("Category")},"{cat}",{rng("Counted in Player-Trade Total?")},"Yes")',
          f'=COUNTIFS({rng("Category")},"{cat}",{rng("Counted in Player-Trade Total?")},"Yes",{rng("Floor Platinum")},"")',
-         f'=COUNTIFS({rng("Category")},"{cat}",{rng("Status")},"*UNAVAILABLE*")',scope])
+         f'=COUNTIFS({rng("Category")},"{cat}",{rng("Status")},"*MARKET DATA UNAVAILABLE*")',scope])
 PT=add(['PLAYER-TRADE TOTAL',f'=SUM(B{r0}:B{ms.max_row})',f'=SUM(C{r0}:C{ms.max_row})',f'=SUM(D{r0}:D{ms.max_row})'],True)
 add(['   Rows without credible sell orders contribute Realistic/Conservative from the traded median when one exists (Floor blank); otherwise 0 and marked MARKET DATA UNAVAILABLE.'])
 add([])
@@ -110,7 +110,7 @@ add(['Arcanes via R0 copies (sum where available, required set)',f'=SUMIFS({rng(
 add(['Non-tradeable frames/weapons/companions (farm/quest/vendor/Dojo)',f'=COUNTIFS({rng("Status")},"FARMABLE*")','','','','','','items; 0p by definition'])
 add(['Incarnon Genesis adapters (Steel Path Circuit)',f'=COUNTIFS({rng("Adapter required?")},"Incarnon*")','','','','','','adapters'])
 add(['Build-required mods: account-bound / earned (0p, see EARNED REQUIREMENTS)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"ACCOUNT-BOUND*")','','','','','',f'{len(_EARNED)}: '+', '.join(sorted(_EARNED))])
-add(['Build-required mods with NO market price (excluded from totals)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"BUILD REQUIRED*",{rng("Status")},"*UNAVAILABLE*")','','','','','','Must be 0 for FINAL; any such row would be acquired by farm / private trade outside these totals'])
+add(['Build-required mods with NO market price (excluded from totals)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"BUILD REQUIRED*",{rng("Status")},"*MARKET DATA UNAVAILABLE*")','','','','','','Must be 0 for FINAL; any such row would be acquired by farm / private trade outside these totals'])
 add(['Archon Shards (account-bound)',330,'','','','','','330/330 final positions: 65 Tauforged / 265 normal'])
 add([])
 add(['Official Platinum pack',4600,199.99,'','','','','Current undiscounted USD price (v3)'])

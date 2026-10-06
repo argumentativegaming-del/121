@@ -1,7 +1,8 @@
 import json, os, math, statistics, datetime
-NOW=datetime.datetime(2026,10,5,3,0,tzinfo=datetime.timezone.utc)
+NOW=datetime.datetime(2026,10,5,3,0,tzinfo=datetime.timezone.utc)   # snapshot time of the v4.3 pull; refresh.py overrides NOW and CACHE
+CACHE='cache'
 def load(kind,slug):
-    p=f'cache/{kind}/{slug}.json'
+    p=os.path.join(CACHE,kind,f'{slug}.json')
     if not os.path.exists(p): return None
     try: return json.load(open(p))
     except Exception: return None

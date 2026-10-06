@@ -1,0 +1,31 @@
+[
+ {
+  "date": "2026-10-05 04:00 UTC",
+  "type": "BASELINE",
+  "queried": 1730,
+  "changed": 0,
+  "prev": [
+   44788.0,
+   52396.5,
+   78673.0
+  ],
+  "new": [
+   44788.0,
+   52396.5,
+   78673.0
+  ],
+  "net": [
+   46968.0,
+   54576.5,
+   80853.0
+  ],
+  "infra_net": 2180,
+  "infra_gross": 2496,
+  "optional": 8600,
+  "inc": "-",
+  "dec": "-",
+  "unavailable": "0",
+  "notes": "v4.3 FINAL pricing baseline (Warframe.Market PC pull 2026-10-05 02:52-04:00 UTC). Every later refresh is appended; records are never overwritten.",
+  "spec": "Phase 3 v4.3 FINAL"
+ }
+]

@@ -1,4 +1,4 @@
-import json, collections, math, openpyxl
+import json, collections, math, os, openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
 import engine, builds_data as BD, builds_extra as X, audit_batch1 as AB1, audit_batch2 as AB2, audit_batch3 as AB3, audit_batch4 as AB4, audit_batch5 as AB5
@@ -209,7 +209,7 @@ rep=[('Frames complete',f'{complete} / 66'),('Helminth decisions',f"{sum(1 for b
      ('Exalted builds complete (Arcanes assigned per U38.5)',f'{nexal} / {nexal}'),('OPTIMIZATION AUDIT (separate standard)',f'{len(AB.AUDIT)} / 66 frames audited - {STATE} (cross-roster audit '+('passed)' if _xc['ok'] else 'FAILED)')),('Incarnon configurations complete',f'{ninc_ok} / {ninc}'),('LIVE TEST REQUIRED count',str(len(LIVE))),
      ('Element-order validator (weapons + Exalteds)',f"{sum(1 for r in wcfg if not r['elem_errs'])+sum(1 for w in X.EXALTED if not X.exalted_element(w)[1])} / {len(wcfg)+len(X.EXALTED)} pass")]
 ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=9)
-s=wb['Phase 3 Summary']; s.append([]); s.append(['','','',f'Frame builds (v4.3 {STATE})',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
+s=wb['Phase 3 Summary']; s.append([]); s.append(['','','','Build specification',f'Phase 3 v4.3 {STATE} (frozen)','Gameplay/build model changes only via an explicit content audit']); s.append(['','','','MARKET DATA REFRESHED','2026-10-05 04:00 UTC','v4.3 baseline pull - see MARKET REFRESH LOG']); s.append(['','','',f'Frame builds (v4.3 {STATE})',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
 # ---------- v4.3 CROSS-ROSTER AUDIT sheet (from xcheck.py)
 _ws=sheet('CROSS-ROSTER AUDIT',['Check','Result','Status','Note'],[[r[0],str(r[1]),r[2],r[3]] for r in _xc['rows']],{'Check':45,'Result':30,'Note':110},idx=1)
 # stale current-state text sweep (historical logs excluded: Corrections Log, Normalization Log, OPTIMIZATION AUDIT history columns)
@@ -249,6 +249,10 @@ for _ws in wb.worksheets:
             if isinstance(_c.value,str):
                 for _a,_b in _STALE.items():
                     if _a in _c.value: _c.value=_c.value.replace(_a,_b)
+# MARKET REFRESH LOG: rendered from the persistent JSON history (refresh.py), so regenerating the workbook never drops records
+if os.path.exists('market_refresh_log.json'):
+    import refresh as _RF
+    _RF.log_sheet(wb, json.load(open('market_refresh_log.json')))
 wb.save(F)
 json.dump(dict(complete=complete,shards=len(sh),taus=taus,live=LIVE,T_old=T_old,T_new=T_new,added=[x[0] for x in added],removed=[x[0] for x in removed],changed=[x[0] for x in changed],rep=rep,tot={f'{k[0]}|{k[1]}|{k[2]}':v for k,v in tot.items()}),open('final_report.json','w'),indent=1)
 print('saved', complete, len(sh), taus, len(LIVE)); print(rep)
