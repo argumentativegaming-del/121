@@ -20,4 +20,6 @@
   - Amalgam Organ Shatter is now on the 5 heavy-attack builds.
   - Two archived mods were replaced: Swift Deth by Assault Mode, and Corroding Barrage by Rousing Plunder.
   - Base Banshee is now framed as the Helminth donor for Silence.
+  - Deconstructor Prime has its own glaive-class melee build. The beast claw build no longer pairs two incompatible claw mods.
+  - Forma estimates are computed per weapon by `tools/capcheck.py`, from max-rank drains, innate polarities and Catalyst/rank-40 capacity.
 - Account-bound build requirements, Helminth donors and the rulings on untradeable alternatives are in **EARNED REQUIREMENTS**. `tools/archived_list.json` is the wiki's {{Archived}} list that `build.py` and `xcheck.py` read.

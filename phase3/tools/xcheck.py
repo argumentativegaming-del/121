@@ -63,6 +63,17 @@ chk('Account-bound alternatives ruled on mechanics (no procurement substitution)
 bad_out=[r['frame'] for r in W if r['arcane']=='Secondary Outburst']
 bad_anim=[r['frame'] for r in W if r['arcane']=='Melee Animosity' and r['template'] not in ('HEAVY_ATTACK',)]
 chk('Outburst on combo builds / Animosity without heavy build', f'{len(bad_out)} / {len(bad_anim)}', not bad_out and not bad_anim)
+cw={k:X.validate_comp_weapon(k) for k in X.COMP_WEAPON_BUILD}
+chk('Companion weapon builds', f'{sum(1 for v in cw.values() if not v[0])}/{len(cw)} valid', all(not v[0] for v in cw.values()), '; '.join(f'{k}: {"VALID" if not v[0] else v[0]}' for k,v in cw.items()))
+_dk=next(k for k in cw if k.startswith('Deconstructor'))
+_users=sorted(f for f,b in B.items() if b['comp']=='Helios Prime')
+chk('Deconstructor Prime config', 'VALID' if not cw[_dk][0] else 'INVALID', not cw[_dk][0] and len(_users)==7, f'{" | ".join(X.COMP_WEAPON_BUILD[_dk][0])}; {" + ".join(cw[_dk][1])}; {cw[_dk][2]["Deconstructor Prime"][0]} Forma {cw[_dk][2]["Deconstructor Prime"][1]}/60; serves {len(_users)}: {", ".join(_users)}')
+import capcheck as _C
+ps=[r for r in W if 'Primed Shred' in r['mods']]
+psok=[r for r in ps if r['capacity'] and r['capacity'][1]<=r['capacity'][2] and _C.drain('Primed Shred')==16]
+chk('Primed Shred weapon capacity checks', f'{len(psok)}/{len(ps)} PASS', len(ps)==5 and len(psok)==5, '; '.join(f"{r['weapon']}: {r['forma']}" for r in ps)+' (Primed Shred max-rank drain 16)')
+capbad=[r['weapon'] for r in W if not r['capacity'] or r['capacity'][1]>r['capacity'][2]]
+chk('Weapon capacity / Forma (all configs)', f'{len(W)-len(capbad)}/{len(W)} fit', not capbad, 'exact max-rank drain with computed Forma; melee excludes stance capacity (upper bound)')
 live=[(f,l) for f,b in B.items() for l in (b.get('live') or [])]
 chk('LIVE TEST REQUIRED', len(live), True, '; '.join(f'{f}: {l}' for f,l in live))
 json.dump(dict(ok=ok, rows=R), open('xcheck.json','w'), indent=1)

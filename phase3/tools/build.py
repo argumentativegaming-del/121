@@ -106,8 +106,10 @@ for wn,f,why in [('Reconifex','Cyte-09','Signature rifle; Primary replaced by Ne
     if s_: row(Category='Signature Extra',Item=wn,**base,**{'Acquisition Method':'Player trade','Tradeable?':'Yes','Counted in Player-Trade Total?':'Optional'},**mk(price(s_,None)))
     else: row(Category='Signature Extra',Item=wn,**base,**{'Acquisition Method':'Farm / vendor / quest','Tradeable?':'No','Status':'FARMABLE / ACCOUNT-BOUND','Counted in Player-Trade Total?':'No'})
 for wn,comp in [('Verglas Prime','Nautilus Prime'),('Prime Laser Rifle','Wyrm Prime'),('Deth Machine Rifle Prime','Dethcube Prime'),('Burst Laser Prime','Shade Prime'),('Deconstructor Prime','Helios Prime'),('Vulklok','Diriga'),('Artax','Taxon')]:
-    row(Category='Companion Weapon',Item=wn,**{'Assigned Frame(s)':comp,'Slot':'Robotic','Quantity':1,'Acquisition Method':'Bundled with sentinel','Tradeable?':'No','Status':'INCLUDED WITH COMPANION','Counted in Player-Trade Total?':'No','Catalyst?':'Yes (optional)','Source/Reasoning':'Default sentinel weapon (wiki); uses one Companion slot','Priority':'Core'})
-for wn,f,why in [('Glory','Jade','Additional Exalted; does not replace Evensong/Cantare/Harmony (doctrine)'),('Noctua','Dante','Additional Exalted (first ability); Onos retained - LIVE TEST if replacement is wanted'),
+    _used=comp in {b_['comp'] for b_ in __import__('builds_data').B.values()}
+    row(Category='Companion Weapon',Item=wn,**{'Assigned Frame(s)':comp,'Slot':'Robotic','Quantity':1,'Acquisition Method':'Bundled with sentinel','Tradeable?':'No','Status':'INCLUDED WITH COMPANION','Counted in Player-Trade Total?':'No',
+        'Catalyst?':'Yes (required: the final 8-mod build needs 56-57 of 60 capacity; 30 without a Catalyst cannot fit)' if _used else 'Optional (companion unassigned)','Source/Reasoning':'Default sentinel weapon (wiki); uses one Companion slot','Priority':'Core' if _used else 'Optional'})
+for wn,f,why in [('Glory','Jade','Additional Exalted; does not replace Evensong/Cantare/Harmony (doctrine)'),('Noctua','Dante','Additional Exalted (first ability); Onos retained. Replacing the Secondary is an OPTIONAL preference only (not a LIVE TEST)'),
                  ('Shadow Clones Prime','Ash Prime','U38.5 Exalted conversion; cast-based, no Melee replacement (doctrine). Melee Crescendo via finishers'),('Landslide Fists Prime','Atlas Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),
                  ('Shattered Lash Prime','Gara Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),('Whipclaw Prime','Khora Prime','U38.5 Exalted conversion; no Melee replacement (doctrine)'),
                  ('Grasp of Lohk','Xaku Prime','Ability weapon; no replacement (doctrine)'),("Ulfrun's Descent",'Voruna Prime','Ability form; no replacement (doctrine)'),('Nurinarim','Narin','Cast sword-dance ability; no Melee replacement (v4 ruling)')]:
@@ -229,6 +231,7 @@ _REQ_MODS=_BX.required_mods()
 # Earned (account-bound) build requirements: acquisition route + classification. Price = 0p, never substituted by a tradeable variant.
 _SAC='Quest: The Sacrifice (1 copy) / Cephalon Simaris extra copies (100,000 standing)'
 EARNED={'Umbral Intensify':(_SAC,'ACCOUNT-BOUND / QUEST'),'Umbral Vitality':(_SAC,'ACCOUNT-BOUND / QUEST'),'Umbral Fiber':(_SAC,'ACCOUNT-BOUND / QUEST'),
+        'Primed Fury':('Daily Tribute milestone choice (day 200 / 400 / 600 / 900; a second milestone pick after Primed Shred); untradeable','ACCOUNT-BOUND / DAILY TRIBUTE'),
         'Primed Shred':('Daily Tribute milestone choice (day 200 / 400 / 600 / 900, with Primed Vigor / Primed Fury / Primed Sure Footed); untradeable','ACCOUNT-BOUND / DAILY TRIBUTE'),
         'Amalgam Organ Shatter':('Thermia Fractures (recurring Orb Vallis event): 50 points; untradeable','ACCOUNT-BOUND / EVENT')}
 _have={r_['Item'].lower():r_ for r_ in proc if r_['Category']=='Mod'}

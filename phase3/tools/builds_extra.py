@@ -30,7 +30,12 @@ def validate_comp(c):
 # Companion weapon builds
 COMP_WEAPON_BUILD = {
  'Beast claws (Adarza/Panzer/Smeeta/Huras)': (['Bite','Maul','Bell Ringer','Hunter Synergy','Sepsis Claws','Shocking Claws','Venom Teeth','Precision Conditioning'], {'Claws'}),
- 'Sentinel rifles (Deth Machine Rifle Prime, Deconstructor Prime*, Prime Laser Rifle, Vulklok)': (['Serration','Split Chamber','Point Strike','Vital Sense','Hellfire','Malignant Force','High Voltage','Galvanized Aptitude'], {'Rifle','Primary'}),
+ 'Sentinel rifles (Deth Machine Rifle Prime, Prime Laser Rifle, Vulklok)': (['Serration','Split Chamber','Point Strike','Vital Sense','Hellfire','Malignant Force','High Voltage','Galvanized Aptitude'], {'Rifle','Primary'}),
+ # Deconstructor Prime: glaive-class robotic MELEE (wiki), 0% crit, 25% status, 160 Impact -> Puncture -> Slash sequence, 1.33 attacks/s.
+ # Only standard melee attacks: no combo, heavy, slide, finisher, block or set mods (U30.5 list = IncompatibilityTags SENTINEL_WEAPON).
+ # Wiki-documented damage routes: Pressure Point / Spoiled Strike, physical mods, elemental mods. Fire rate is a live stat (Spoiled Strike's
+ # penalty is WEAPON_FIRE_RATE; U-patch "Regen Mod drastically increasing the rate of fire of Helios' Deconstructor"), so attack speed functions.
+ 'Deconstructor Prime (Helios Prime; glaive-class robotic melee)': (['Primed Pressure Point','Condition Overload','Primed Fever Strike','Virulent Scourge','North Wind','Volcanic Edge','Melee Prowess','Primed Fury'], {'Melee','Thrown Melee'}),
 }
 
 # ---------------- Exalted / separately moddable builds
@@ -481,13 +486,73 @@ _m = COMP['Dethcube Prime']['mods']; _m[_m.index('Swift Deth')] = 'Assault Mode'
 # Every untradeable/account-bound mod that competes with a mod used in a final build, ruled on mechanics only.
 # RESTORE = the account-bound mod is the optimal choice and is in the build (earned requirement, 0p); KEEP = the tradeable mod is genuinely better.
 ACCOUNT_BOUND_RULINGS = {
- 'Primed Shred': ('Shred', 'RESTORE', '+55% Fire Rate / +2.2 Punch Through vs Shred +30% / +1.2: strictly better on every stat at the same drain and polarity. The XR swap to Shred was a procurement-driven downgrade and is reverted.'),
+ 'Primed Shred': ('Shred', 'RESTORE', '+55% Fire Rate / +2.2 Punch Through vs Shred +30% / +1.2 (bows x2): better on both stats, same Madurai polarity, but HIGHER drain - 16 at max rank vs Shred 11 (+5 capacity; +3 on a Madurai slot). Capacity revalidated on all 5 builds with the 16-drain mod (WEAPON CONFIGS Forma column). The XR swap to Shred was a procurement-driven downgrade and is reverted.'),
  'Amalgam Organ Shatter': ('Organ Shatter', 'RESTORE (heavy-attack builds only)', 'Heavy-attack DPS = damage / (wind-up + swing). +60% Heavy Attack Wind Up for -5% Crit Damage (+85% vs +90%, about -2.6% on the crit multiplier) is a net gain when every hit is a heavy attack. Normal-attack combo builds keep Organ Shatter (wind-up does nothing there).'),
  'Umbral Vitality': ('Parasitic Vitality', 'RESTORE (frame builds) / KEEP Parasitic Vitality on Nidus', 'Umbral set bonus (each extra Umbral mod amplifies the others) makes the 3-piece set the frame-build standard. Nidus: Parasitic Vitality scales with Parasitic Link targets and feeds Arcane Bellicose (B4 ruling).'),
- 'Primed Fury': ('Berserker Fury', 'KEEP Berserker Fury', '+55% flat Attack Speed vs Berserker Fury +70% at 2 stacks (on melee kill, 10s), which stays up on horde-clearing melee builds.'),
+ 'Primed Fury': ('Berserker Fury / Fury', 'RESTORE on Deconstructor Prime / KEEP Berserker Fury on frame melee', 'Frame melee: Berserker Fury +70% at 2 stacks (on melee kill, 10s) stays up on horde-clearing builds > +55% flat. Deconstructor Prime: kill-stack uptime is not attributable to the sentinel, so the flat +55% wins (Fury +30% is strictly worse at the same polarity; 14 vs 9 drain fits: 57/60 with 5 Forma).'),
  'Sacrificial Pressure': ('Primed Pressure Point', 'KEEP Primed Pressure Point', '+165% Melee Damage vs +110% (x1.33 vs Sentients only = 146%): lower against every faction.'),
  'Amalgam Serration': ('Serration', 'KEEP Serration', '+165% vs +155% Damage; the +25% Sprint Speed has no damage value.'),
  'Amalgam Barrel Diffusion': ('Barrel Diffusion', 'KEEP Barrel Diffusion', '+120% vs +110% Multishot; Dodge Speed has no damage value.'),
  'Amalgam Shotgun Barrage': ('Shotgun Barrage', 'KEEP Shotgun Barrage', '+90% vs +85% Fire Rate; Revive Speed has no damage value.'),
  'Primed Streamline': ('Streamline', 'KEEP Streamline (no choice)', 'Archived mod (wiki), not obtainable.'),
+}
+
+# ---------------- v4.3 FINAL: companion-weapon validation + computed Forma estimates
+import capcheck as _CAP
+COMP_WEAPON_TARGETS = {
+ 'Beast claws (Adarza/Panzer/Smeeta/Huras)': [],
+ 'Sentinel rifles (Deth Machine Rifle Prime, Prime Laser Rifle, Vulklok)': ['Deth Machine Rifle Prime','Prime Laser Rifle','Vulklok'],
+ 'Deconstructor Prime (Helios Prime; glaive-class robotic melee)': ['Deconstructor Prime'],
+}
+DECON_NOTES = ('Viral (Primed Fever Strike + Virulent Scourge Toxin -> North Wind Cold) + Heat (Volcanic Edge); status 25% x (1 + 0.6 + 0.6 + 0.9) = 77.5%. '
+               'Condition Overload: up to 5 statuses (Impact, Puncture, Slash from the attack sequence + Viral + Heat). No crit mods (0% crit). '
+               'Primed Fury (account-bound, Daily Tribute) is the attack-speed mod: +55% flat vs Fury +30%; Berserker Fury needs melee kills. '
+               'Spoiled Strike rejected: its -20% fire rate leaves ~+10% net, Primed Fury gives +55%. Melee Prowess kept over a second damage mod: status is the only scaling stat at 0% crit.')
+_CRIT_ONLY = {'WEAPON_CRIT_CHANCE','WEAPON_CRIT_DAMAGE'}
+def validate_comp_weapon(k):
+    mods, types = COMP_WEAPON_BUILD[k]; errs = []
+    targets = COMP_WEAPON_TARGETS.get(k, [])
+    for m in mods:
+        v = engine.mod(m)
+        if not v: errs.append('unknown ' + m); continue
+        if v.get('Type') not in types: errs.append(f'{m} type {v.get("Type")} not in {sorted(types)}')
+        if targets and 'SENTINEL_WEAPON' in (v.get('IncompatibilityTags') or []): errs.append(f'{m} incompatible with sentinel weapons')
+        if v.get('Set') and targets: errs.append(f'{m} is a set mod')
+        if 'Tennokai' in (v.get('Description') or ''): errs.append(f'{m} is a Tennokai mod')
+        for i in v.get('Incompatible') or []:
+            if i in mods: errs.append(f'{m} incompatible with {i}')
+        for t in targets:
+            atk = (W.get(t) or {}).get('Attacks') or [{}]
+            if max(a.get('CritChance', 0) for a in atk) == 0 and set(v.get('UpgradeTypes') or []) <= _CRIT_ONLY and v.get('UpgradeTypes'):
+                errs.append(f'{m} is crit-only on 0% crit {t}')
+    if len(set(mods)) != len(mods): errs.append('dup')
+    if len(mods) != 8: errs.append(f'{len(mods)} mods')
+    cap = {}
+    for t in targets:
+        try: cap[t] = _CAP.min_forma(t, mods)
+        except Exception as e: errs.append(f'capacity {t}: {e}')
+    return errs, combine(mods, []), cap
+def _forma_text(r):
+    w = r['weapon']; k40 = w.startswith(('Kuva ', 'Tenet ')); wn = w
+    if wn not in _CAP._W: wn = w.replace(' (Primary)', '').replace(' (Melee)', '')
+    if wn not in _CAP._W: wn = next((x for x in _CAP._W if x.startswith(w + ' (')), wn)
+    if wn not in _CAP._W: return r['forma'], None
+    k, t, cap, det = _CAP.min_forma(wn, r['mods'], r.get('exilus'), k40)
+    mel = r['slot'] == 'Melee'
+    txt = (f'5 Forma to Rank 40 (also set the {k} polarit{"y" if k == 1 else "ies"} needed)' if k40 and k <= 5 else
+           (f'5 Forma to Rank 40 + {k - 5}' if k40 else f'{k}')) + f' - {t}/{cap} capacity at max rank' + (' (upper bound: stance capacity not counted)' if mel else '')
+    return txt, (k, t, cap)
+_weapon_configs_raw = weapon_configs
+def weapon_configs():
+    rows = _weapon_configs_raw()
+    for r in rows:
+        r['forma_old'] = r['forma']; r['forma'], r['capacity'] = _forma_text(r)
+    return rows
+# Beast claws: Sepsis Claws and Shocking Claws are mutually incompatible (game data). Sepsis Claws converts all claw elemental damage to Toxin,
+# so a second element mod is wasted anyway -> Cull the Weak (+60% per status type: Toxin, Slash from Precision Conditioning, Impact from Bell Ringer).
+_m = COMP_WEAPON_BUILD['Beast claws (Adarza/Panzer/Smeeta/Huras)'][0]; _m[_m.index('Shocking Claws')] = 'Cull the Weak'
+COMP_WEAPON_USERS = {
+ 'Beast claws (Adarza/Panzer/Smeeta/Huras)': ['Adarza Kavat','Panzer Vulpaphyla','Smeeta Kavat','Huras Kubrow'],
+ 'Sentinel rifles (Deth Machine Rifle Prime, Prime Laser Rifle, Vulklok)': ['Dethcube Prime','Wyrm Prime','Diriga'],
+ 'Deconstructor Prime (Helios Prime; glaive-class robotic melee)': ['Helios Prime'],
 }

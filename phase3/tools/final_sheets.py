@@ -106,9 +106,12 @@ ws=sheet('COMPANION ASSIGNMENTS',['Frame','Companion','Why (mechanical role)','C
 ws.append([]); ws.append(['COMPANION CONFIGS','Mods (10)','Users','Weapon'])
 for c,cfg in X.COMP.items():
     ws.append([c,' | '.join(cfg['mods']),sum(1 for b in BD.B.values() if b['comp']==c),cfg['weapon']])
-ws.append([]); ws.append(['COMPANION WEAPON BUILDS','Mods'])
-for k,(mods,t) in X.COMP_WEAPON_BUILD.items(): ws.append([k,' | '.join(mods)])
-ws.append(['Note','* Deconstructor Prime is a glaive-type sentinel weapon: use melee-style template (Primed Pressure Point, Blood Rush...) if rifle mods do not equip -> verify in Arsenal'])
+ws.append([]); ws.append(['COMPANION WEAPON BUILDS','Mods','Frames served','Element','Forma / capacity (Orokin Catalyst required)','Validation','Notes'])
+for k,(mods,t) in X.COMP_WEAPON_BUILD.items():
+    e_,el_,cap_=X.validate_comp_weapon(k)
+    us_=sorted(f for f,b in BD.B.items() if b['comp'] in X.COMP_WEAPON_USERS[k])
+    ws.append([k,' | '.join(mods),f'{len(us_)}: '+', '.join(us_),' + '.join(el_),'; '.join(f'{w}: {c[0]} Forma, {c[1]}/{c[2]}' for w,c in cap_.items()) or 'claws: part of the beast (no separate capacity)',
+               'VALID' if not e_ else 'INVALID: '+'; '.join(e_),X.DECON_NOTES if k.startswith('Deconstructor') else ('Sepsis Claws converts all claw elemental damage to Toxin; crit via Bite + Hunter Synergy' if k.startswith('Beast') else '')])
 # ---------- EXALTED BUILDS
 eb=[]
 for w,(f,slot,mods,a,e,n) in X.EXALTED.items():
@@ -205,7 +208,19 @@ ws=sheet('BUILD COMPLETENESS',['Test','Result'],rep,{'Test':40,'Result':20},idx=
 s=wb['Phase 3 Summary']; s.append([]); s.append(['','','',f'Frame builds (v4.3 {STATE})',f'{complete}/66 mechanically valid',f'{len(AB.AUDIT)}/66 optimization-audited; cross-roster consistency audit passed']); s.append(['','','','Archon Shard positions',len(sh),f'{taus} Tauforged'])
 # ---------- v4.3 CROSS-ROSTER AUDIT sheet (from xcheck.py)
 _ws=sheet('CROSS-ROSTER AUDIT',['Check','Result','Status','Note'],[[r[0],str(r[1]),r[2],r[3]] for r in _xc['rows']],{'Check':45,'Result':30,'Note':110},idx=1)
-_ws.append([]); _ws.append(['OVERALL','ALL PASS' if _xc['ok'] else 'FAILURES PRESENT'])
+# stale current-state text sweep (historical logs excluded: Corrections Log, Normalization Log, OPTIMIZATION AUDIT history columns)
+_STALE_PAT=['verify in Arsenal','LIVE TEST if','Do not buy until','Tauforged is final target','14 Exalted/intrinsic','11 v4 weapon baseline','100 unplanned','Do not bulk-Forma','Roar/Temporal Artillery conflict','verify before purchase','same drain','DRAFT','not final']
+_HIST={'Corrections Log','Normalization Log'}
+_hits=[]
+for _w in wb.worksheets:
+    if _w.title in _HIST: continue
+    for _row in _w.iter_rows():
+        for _c in _row:
+            if _w.title=='OPTIMIZATION AUDIT' and _c.column in (3,4): continue
+            if isinstance(_c.value,str) and any(p_ in _c.value for p_ in _STALE_PAT): _hits.append(f'{_w.title}!{_c.coordinate}')
+_ws.append(['Stale current-state text',len(_hits),'PASS' if not _hits else 'FAIL',', '.join(_hits) or 'current-state sheets swept; historical logs labelled and excluded'])
+_ws.append([]); _ws.append(['OVERALL','ALL PASS' if (_xc['ok'] and not _hits) else 'FAILURES PRESENT'])
+json.dump(dict(stale=_hits),open('stale.json','w'))
 # ---------- v4.3 XR stale-text sweep: obsolete v3 notes in carried-over sheets
 _STALE={'Protea; LIVE TEST with Helminth config':'Protea; RESOLVED v4.3 B4 - Roar over Grenade Fan + Temporal Artillery + Temporal Erosion',
         'LIVE TEST intrinsic weapons':'Intrinsic/Exalted weapons resolved in v4.3 (see EXALTED BUILDS)'}

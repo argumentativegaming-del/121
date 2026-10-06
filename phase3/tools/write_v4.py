@@ -25,6 +25,8 @@ def rng(c): return f"'Procurement Master'!${L[c]}$2:${L[c]}${N}"
 def S(cat,flag,col): return sum((r[col] or 0) for r in proc if r['Category']==cat and r['Counted in Player-Trade Total?']==flag)
 ws_count=sum(1 for r in proc if r['Category'] in ('Weapon','Adversary Weapon') and r['Quantity']==1)
 cat_count=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1 and not str(r.get('Catalyst?')).startswith('Pre-installed'))
+comp_cat=sum(1 for r in proc if r['Category']=='Companion Weapon' and str(r.get('Catalyst?')).startswith('Yes (required'))
+cat_count+=comp_cat
 quest_slot=sum(1 for r in proc if r['Category']=='Weapon' and r['Quantity']==1 and str(r.get('Catalyst?')).startswith('Pre-installed (quest'))
 import build as _b
 COMP_SLOTS=len(_b.USED_COMP)+sum(1 for c in _b.USED_COMP if c in ('Dethcube Prime','Helios Prime','Wyrm Prime','Diriga','Nautilus Prime','Shade Prime','Taxon'))
@@ -77,7 +79,7 @@ add([])
 add(['3. OPTIONAL CONVENIENCE (plat shortcut for farmable items)','Count','Unit Pt','Pt','','','','Basis'],True)
 oa=ms.max_row+1
 add(['Orokin Reactors',65,20,f'=B{oa}*C{oa}','','','','66 frames minus Excalibur Umbra (pre-installed). Sirius & Orion counted once for Sirius; Orion\'s Reactor is pre-installed (wiki). Verified v4.3 XR against every frame page.'])
-add(['Orokin Catalysts',cat_count,20,f'=B{oa+1}*C{oa+1}','','','',f'{cat_count} ordinary non-adversary weapons (Kuva/Tenet pre-installed; Grimoire/Nataruk quest pre-installed; Exalted use frame Reactor)'])
+add(['Orokin Catalysts',cat_count,20,f'=B{oa+1}*C{oa+1}','','','',f'{cat_count-comp_cat} ordinary non-adversary weapons + {comp_cat} assigned sentinel weapons (full builds exceed 30 capacity) (Kuva/Tenet pre-installed; Grimoire/Nataruk quest pre-installed; Exalted use frame Reactor)'])
 add(['Incarnon Genesis via Cavalero (plat, one-time each)',32,120,f'=B{oa+2}*C{oa+2}','','','','wiki (U39): rotation adapters purchasable for 120p incl. install resources (U39). Otherwise farm Steel Path Circuit'])
 OC=add(['OPTIONAL CONVENIENCE TOTAL','','',f'=SUM(D{oa}:D{oa+2})'],True)
 add([])
@@ -211,10 +213,12 @@ for row_ in ws.iter_rows(min_row=2):
     r=pc.get(row_[0].value)
     if r:
         for i,k in enumerate(['Floor Platinum','Realistic Platinum','Conservative Platinum','Status'],5): ws.cell(row_[0].row,i,r[k])
-ws=wb['Archon Shards']; ws.append(['TOTAL PLANNED',230,'','','v4: 66 frames x 5 = 330 slots; 100 unplanned','OPEN'])
+ws=wb['Archon Shards']; ws.append(['v3 TOTAL PLANNED (historical)',230,'','','v4.3 FINAL: all 330 positions assigned (65 Tauforged / 265 normal) - see ARCHON SHARD ASSIGNMENTS','RESOLVED'])
 ws=wb['Account Infrastructure']
 for row_ in ws.iter_rows(min_row=2):
-    if row_[0].value=='Orokin Catalysts': ws.cell(row_[0].row,2,f'{cat_count} ordinary non-adversary weapons (v4.3: Grimoire/Nataruk pre-installed)')
+    if row_[0].value=='Orokin Catalysts': ws.cell(row_[0].row,2,f'{cat_count}: {cat_count-comp_cat} ordinary non-adversary weapons + {comp_cat} assigned sentinel weapons (Grimoire/Nataruk/Kuva/Tenet pre-installed)'); ws.cell(row_[0].row,4,'Weapon allocation and conflict audit complete (v4.3 FINAL): count is final')
+    if row_[0].value=='Orokin Reactors': ws.cell(row_[0].row,4,'Verified v4.3 against every frame page: Excalibur Umbra pre-installed; Orion pre-installed (counted with Sirius)')
+    if row_[0].value=='Forma': ws.cell(row_[0].row,4,'Per-weapon Forma computed at max rank in WEAPON CONFIGS (innate polarities + Catalyst); Adversary weapons: 5 each to Rank 40 (they also set polarities)')
     if row_[0].value=='Elemental Vice': ws.cell(row_[0].row,2,'12 baseline (v4: 12 adversary weapons)')
     if row_[0].value=='Orokin Reactors': ws.cell(row_[0].row,2,'65 (66 frames minus Umbra)')
 ws=wb['Normalization Log']
@@ -223,13 +227,14 @@ ws=wb['Frames']
 for row_ in ws.iter_rows(min_row=2):
     f=row_[0].value; r=next((x for x in proc if x['Category']=='Warframe' and x['Item']==f),None)
     if r: ws.cell(row_[0].row,6,f"v4: {r['Status']}; R={r['Realistic Platinum']}p")
-    if f=='Protea Prime': ws.cell(row_[0].row,5,'v4: Roar/Temporal Artillery conflict - see Open Items')
+    if f=='Protea Prime': ws.cell(row_[0].row,5,'v4.3: RESOLVED - Roar over Grenade Fan + Temporal Artillery + Temporal Erosion')
     if f=='Narin': ws.cell(row_[0].row,5,'v4: Nurinarim = cast ability, no Melee replacement; Prisma Skana')
     if f=='Nokko': ws.cell(row_[0].row,5,'v4: Sporothrix / Ocucor / Mios; Arbucep signature archgun')
     if f=='Dante': ws.cell(row_[0].row,5,'v4: Phenmor / Onos / Ruvox; Noctua additional Exalted')
 ws=wb['Phase 3 Summary']
-upd={'Named weapon rows':(ws_count,f'{ws_count} slot-taking + 14 Exalted/intrinsic (v4 normalized)'),'Incarnon adapters':(32,'32 Genesis + 7 innate (v4)'),
-     'Adversary targets':(12,'v4'),'Arcane families':(25,'14 v3 + 11 v4 weapon baseline'),'Exact duplicate weapon names':(0,'v4 logical audit: 0 exact'),'Incarnon Genesis targets':(32,'v4 live audit')}
+_nex=len(_b._BX.EXALTED); _nreq_arc=sum(1 for r in proc if r['Category']=='Arcane' and r['Counted in Player-Trade Total?']=='Yes')
+upd={'Named weapon rows':(ws_count,f'{ws_count} slot-taking + {_nex+3} Exalted/intrinsic configs ({_nex} Exalted weapons + Venari Prime + Sevagoth Shadow + Orion) (v4.3 FINAL)'),'Incarnon adapters':(32,'32 Genesis + 7 innate (v4)'),
+     'Adversary targets':(12,'v4'),'Arcane families':(_nreq_arc,f'{_nreq_arc} required Arcanes derived from the v4.3 FINAL builds (frame, Exalted-frame, weapon and Exalted)'),'Exact duplicate weapon names':(0,'v4 logical audit: 0 exact'),'Incarnon Genesis targets':(32,'v4 live audit')}
 for row_ in ws.iter_rows(min_row=1):
     m=row_[3].value
     if m in upd: ws.cell(row_[0].row,5,upd[m][0]); ws.cell(row_[0].row,6,upd[m][1])
@@ -237,6 +242,8 @@ for row_ in ws.iter_rows(min_row=1):
     if m=='Gross potato shortcut Pt': ws.cell(row_[0].row,5,f"='Economic Model'!D{OC}")
     if m=='Gross fixed shortcut Pt': ws.cell(row_[0].row,5,f"='Economic Model'!D{FI}+'Economic Model'!D{OC}")
     if m=='$1k official-store benchmark Pt': ws.cell(row_[0].row,5,23000)
+    if row_[0].value=='Forma': ws.cell(row_[0].row,2,'Forma per weapon is computed at max rank in WEAPON CONFIGS (actual drains, innate polarities, Catalyst). Adversary weapons need 5 Forma each for Rank 40 (these also set polarities). The 2 remaining LIVE TESTs (Khora Venari posture, Kullervo Melee Duplicate) do not change any weapon Forma plan.')
+    if row_[0].value=='Shards': ws.cell(row_[0].row,2,'Account-bound. Deliberate finite allocation (v4.3 FINAL): 330 positions = 65 Tauforged (where the stat is the build\'s primary uncapped scaling) + 265 normal (capped/secondary stats). Ascent Fusion (3 normal -> 1 Tauforged) only for the 65 planned Tau positions.')
 ws.append([]); ws.append(['','','','Realistic total reconstruction Pt (v4)',f"='Economic Model'!C{T1}",'Trade + net fixed infrastructure'])
 ws['A1']='WARFRAME PERMANENT ACCOUNT - PHASE 3 PROCUREMENT MASTER v4 (normalized + live-priced)'
 src=wb['Sources']; src.append(['Warframe Wiki data modules (Warframes/Weapons/Mods/Arcane data)','https://wiki.warframe.com/w/Module:Weapons/data','Live roster, slots, Incarnon, signatures, mod tradeability (pulled 2026-10-05)']); src.append(['Warframe.Market API v2/v1','https://api.warframe.market','Live orders, 90d statistics, lich/sister auctions (PC)'])
