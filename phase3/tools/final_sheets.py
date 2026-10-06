@@ -106,12 +106,16 @@ ws=sheet('COMPANION ASSIGNMENTS',['Frame','Companion','Why (mechanical role)','C
 ws.append([]); ws.append(['COMPANION CONFIGS','Mods (10)','Users','Weapon'])
 for c,cfg in X.COMP.items():
     ws.append([c,' | '.join(cfg['mods']),sum(1 for b in BD.B.values() if b['comp']==c),cfg['weapon']])
-ws.append([]); ws.append(['COMPANION WEAPON BUILDS','Mods','Frames served','Element','Forma / capacity (Orokin Catalyst required)','Validation','Notes'])
+ws.append([]); ws.append(['COMPANION WEAPON BUILDS','Mods','Frames served','Element','Forma / capacity at max rank','Validation','Notes'])
 for k,(mods,t) in X.COMP_WEAPON_BUILD.items():
     e_,el_,cap_=X.validate_comp_weapon(k)
     us_=sorted(f for f,b in BD.B.items() if b['comp'] in X.COMP_WEAPON_USERS[k])
-    ws.append([k,' | '.join(mods),f'{len(us_)}: '+', '.join(us_),' + '.join(el_),'; '.join(f'{w}: {c[0]} Forma, {c[1]}/{c[2]}' for w,c in cap_.items()) or 'claws: part of the beast (no separate capacity)',
+    ws.append([k,' | '.join(mods),f'{len(us_)}: '+', '.join(us_),' + '.join(el_),'; '.join(f'{w}: {c[0]} Forma, {c[1]}/{c[2]} (Catalyst required)' for w,c in cap_.items()) or '; '.join(f"{X.BEAST_WEAPON[c_]}: {X.validate_beast_weapon(c_)[1][0]} Forma, {X.validate_beast_weapon(c_)[1][1]}/{X.validate_beast_weapon(c_)[1][2]}" for c_ in X.BEAST_WEAPON)+' (built-in Catalyst 60 + Posture 10; see BEAST CLAW WEAPONS)',
                'VALID' if not e_ else 'INVALID: '+'; '.join(e_),X.DECON_NOTES if k.startswith('Deconstructor') else ('Sepsis Claws converts all claw elemental damage to Toxin; crit via Bite + Hunter Synergy' if k.startswith('Beast') else '')])
+ws.append([]); ws.append(['BEAST CLAW WEAPONS','Companion','Posture','Posture decision','Innate polarities','Catalyst','Capacity (Catalyst 60 + Posture)','Forma','Drain after Forma','Validation'])
+for c_,w_ in X.BEAST_WEAPON.items():
+    e_,cap_,inn_=X.validate_beast_weapon(c_); p_,why_=X.COMP_POSTURE[c_]
+    ws.append([w_,c_,p_,why_,', '.join(inn_) or 'none (Posture slot Penjaga)',X.BEAST_CATALYST,cap_[2],cap_[0],f'{cap_[1]}/{cap_[2]}','VALID' if not e_ else 'INVALID: '+'; '.join(e_)])
 # ---------- EXALTED BUILDS
 eb=[]
 for w,(f,slot,mods,a,e,n) in X.EXALTED.items():
@@ -209,7 +213,7 @@ s=wb['Phase 3 Summary']; s.append([]); s.append(['','','',f'Frame builds (v4.3 {
 # ---------- v4.3 CROSS-ROSTER AUDIT sheet (from xcheck.py)
 _ws=sheet('CROSS-ROSTER AUDIT',['Check','Result','Status','Note'],[[r[0],str(r[1]),r[2],r[3]] for r in _xc['rows']],{'Check':45,'Result':30,'Note':110},idx=1)
 # stale current-state text sweep (historical logs excluded: Corrections Log, Normalization Log, OPTIMIZATION AUDIT history columns)
-_STALE_PAT=['verify in Arsenal','LIVE TEST if','Do not buy until','Tauforged is final target','14 Exalted/intrinsic','11 v4 weapon baseline','100 unplanned','Do not bulk-Forma','Roar/Temporal Artillery conflict','verify before purchase','same drain','DRAFT','not final']
+_STALE_PAT=['part of the beast','no separate capacity','v3 14 required','11 weapon-arcane','v3 companion list','covers only 230','v3 shard plan','verify in Arsenal','LIVE TEST if','Do not buy until','Tauforged is final target','14 Exalted/intrinsic','11 v4 weapon baseline','100 unplanned','Do not bulk-Forma','Roar/Temporal Artillery conflict','verify before purchase','same drain','DRAFT','not final']
 _HIST={'Corrections Log','Normalization Log'}
 _hits=[]
 for _w in wb.worksheets:
@@ -218,6 +222,21 @@ for _w in wb.worksheets:
         for _c in _row:
             if _w.title=='OPTIMIZATION AUDIT' and _c.column in (3,4): continue
             if isinstance(_c.value,str) and any(p_ in _c.value for p_ in _STALE_PAT): _hits.append(f'{_w.title}!{_c.coordinate}')
+# data-consistency claims on current-state sheets: earned-mod lists must be complete, counts must match the final data
+import re as _re
+_EARNED=[r_['Item'] for r_ in json.load(open('proc.json')) if r_['Category']=='Mod' and str(r_.get('Priority','')).startswith('ACCOUNT-BOUND')]
+_NARC=sum(1 for r_ in json.load(open('proc.json')) if r_['Category']=='Arcane' and r_['Counted in Player-Trade Total?']=='Yes')
+for _w in wb.worksheets:
+    if _w.title not in ('Economic Model','Phase 3 Summary','Account Infrastructure','Open Items'): continue
+    for _row in _w.iter_rows():
+        for _c in _row:
+            v_=_c.value
+            if not isinstance(v_,str): continue
+            if any(e_ in v_ for e_ in _EARNED) and not all((e_ in v_) or (e_.startswith('Umbral ') and 'Umbral x3' in v_) for e_ in _EARNED): _hits.append(f'{_w.title}!{_c.coordinate} (incomplete earned-mod list)')
+            for n_ in _re.findall(r'(\d+) required Arcane',v_):
+                if int(n_)!=_NARC: _hits.append(f'{_w.title}!{_c.coordinate} ({n_} required Arcanes != {_NARC})')
+            for n_ in _re.findall(r'(\d+)(?:/\d+)? (?:final )?(?:shard )?positions',v_):
+                if int(n_)!=330: _hits.append(f'{_w.title}!{_c.coordinate} ({n_} shard positions)')
 _ws.append(['Stale current-state text',len(_hits),'PASS' if not _hits else 'FAIL',', '.join(_hits) or 'current-state sheets swept; historical logs labelled and excluded'])
 _ws.append([]); _ws.append(['OVERALL','ALL PASS' if (_xc['ok'] and not _hits) else 'FAILURES PRESENT'])
 json.dump(dict(stale=_hits),open('stale.json','w'))

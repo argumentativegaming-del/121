@@ -556,3 +556,36 @@ COMP_WEAPON_USERS = {
  'Sentinel rifles (Deth Machine Rifle Prime, Prime Laser Rifle, Vulklok)': ['Dethcube Prime','Wyrm Prime','Diriga'],
  'Deconstructor Prime (Helios Prime; glaive-class robotic melee)': ['Helios Prime'],
 }
+# ---------------- Beast Claw weapons (U37: separate moddable weapon per Beast; built-in Orokin Catalyst; Penjaga Posture slot adds capacity)
+BEAST_WEAPON = {'Adarza Kavat':'Adarza Claws','Panzer Vulpaphyla':'Panzer Claws','Smeeta Kavat':'Smeeta Claws','Huras Kubrow':'Huras Claws'}
+BEAST_CATALYST = 'Built-in Orokin Catalyst (wiki Claws (Beast): "Each weapon includes a built-in Orokin Catalyst")'
+COMP_POSTURE = {
+ 'Adarza Kavat': ('Protector Posture', 'Crit support: keeps Adarza on enemies within 15m of the Warframe, where Cat\'s Eye (25m ally crit buff) and Vicious Bond armor strip act on the player\'s own targets; +4 Puncture procs per attack.'),
+ 'Panzer Vulpaphyla': ('Frenzied Posture', 'Viral/status support: a new target after every attack spreads Viral/Toxin procs and Vicious Bond strip across the pack (Contagious Bond spreads on kill); +80% Status Duration keeps the primed statuses up.'),
+ 'Smeeta Kavat': ('Protector Posture', 'Utility: Charm runs on a timer, but Duplex Bond clones return energy only through KILLS (50% orb chance), so Elusive (avoid attacking) is rejected; Protector keeps kills and their orbs within 15m of the Warframe.'),
+ 'Huras Kubrow': ('Assassin Posture', 'Stealth/utility: Huras has the strongest claws of the four (350 Slash, 20%/3.5x); with Loki invisible, Eximus are the threats left - Assassin prioritizes them and adds +300% damage vs Overguard.'),
+}
+def validate_beast_weapon(c):
+    """Validate the shared claw package on one specific Beast weapon + its Posture."""
+    w = BEAST_WEAPON[c]; mods = COMP_WEAPON_BUILD['Beast claws (Adarza/Panzer/Smeeta/Huras)'][0]; p, why = COMP_POSTURE[c]
+    errs = []; wt = set((W.get(w) or {}).get('CompatibilityTags') or [])
+    if (W.get(w) or {}).get('Slot') != 'Beast': errs.append(f'{w} is not a Beast weapon')
+    for m in mods + [p]:
+        v = engine.mod(m)
+        if not v: errs.append('unknown ' + m); continue
+        if v.get('Type') != 'Claws': errs.append(f'{m} type {v.get("Type")} is not a Claws mod')
+        bad = wt & set(v.get('IncompatibilityTags') or [])
+        if bad: errs.append(f'{m} incompatible with {w} ({bad})')
+        for i in v.get('Incompatible') or []:
+            if i in mods: errs.append(f'{m} incompatible with {i}')
+    pv = engine.mod(p) or {}
+    if not p.endswith('Posture') or pv.get('Polarity') != 'Penjaga': errs.append(f'{p} is not a Penjaga Posture mod')
+    if len(set(mods)) != 8: errs.append('claw package must be 8 distinct mods')
+    cap = _CAP.min_forma(w, mods, None, False, posture=p)
+    inn = (W.get(w) or {}).get('Polarities') or []
+    return errs, cap, inn
+_required_mods_raw = required_mods
+def required_mods():
+    req = _required_mods_raw()
+    for c, (p, _) in COMP_POSTURE.items(): req.setdefault(p, set()).add(BEAST_WEAPON[c])
+    return req

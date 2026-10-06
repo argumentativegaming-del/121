@@ -38,7 +38,7 @@ ad=[f for f,(e,w,a) in val.items() if any(('needs' in x and 'subsumed' in x) or 
 chk('Broken augment dependencies', len(ad), not ad)
 chk('All frame validator errors', sum(1 for e,w,a in val.values() if e), not any(e for e,w,a in val.values()))
 chk('Unintended weapon duplicates', len(dup), not dup, 'family overlaps (base vs Prime) are distinct items - INTENTIONAL; Vinquibus dual-slot - MECHANICALLY REQUIRED')
-P=json.load(open('proc.json')); pm={r['Item'].lower():r for r in P if r['Category']=='Mod'}; pa={r['Item']:r for r in P if r['Category']=='Arcane'}
+P=json.load(open('proc.json')); pm={r['Item'].lower():r for r in P if r['Category']=='Mod'}; pm.update({r['Item']:r for r in P if r['Category']=='Mod'}); pa={r['Item']:r for r in P if r['Category']=='Arcane'}
 req=X.required_mods(); miss=[m for m in req if m.lower() not in pm]
 arcs={a for b in B.values() for a in b['arcanes']}|{a for c in BD.EXALTED_FRAMES.values() for a in c.get('arcanes',[])}|{r['arcane'] for r in W}|{v[3] for v in X.EXALTED.values() if v[3]}
 amiss=[a for a in arcs if a not in pa]; anot=[a for a in arcs if a in pa and pa[a]['Counted in Player-Trade Total?']!='Yes']
@@ -65,6 +65,12 @@ bad_anim=[r['frame'] for r in W if r['arcane']=='Melee Animosity' and r['templat
 chk('Outburst on combo builds / Animosity without heavy build', f'{len(bad_out)} / {len(bad_anim)}', not bad_out and not bad_anim)
 cw={k:X.validate_comp_weapon(k) for k in X.COMP_WEAPON_BUILD}
 chk('Companion weapon builds', f'{sum(1 for v in cw.values() if not v[0])}/{len(cw)} valid', all(not v[0] for v in cw.values()), '; '.join(f'{k}: {"VALID" if not v[0] else v[0]}' for k,v in cw.items()))
+bw={c:X.validate_beast_weapon(c) for c in X.BEAST_WEAPON}
+chk('Beast Claw weapons', f'{sum(1 for v in bw.values() if not v[0])}/{len(bw)} VALID', len(bw)==4 and all(not v[0] for v in bw.values()), '; '.join(f'{X.BEAST_WEAPON[c]}: {"VALID" if not v[0] else v[0]}, {v[1][0]} Forma {v[1][1]}/{v[1][2]}' for c,v in bw.items()))
+_pa=[c for c in X.BEAST_WEAPON if X.COMP_POSTURE.get(c,(None,))[0] in pm and (X.COMP_POSTURE[c][0] in req)]
+chk('Beast Postures assigned', f'{len(_pa)}/{len(X.BEAST_WEAPON)} assigned', len(_pa)==4, '; '.join(f'{c}: {X.COMP_POSTURE[c][0]}' for c in X.BEAST_WEAPON))
+_cwn=[(w,c) for k,v in cw.items() for w,c in v[2].items()]+[(X.BEAST_WEAPON[c],v[1]) for c,v in bw.items()]
+chk('Companion weapon capacity (actual weapons)', f'{sum(1 for w,c in _cwn if c[1]<=c[2])}/{len(_cwn)} PASS', all(c[1]<=c[2] for w,c in _cwn) and len(_cwn)==8, '; '.join(f'{w} {c[1]}/{c[2]} ({c[0]} Forma)' for w,c in _cwn))
 _dk=next(k for k in cw if k.startswith('Deconstructor'))
 _users=sorted(f for f,b in B.items() if b['comp']=='Helios Prime')
 chk('Deconstructor Prime config', 'VALID' if not cw[_dk][0] else 'INVALID', not cw[_dk][0] and len(_users)==7, f'{" | ".join(X.COMP_WEAPON_BUILD[_dk][0])}; {" + ".join(cw[_dk][1])}; {cw[_dk][2]["Deconstructor Prime"][0]} Forma {cw[_dk][2]["Deconstructor Prime"][1]}/60; serves {len(_users)}: {", ".join(_users)}')

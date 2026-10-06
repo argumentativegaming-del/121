@@ -44,12 +44,17 @@ add([f'Market: Warframe.Market PC, {TS}. Floor = cheapest credible (online, else
 add([f'Benchmark: 23,000p = $1,000 (5 x 4,600p @ $199.99). 1p = ${PLAT_USD:.5f}. Cells are live formulas over Procurement Master.'])
 add([])
 add(['1. PLAYER-TRADE ACQUISITION','Floor','Realistic','Conservative','Rows counted','Rows w/o sell orders','Rows no data','Scope'],True)
+_NREQARC=sum(1 for r in proc if r['Category']=='Arcane' and r['Counted in Player-Trade Total?']=='Yes')
+_cr=[r for r in proc if r['Category']=='Companion' and r['Priority']=='Core']
+_COMPSCOPE=(f"{len(_cr)} assigned companions (v4.3 FINAL COMPANION ASSIGNMENTS): traded Prime sets - "+', '.join(r['Item'] for r in _cr if r['Counted in Player-Trade Total?']=='Yes')
+            +"; farmed/bred (0p) - "+', '.join(r['Item'] for r in _cr if r['Counted in Player-Trade Total?']!='Yes'))
+_EARNED=[r['Item'] for r in proc if r['Category']=='Mod' and str(r.get('Priority','')).startswith('ACCOUNT-BOUND')]
 cats=[('Prime frame acquisition','Warframe','51 Prime sets; 15 base/quest frames are account-bound (0p)'),
       ('Weapon acquisition (ordinary, tradeable)','Weapon','Prime sets, Vandal/Wraith/Prisma, Zariman/Entrati blueprints'),
       ('Adversary acquisition (Kuva/Tenet)','Adversary Weapon','12 weapons, target element, >=58% valence'),
       ('Max-rank mod acquisition (PvE, every tradeable mod)','Mod','All WFM mods ex Rivens/Flawed/locators; Conclave reported separately'),
-      ('Max-rank Arcane acquisition (required)','Arcane','v3 14 required + v4 11 weapon-arcane baseline'),
-      ('Companions (Prime sentinel sets)','Companion','v3 companion list; beasts/base sentinels farmed')]
+      ('Max-rank Arcane acquisition (required)','Arcane',f'{_NREQARC} required Arcanes derived from v4.3 FINAL builds (frame, Exalted-frame, weapon, Exalted)'),
+      ('Companions (Prime sentinel sets)','Companion',_COMPSCOPE)]
 r0=ms.max_row+1
 for lab,cat,scope in cats:
     f=lambda col: f'=SUMIFS({rng(col)},{rng("Category")},"{cat}",{rng("Counted in Player-Trade Total?")},"Yes")'
@@ -104,9 +109,9 @@ add(['  Credits needed to max every PvE mod yourself',f'=SUMIFS({rng("Credits to
 add(['Arcanes via R0 copies (sum where available, required set)',f'=SUMIFS({rng("Max via R0 copies (Realistic)")},{rng("Category")},"Arcane",{rng("Counted in Player-Trade Total?")},"Yes")'])
 add(['Non-tradeable frames/weapons/companions (farm/quest/vendor/Dojo)',f'=COUNTIFS({rng("Status")},"FARMABLE*")','','','','','','items; 0p by definition'])
 add(['Incarnon Genesis adapters (Steel Path Circuit)',f'=COUNTIFS({rng("Adapter required?")},"Incarnon*")','','','','','','adapters'])
-add(['Build-required mods: account-bound / earned (0p, see EARNED REQUIREMENTS)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"ACCOUNT-BOUND*")','','','','','','Umbral x3 (The Sacrifice), Primed Shred (Daily Tribute), Amalgam Organ Shatter (Thermia Fractures)'])
+add(['Build-required mods: account-bound / earned (0p, see EARNED REQUIREMENTS)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"ACCOUNT-BOUND*")','','','','','',f'{len(_EARNED)}: '+', '.join(sorted(_EARNED))])
 add(['Build-required mods with NO market price (excluded from totals)',f'=COUNTIFS({rng("Category")},"Mod",{rng("Priority")},"BUILD REQUIRED*",{rng("Status")},"*UNAVAILABLE*")','','','','','','Must be 0 for FINAL; any such row would be acquired by farm / private trade outside these totals'])
-add(['Archon Shards (account-bound)',330,'','','','','','66 frames x 5; v3 shard plan covers only 230'])
+add(['Archon Shards (account-bound)',330,'','','','','','330/330 final positions: 65 Tauforged / 265 normal'])
 add([])
 add(['Official Platinum pack',4600,199.99,'','','','','Current undiscounted USD price (v3)'])
 add(['$1,000 benchmark packs',5,4600,'=B{0}*C{0}'.format(ms.max_row+1),'','','','Five 4,600p packs = 23,000p for $999.95'])
@@ -118,7 +123,7 @@ for t in ['Mods are ~70% of the player-trade total. Buying every PvE mod already
           'Prime frames/weapons are priced as complete sets; buying parts or cracking relics is cheaper but slower.',
           'Account purchase comparison: the $1,000 / 23,000p benchmark should be compared to the portion of THIS procurement universe a candidate account already satisfies (equivalency audit), not to its raw inventory. Purchase risk is separate.',
           'Platinum totals exclude Forma, Archon Shards, Focus, Helminth, Incarnon Genesis, Endo and credits (all farmable/account-bound).',
-          'Platinum totals EXCLUDE any unpriced private-trade acquisition: a build-required row with Status MARKET DATA UNAVAILABLE contributes 0p (count in section 6; v4.3 FINAL has none - Corroding Barrage and Swift Deth were archived mods, replaced by Rousing Plunder and Assault Mode, both priced). Earned account-bound build requirements (Umbral x3, Primed Shred, Amalgam Organ Shatter) are 0p by definition - see EARNED REQUIREMENTS.']:
+          'Platinum totals EXCLUDE any unpriced private-trade acquisition: a build-required row with Status MARKET DATA UNAVAILABLE contributes 0p (count in section 6; v4.3 FINAL has none - Corroding Barrage and Swift Deth were archived mods, replaced by Rousing Plunder and Assault Mode, both priced). Earned account-bound build requirements are 0p by definition - the full list is in EARNED REQUIREMENTS (count in section 6).']:
     add(['  - '+t])
 for row_ in ms.iter_rows(min_row=5):
     for c in row_[1:7]:

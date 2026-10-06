@@ -11,9 +11,13 @@ def cost(m,slotpol):
     return rh(d*1.25)
 def capacity(w, rank40=False):
     return (40 if rank40 else 30)*2          # Orokin Catalyst (pre-installed on Kuva/Tenet)
-def min_forma(w, mods, exilus=None, rank40=False):
+def posture_bonus(p, slot='Penjaga'):
+    """Posture/stance capacity bonus: max-rank |drain|, doubled on a matching polarity slot, x0.75 otherwise (wiki: Posture Mods)."""
+    v=MODS[p]; b=abs(v['BaseDrain'])+v['MaxRank']
+    return b*2 if v.get('Polarity')==slot else rh(b*0.75)
+def min_forma(w, mods, exilus=None, rank40=False, posture=None):
     """Return (forma_needed, drain_after, capacity, detail) for the cheapest legal polarity layout."""
-    cap=capacity(w,rank40); inn=list(_W[w].get('Polarities') or [])
+    cap=capacity(w,rank40)+(posture_bonus(posture) if posture else 0); inn=list(_W[w].get('Polarities') or [])
     best=None
     slots=inn+[None]*(len(mods)-len(inn))
     for perm in set(itertools.permutations(range(len(mods)), len(inn))):
