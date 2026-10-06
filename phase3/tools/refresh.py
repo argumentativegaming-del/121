@@ -71,7 +71,7 @@ def fetch_item(cache, slug, adversary=None):
         return get_json(f'{API}/v1/auctions/search?type={t}&weapon_url_name={slug}&sort_by=price_asc', os.path.join(cache, 'auctions', f'{slug}.json')) is not None
     o = get_json(f'{API}/v2/orders/item/{slug}', os.path.join(cache, 'orders', f'{slug}.json'))
     s = get_json(f'{API}/v1/items/{slug}/statistics', os.path.join(cache, 'stats', f'{slug}.json'))
-    return o is not None and 'error' not in o and s is not None
+    return o is not None and not o.get('error') and s is not None and not s.get('error')      # v2 bodies carry "error": null
 
 
 # ---------------------------------------------------------------- pricing (v4.3 methodology, unchanged)
@@ -91,7 +91,7 @@ def price_adversary(cache, slug, element, now):
 
 def price_row(cache, r, now):
     cat, slug = r['Category'], r['Market Slug']
-    if cat == 'Adversary Weapon': return price_adversary(cache, slug, r.get('Element target'), now), None
+    if cat == 'Adversary Weapon': return price_adversary(cache, slug, str(r.get('Element target') or '').lower(), now), None   # auctions use lower-case elements
     rank = r.get('Required Rank') if cat in ('Mod', 'Arcane') else None
     rank = int(rank) if rank not in (None, '') else None
     os.makedirs(os.path.join(cache, 'item'), exist_ok=True)
@@ -133,8 +133,7 @@ def decide(r, p, p0, ok_fetch, ts):
         keep['Status'] = f'ANOMALY HELD ({ts}; book shows {new_real}p from {n} seller(s), unsupported by trade history; previous status: {pst})'
         return keep, 'HELD'
     th = thin(p.get('status'))
-    cons = p['conservative']
-    if th: cons = max(cons, math.ceil(new_real * 1.25))          # thin supply: keep the uncertainty in Conservative
+    cons = p['conservative']          # v4.3 method already widens thin books (5th seller / 30d median, x1.10)
     st = str(p['status']).replace('THIN', 'THIN MARKET', 1)
     if old_real and abs(new_real - old_real) >= MOVE_PCT * old_real and abs(new_real - old_real) >= 5: st += '; VOLATILE'
     elif cons >= 1.8 * new_real: st += '; VOLATILE'
@@ -336,7 +335,7 @@ def main():
     moves = [x for x in changes if x[1][1] and x[2][1] is not None and (abs(dR(x)) >= MOVE_PCT * x[1][1] or abs(dR(x)) >= MOVE_ABS)]
     nthin = [r for r in sel if r['_newly_thin']]
     nunav = [r for r in unav if not r['_was_unavail']]
-    caf = content_audit(cache, {r['Market Slug'] for r in rows if r.get('Market Slug')})
+    caf = content_audit(cache, {r['Market Slug'] for r in rows if r.get('Market Slug') and r['Category'] != 'Adversary Weapon'})   # adversary slugs are auction weapon names, not catalogue items
     lab = lambda x: f"{x[0]['Item']} ({x[0]['Category']}) {fmt(x[1][1] or 0)}->{fmt(x[2][1] or 0)}p ({dR(x):+,.1f})"
     notes = [f'{len(held)} anomalous quote(s) held at previous value' if held else '', f'{len(nthin)} newly THIN MARKET' if nthin else '',
              ('CONTENT AUDIT REQUIRED: ' + ' | '.join(caf)) if caf else 'No content change detected on Warframe.Market',
